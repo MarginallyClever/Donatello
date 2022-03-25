@@ -14,21 +14,6 @@ import java.util.*;
  * @since 2022-03-24
  */
 public class SelectShortestPathAction extends AbstractAction implements EditorAction {
-    /**
-     * The editor being affected.
-     */
-    private final Donatello editor;
-
-    /**
-     * Constructor for subclasses to call.
-     * @param name the name of this action visible on buttons and menu items.
-     * @param editor the editor affected by this Action.
-     */
-    public SelectShortestPathAction(String name, Donatello editor) {
-        super(name);
-        this.editor = editor;
-    }
-
     class DistanceNode {
         public Node node;
         public double distance;
@@ -44,8 +29,26 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
             prev = null;
         }
     }
+
+    /**
+     * The editor being affected.
+     */
+    private final Donatello editor;
+
     private final Set<DistanceNode> unvisitedNodes = new HashSet<>();
+
     private final Set<DistanceNode> visitedNodes = new HashSet<>();
+
+    /**
+     * Constructor for subclasses to call.
+     * @param name the name of this action visible on buttons and menu items.
+     * @param editor the editor affected by this Action.
+     */
+    public SelectShortestPathAction(String name, Donatello editor) {
+        super(name);
+        this.editor = editor;
+    }
+
 
     /**
      * Finds the shortest path between two nodes and selects every node on the path.
@@ -57,6 +60,17 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
         Node head = selectedNodes.get(0);
         Node tail = selectedNodes.get(1);
 
+        List<Node> list = findShortestPath(head,tail);
+        if(list.isEmpty()) {
+            list = findShortestPath(tail,head);
+        }
+        if(!list.isEmpty()) {
+            editor.setSelectedNodes(list);
+            editor.repaint();
+        }
+    }
+
+    private List<Node> findShortestPath(Node head, Node tail) {
         initializeAlgorithm();
         DistanceNode current = getDistanceNode(head);
         DistanceNode goal = getDistanceNode(tail);
@@ -70,21 +84,26 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
 
         }
 
+        List<Node> path = new ArrayList<>();
         if(visitedNodes.contains(goal)) {
             // path found
-            List<Node> path = new ArrayList<>();
-            DistanceNode backwards = goal;
-            while (backwards != null) {
-                path.add(backwards.node);
-                backwards = backwards.prev;
-            }
-            Collections.reverse(path);
-            editor.setSelectedNodes(path);
-            editor.repaint();
+            path.addAll(reverseListOfSteps(goal));
         }
         // clean up
         visitedNodes.clear();
         unvisitedNodes.clear();
+        return path;
+    }
+
+    private List<Node> reverseListOfSteps(DistanceNode goal) {
+        List<Node> path = new ArrayList<>();
+        DistanceNode backwards = goal;
+        while (backwards != null) {
+            path.add(backwards.node);
+            backwards = backwards.prev;
+        }
+        Collections.reverse(path);
+        return path;
     }
 
     private DistanceNode getSmallestDistanceNode() {
@@ -119,9 +138,7 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
 
     // get all nodes adjacent to the given node from the unvisited list.
     private List<Node> getAdjacentNodes(DistanceNode current) {
-        List<Node> from = new ArrayList<>();
-        from.add(current.node);
-        List<Node> candidates = NodeHelper.getNeighbors(editor.getGraph(),from);
+        List<Node> candidates = NodeHelper.getAllOutgoingConnections(editor.getGraph(),current.node);
         List<Node> adjacentNodes = new ArrayList<>();
 
         for(Node n : candidates) {
