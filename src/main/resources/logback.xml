@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration>
+
+    <if condition='property("DEV").equals("true")'>
+        <then>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d %-5level %logger{35} - %msg %n</pattern>
+                </encoder>
+            </appender>
+
+            <logger name="com.marginallyclever.donatello.Donatello" level="debug" />
+            <root>
+                <appender-ref ref="STDOUT" />
+            </root>
+        </then>
+    </if>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/Donatello/donatello.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${user.home}/Donatello/donatello.%i.log</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>1</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="com.marginallyclever.donatello.RollOncePerSessionTriggeringPolicy"/>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.marginallyclever" level="debug" />
+
+    <root level="info">
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>
