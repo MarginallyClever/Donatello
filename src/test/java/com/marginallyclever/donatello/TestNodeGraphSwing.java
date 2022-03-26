@@ -21,7 +21,7 @@ public class TestNodeGraphSwing {
 
     @BeforeAll
     public static void beforeAll() {
-        SwingRegistry r = new SwingRegistry();
+        DonatelloRegistry r = new DonatelloRegistry();
         r.registerNodes();
         r.registerDAO();
     }
@@ -54,10 +54,12 @@ public class TestNodeGraphSwing {
 
     @Test
     public void testImages() {
-        LoadImage img2 = new LoadImage("doesNotExist.png");
+        LoadImage img2 = new LoadImage();
+        img2.getVariable(0).setValue("doesNotExist.png");
         img2.update();
 
-        LoadImage img = new LoadImage("src/test/resources/test.png");
+        LoadImage img = new LoadImage();
+        img.getVariable(0).setValue("src/test/resources/test.png");
         img.update();
 
         PrintImage printer = new PrintImage();
