@@ -30,20 +30,6 @@ public class LoadImage extends Node {
         addVariable(height);
     }
 
-    /**
-     * Constructor that sets a starting value
-     * @param filename the starting value.
-     */
-    public LoadImage(String filename) {
-        this();
-        this.filename.setValue(filename);
-    }
-
-    @Override
-    public Node create() {
-        return new LoadImage();
-    }
-
     @Override
     public void update() {
         try {

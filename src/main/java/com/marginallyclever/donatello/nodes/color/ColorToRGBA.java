@@ -29,26 +29,6 @@ public class ColorToRGBA extends Node {
         addVariable(alpha);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param red the starting red value, 0...255.
-     * @param green the starting green value, 0...255.
-     * @param blue the starting blue value, 0...255.
-     * @param alpha the starting alpha value, 0...255.
-     */
-    public ColorToRGBA(double red, double green, double blue, double alpha) {
-        this();
-        this.red  .setValue(red  );
-        this.green.setValue(green);
-        this.blue .setValue(blue );
-        this.alpha.setValue(alpha);
-    }
-
-    @Override
-    public Node create() {
-        return new ColorToRGBA();
-    }
-
     @Override
     public void update() {
         Color c = color.getValue();

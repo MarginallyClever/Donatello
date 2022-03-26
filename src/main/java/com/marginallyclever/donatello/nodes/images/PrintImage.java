@@ -27,24 +27,6 @@ public class PrintImage extends Node implements PrintWithGraphics {
         addVariable(py);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param img the starting value.
-     * @param x the starting value.
-     * @param y the starting value.
-     */
-    public PrintImage(BufferedImage img,double x,double y) {
-        this();
-        this.image.setValue(img);
-        this.px.setValue(x);
-        this.py.setValue(y);
-    }
-
-    @Override
-    public Node create() {
-        return new PrintImage();
-    }
-
     @Override
     public void update() {
         cleanAllInputs();

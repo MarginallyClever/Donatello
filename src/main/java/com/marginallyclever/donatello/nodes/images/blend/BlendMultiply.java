@@ -25,22 +25,6 @@ public class BlendMultiply extends Node {
         addVariable(output);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param a the starting value.
-     * @param b the starting value.
-     */
-    public BlendMultiply(BufferedImage a, BufferedImage b) {
-        this();
-        this.a.setValue(a);
-        this.b.setValue(b);
-    }
-
-    @Override
-    public Node create() {
-        return new BlendMultiply();
-    }
-
     @Override
     public void update() {
         BufferedImage A = a.getValue();

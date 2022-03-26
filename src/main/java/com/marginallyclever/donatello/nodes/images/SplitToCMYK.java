@@ -29,20 +29,6 @@ public class SplitToCMYK extends Node {
         addVariable(black);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param img the starting value.
-     */
-    public SplitToCMYK(BufferedImage img) {
-        this();
-        this.image.setValue(img);
-    }
-
-    @Override
-    public Node create() {
-        return new SplitToCMYK();
-    }
-
     @Override
     public void update() {
         BufferedImage src = image.getValue();

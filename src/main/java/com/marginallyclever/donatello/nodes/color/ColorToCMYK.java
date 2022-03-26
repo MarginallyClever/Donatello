@@ -30,20 +30,6 @@ public class ColorToCMYK extends Node {
         addVariable(black);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param color the RGB color starting value.
-     */
-    public ColorToCMYK(Color color) {
-        this();
-        this.color.setValue(color);
-    }
-
-    @Override
-    public Node create() {
-        return new ColorToCMYK();
-    }
-
     @Override
     public void update() {
         Color c = color.getValue();

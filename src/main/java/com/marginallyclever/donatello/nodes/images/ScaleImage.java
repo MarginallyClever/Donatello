@@ -29,24 +29,6 @@ public class ScaleImage extends Node {
         addVariable(output);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param img the starting value.
-     * @param width the starting value.
-     * @param height the starting value.
-     */
-    public ScaleImage(BufferedImage img, double width, double height) {
-        this();
-        this.image.setValue(img);
-        this.width.setValue(width);
-        this.height.setValue(height);
-    }
-
-    @Override
-    public Node create() {
-        return new ScaleImage();
-    }
-
     @Override
     public void update() {
         int w = Math.max(1,width.getValue().intValue());

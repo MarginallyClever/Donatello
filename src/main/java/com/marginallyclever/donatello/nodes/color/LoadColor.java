@@ -30,25 +30,6 @@ public class LoadColor extends Node {
         addVariable(output);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param img the starting value.
-     * @param sampleSize how many pixels to sample.  A value of zero is a single pixel.  One is the single pixel plus
-     *                   one on each side.  Two would be two on each side in a square, and so on.
-     */
-    public LoadColor(int r,int g,int b, int a) {
-        this();
-        this.r.setValue(r);
-        this.g.setValue(g);
-        this.b.setValue(b);
-        this.a.setValue(a);
-    }
-
-    @Override
-    public Node create() {
-        return new LoadColor();
-    }
-
     @Override
     public void update() {
         int rr = r.getValue().intValue();

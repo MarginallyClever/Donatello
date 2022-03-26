@@ -34,23 +34,6 @@ public class ColorAtPoint extends Node {
         addVariable(output);
     }
 
-    /**
-     * Constructor that sets starting values.
-     * @param img the starting value.
-     * @param sampleSize how many pixels to sample.  A value of zero is a single pixel.  One is the single pixel plus
-     *                   one on each side.  Two would be two on each side in a square, and so on.
-     */
-    public ColorAtPoint(BufferedImage img,int sampleSize) {
-        this();
-        this.image.setValue(img);
-        this.sampleSize.setValue(sampleSize);
-    }
-
-    @Override
-    public Node create() {
-        return new ColorAtPoint();
-    }
-
     @Override
     public void update() {
         BufferedImage src = image.getValue();
