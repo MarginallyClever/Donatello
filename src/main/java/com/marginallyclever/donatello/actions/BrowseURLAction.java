@@ -1,5 +1,9 @@
 package com.marginallyclever.donatello.actions;
 
+import com.marginallyclever.donatello.Donatello;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +16,8 @@ import java.net.URI;
  * @since 2022-03-14
  */
 public class BrowseURLAction extends AbstractAction {
+    private static final Logger logger = LoggerFactory.getLogger(BrowseURLAction.class);
+
     private final String address;
 
     public BrowseURLAction(String label, String address) {
@@ -26,7 +32,8 @@ public class BrowseURLAction extends AbstractAction {
                 java.awt.Desktop.getDesktop().browse(URI.create(address));
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.warn("Could not open browser.", ex);
+            JOptionPane.showMessageDialog((Component)e.getSource(), "Could not open "+address, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
