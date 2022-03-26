@@ -9,13 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClassLoadingTest {
     @Test
-    public void listAllNodes() {
-        ServiceLoaderHelper helper = new ServiceLoaderHelper();
-        ClassLoader classLoader = helper.getExtensionClassLoader();
-        ServiceLoader<NodeRegistry> loader = ServiceLoader.load(NodeRegistry.class, classLoader);
-        for (NodeRegistry registry : loader) {
-            registry.registerNodes();
-        }
+    public void listAllNodes() throws Exception {
+        NodeFactory.loadRegistries();
         String add = "Nodes: ";
         for (String n : NodeFactory.getNames()) {
             System.out.print(add + n);
@@ -43,17 +38,18 @@ public class ClassLoadingTest {
     }
 
     @Test
-    public void whoIsMyClassLoader() {
+    public void whoIsMyClassLoader() throws Exception {
         ServiceLoaderHelper helper = new ServiceLoaderHelper();
         ClassLoader classLoader = helper.getExtensionClassLoader();
         NodeFactory.loadRegistries();
         if(NodeFactory.knowsAbout("PrintTurtle")) {
-            Node add = NodeFactory.createNode("PrintTurtle");
-            ClassLoader addLoader = add.getClass().getClassLoader();
+            Node pt = NodeFactory.createNode("PrintTurtle");
+            ClassLoader addLoader = pt.getClass().getClassLoader();
             NodeFactory.clear();
             assertEquals(addLoader, classLoader);
         } else {
             System.out.println("Did not thoroughly run this test");
         }
+        NodeFactory.clear();
     }
 }

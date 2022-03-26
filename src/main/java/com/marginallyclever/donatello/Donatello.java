@@ -467,8 +467,6 @@ public class Donatello extends JPanel {
 
     public void swapTool(ContextSensitiveTool tool) {
         if(tool==activeTool) return;
-        logger.debug("Context: " + tool.getName());
-
         deactivateCurrentTool();
         activeTool = tool;
         activateCurrentTool();
@@ -658,7 +656,9 @@ public class Donatello extends JPanel {
      * Main entry point.  Good for independent test.
      * @param args command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        FileHelper.createDirectoryIfMissing(FileHelper.getExtensionPath());
+        ServiceLoaderHelper.addPath(FileHelper.getExtensionPath());
         NodeFactory.loadRegistries();
         DAO4JSONFactory.loadRegistries();
 

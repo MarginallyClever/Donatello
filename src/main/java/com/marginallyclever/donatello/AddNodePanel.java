@@ -142,7 +142,7 @@ public class AddNodePanel extends JPanel {
      * main entry point.  Good for independent test.
      * @param args command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         NodeFactory.loadRegistries();
 
         JFrame frame = new JFrame(AddNodePanel.class.getSimpleName());
