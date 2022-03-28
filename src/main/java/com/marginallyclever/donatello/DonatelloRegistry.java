@@ -21,6 +21,10 @@ import java.awt.image.BufferedImage;
 public class DonatelloRegistry implements NodeRegistry, DAORegistry {
     private static final Logger logger = LoggerFactory.getLogger(DonatelloRegistry.class);
 
+    public String getName() {
+        return "Donatello";
+    }
+
     /**
      * Perform the registration.
      */

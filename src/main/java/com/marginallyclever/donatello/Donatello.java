@@ -658,7 +658,7 @@ public class Donatello extends JPanel {
      */
     public static void main(String[] args) throws Exception {
         FileHelper.createDirectoryIfMissing(FileHelper.getExtensionPath());
-        ServiceLoaderHelper.addPath(FileHelper.getExtensionPath());
+        ServiceLoaderHelper.addPathFiles(FileHelper.getExtensionPath());
         NodeFactory.loadRegistries();
         DAO4JSONFactory.loadRegistries();
 

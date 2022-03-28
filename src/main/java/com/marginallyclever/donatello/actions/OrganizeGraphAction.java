@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.sort.OrganizeGraphPanel;
+import com.marginallyclever.donatello.organize.OrganizeGraphPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
