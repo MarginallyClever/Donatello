@@ -13,6 +13,7 @@ public class SearchBar extends JPanel {
     private static final JTextField search = new JTextField();
 
     private final JToggleButton caseSensitive = new JToggleButton("Aa");
+    private final JToggleButton regularExpression = new JToggleButton(".*");
 
     private final ArrayList<SearchListener> listeners = new ArrayList<>();
 
@@ -21,7 +22,11 @@ public class SearchBar extends JPanel {
 
         this.add(new JLabel(" \uD83D\uDD0D "), BorderLayout.WEST);
         this.add(search, BorderLayout.CENTER);
-        this.add(caseSensitive, BorderLayout.EAST);
+
+        JPanel buttons = new JPanel(new BorderLayout());
+        buttons.add(caseSensitive, BorderLayout.WEST);
+        buttons.add(regularExpression, BorderLayout.EAST);
+        this.add(buttons, BorderLayout.EAST);
 
         search.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -44,7 +49,7 @@ public class SearchBar extends JPanel {
     }
 
     protected void searchFor(String text) {
-        listeners.forEach(l -> l.searchFor(text,caseSensitive.isSelected()) );
+        listeners.forEach(l -> l.searchFor(text,caseSensitive.isSelected(),regularExpression.isSelected()) );
     }
 
     public String getText() {
@@ -57,5 +62,13 @@ public class SearchBar extends JPanel {
 
     public boolean getCaseSensitive() {
         return caseSensitive.isSelected();
+    }
+
+    public void addSearchListener(SearchListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeSearchListener(SearchListener listener) {
+        listeners.remove(listener);
     }
 }

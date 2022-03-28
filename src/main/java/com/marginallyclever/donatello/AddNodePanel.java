@@ -53,22 +53,26 @@ public class AddNodePanel extends JPanel implements SearchListener {
         this.add(listScroller, BorderLayout.CENTER);
         this.add(confirmButton, BorderLayout.SOUTH);
         this.add(searchBar,BorderLayout.NORTH);
+
+        searchBar.addSearchListener(this);
+        searchFor("",false,false);
     }
 
     /**
      * Filter the default list model based on the search query.
      * From <a href='https://stackoverflow.com/questions/15824733/option-to-ignore-case-with-contains-method'>Stack Overflow</a>
      */
-    public void searchFor(String query,boolean caseSensitive) {
-        if(!caseSensitive) {
+    public void searchFor(String query,boolean caseSensitive,boolean regularExpression) {
+        if(!regularExpression && !caseSensitive) {
             query = query.toLowerCase();
         }
 
         listModel.clear();
 
         for (String s : names) {
-            String t = caseSensitive ? s : s.toLowerCase();
-            if(t.contains(query)) {
+            String t = (!regularExpression && caseSensitive) ? s : s.toLowerCase();
+            boolean found = (regularExpression) ? t.matches(query) : t.contains(query);
+            if(found) {
                 listModel.addElement(s);
             }
         }

@@ -67,7 +67,7 @@ public class ClassLoadingTest {
     public void testLoadingDonatelloExtensionsIfAvailable() throws Exception {
         System.out.println("Loading Donatello extensions: "+FileHelper.getExtensionPath());
 
-        ServiceLoaderHelper.addPathFiles(FileHelper.getExtensionPath());
+        ServiceLoaderHelper.addAllPathFiles(FileHelper.getExtensionPath());
 
         NodeFactory.loadRegistries();
         for(String name : NodeFactory.getNames()) {
