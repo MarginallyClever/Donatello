@@ -1,11 +1,11 @@
 package com.marginallyclever.donatello;
 
+import com.marginallyclever.donatello.search.SearchBar;
+import com.marginallyclever.donatello.search.SearchListener;
 import com.marginallyclever.nodegraphcore.NodeFactory;
 import com.marginallyclever.nodegraphcore.Node;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -16,11 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Dan Royer
  * @since 2022-02-11
  */
-public class AddNodePanel extends JPanel {
-    /**
-     * The search field
-     */
-    private static final JTextField search = new JTextField();
+public class AddNodePanel extends JPanel implements SearchListener {
 
     /**
      * The database of names in the list model.
@@ -42,7 +38,7 @@ public class AddNodePanel extends JPanel {
      */
     private final JButton confirmButton = new JButton("Add");
 
-    private final JToggleButton caseSensitive = new JToggleButton("Aa");
+    private final SearchBar searchBar = new SearchBar();
 
     /**
      * Constructor for subclasses to call.
@@ -56,52 +52,22 @@ public class AddNodePanel extends JPanel {
 
         this.add(listScroller, BorderLayout.CENTER);
         this.add(confirmButton, BorderLayout.SOUTH);
-
-        addSearchFeature();
-        searchFor(search.getText());
-    }
-
-    private void addSearchFeature() {
-        JPanel searchBlock = new JPanel(new BorderLayout());
-        searchBlock.add(new JLabel(" \uD83D\uDD0D "),BorderLayout.WEST);
-        searchBlock.add(search,BorderLayout.CENTER);
-        searchBlock.add(caseSensitive,BorderLayout.EAST);
-
-        this.add(searchBlock,BorderLayout.NORTH);
-
-        search.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                searchFor(search.getText());
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                searchFor(search.getText());
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                searchFor(search.getText());
-            }
-        });
-
-        caseSensitive.addActionListener((e)->searchFor(search.getText()));
+        this.add(searchBar,BorderLayout.NORTH);
     }
 
     /**
      * Filter the default list model based on the search query.
      * From <a href='https://stackoverflow.com/questions/15824733/option-to-ignore-case-with-contains-method'>Stack Overflow</a>
      */
-    private void searchFor(String query) {
-        if(!caseSensitive.isSelected()) {
+    public void searchFor(String query,boolean caseSensitive) {
+        if(!caseSensitive) {
             query = query.toLowerCase();
         }
 
         listModel.clear();
 
         for (String s : names) {
-            String t = caseSensitive.isSelected() ? s : s.toLowerCase();
+            String t = caseSensitive ? s : s.toLowerCase();
             if(t.contains(query)) {
                 listModel.addElement(s);
             }
