@@ -2,7 +2,7 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.NodeEditPanel;
+import com.marginallyclever.donatello.EditNodePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +34,7 @@ public class EditNodeAction extends AbstractAction implements EditorAction {
         List<Node> nodes = editor.getSelectedNodes();
         if(nodes.isEmpty()) return;
         Node firstNode = nodes.get(0);
-        NodeEditPanel.runAsDialog(firstNode,(JFrame)SwingUtilities.getWindowAncestor(editor));
+        EditNodePanel.runAsDialog(firstNode,(JFrame)SwingUtilities.getWindowAncestor(editor));
         editor.repaint(firstNode.getRectangle());
     }
 

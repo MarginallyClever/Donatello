@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Dan Royer
  * @since 2022-02-23
  */
-public class NodeEditPanel extends JPanel {
+public class EditNodePanel extends JPanel {
     /**
      * The {@link Node} being edited.
      */
@@ -25,13 +25,13 @@ public class NodeEditPanel extends JPanel {
     /**
      * The fields being edited.
      */
-    private final ArrayList<JTextField> fields = new ArrayList<>();
+    private final ArrayList<JComponent> fields = new ArrayList<>();
 
     /**
      * The Constructor for subclasses to call.
      * @param node the {@link Node} to edit.
      */
-    public NodeEditPanel(Node node) {
+    public EditNodePanel(Node node) {
         super();
         this.node=node;
         this.setLayout(new GridBagLayout());
@@ -62,6 +62,8 @@ public class NodeEditPanel extends JPanel {
                 addTextField(variable, c);
             } else if (variable.getTypeClass().equals(String.class)) {
                 addTextField(variable, c);
+            } else if (variable.getTypeClass().equals(Boolean.class)) {
+                addBooleanField(variable, c);
             } else {
                 addReadOnlyField(c, variable.getName(), variable.getTypeName());
             }
@@ -87,6 +89,25 @@ public class NodeEditPanel extends JPanel {
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx=1;
         this.add(textField,c);
+    }
+
+    /**
+     * Adds one variable to the panel as a label/text field pair.
+     * @param variable the {@link NodeVariable} to add.
+     * @param c {@link GridBagConstraints} for placement.
+     */
+    private void addBooleanField(NodeVariable<?> variable,GridBagConstraints c) {
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridx=0;
+        this.add(new JLabel(variable.getName()),c);
+
+        boolean v = (Boolean)variable.getValue();
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setSelected(v);
+        fields.add(checkBox);
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridx=1;
+        this.add(checkBox,c);
     }
 
     /**
@@ -128,14 +149,14 @@ public class NodeEditPanel extends JPanel {
      * @param frame the parent frame.
      */
     public static void runAsDialog(Node subject,Frame frame) {
-        NodeEditPanel panel = new NodeEditPanel(subject);
+        EditNodePanel panel = new EditNodePanel(subject);
         if(JOptionPane.showConfirmDialog(frame,panel,"Edit "+subject.getName(),JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
             subject.setLabel(panel.getLabel());
             readAllFields(subject,panel);
         }
     }
 
-    private static void readAllFields(Node subject,NodeEditPanel panel) {
+    private static void readAllFields(Node subject, EditNodePanel panel) {
         int j=0;
         for(int i=0;i<subject.getNumVariables();++i) {
             NodeVariable<?> variable = subject.getVariable(i);
@@ -144,6 +165,8 @@ public class NodeEditPanel extends JPanel {
                     panel.readTextField(j++, subject.getVariable(i));
                 } else if (variable.getTypeClass().equals(String.class)) {
                     panel.readTextField(j++, subject.getVariable(i));
+                }  else if (variable.getTypeClass().equals(Boolean.class)) {
+                    panel.readBooleanField(j++, subject.getVariable(i));
                 } else {
                     // TODO ???
                 }
@@ -151,8 +174,18 @@ public class NodeEditPanel extends JPanel {
         }
     }
 
+    private void readBooleanField(int index,NodeVariable<?> variable) {
+        JCheckBox f = (JCheckBox)fields.get(index);
+        if(f==null) {
+            // TODO ???
+            return;
+        }
+
+        variable.setValue(f.isSelected());
+    }
+
     private void readTextField(int index,NodeVariable<?> variable) {
-        JTextField f = fields.get(index);
+        JTextField f = (JTextField)fields.get(index);
         if(f==null) {
             // TODO ???
             return;
@@ -182,6 +215,6 @@ public class NodeEditPanel extends JPanel {
     public static void main(String[] args) {
         // a test case
         Node node = new ColorAtPoint();
-        NodeEditPanel.runAsDialog(node,null);
+        EditNodePanel.runAsDialog(node,null);
     }
 }
