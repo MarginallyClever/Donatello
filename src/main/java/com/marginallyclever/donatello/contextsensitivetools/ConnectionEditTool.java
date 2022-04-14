@@ -6,7 +6,7 @@ import com.marginallyclever.nodegraphcore.NodeConnectionPointInfo;
 import com.marginallyclever.nodegraphcore.NodeGraph;
 import com.marginallyclever.nodegraphcore.NodeVariable;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.NodeGraphViewPanel;
+import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.donatello.edits.AddConnectionEdit;
 import com.marginallyclever.donatello.edits.RemoveConnectionEdit;
 import org.slf4j.Logger;
@@ -134,7 +134,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     private void paintConnectionBeingMade(Graphics g) {
         if(connectionBeingCreated.isInputValid() || connectionBeingCreated.isOutputValid()) {
             g.setColor(CONNECTION_BEING_EDITED);
-            NodeGraphViewPanel paintArea = editor.getPaintArea();
+            GraphViewPanel paintArea = editor.getPaintArea();
             paintArea.setLineWidth(g,3);
 
             Point a,b;
@@ -160,7 +160,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     private void highlightNearbyConnectionPoint(Graphics g) {
         if(lastConnectionPoint !=null) {
             g.setColor(CONNECTION_POINT_COLOR_SELECTED);
-            NodeGraphViewPanel paintArea = editor.getPaintArea();
+            GraphViewPanel paintArea = editor.getPaintArea();
             paintArea.setLineWidth(g,2);
             paintArea.paintVariableConnectionPoints(g,lastConnectionPoint.getVariable());
             paintArea.setLineWidth(g,1);
@@ -232,7 +232,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     @Override
     public void attachMouseAdapter() {
         super.attachMouseAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.addMouseMotionListener(this);
         paintArea.addMouseListener(this);
     }
@@ -240,7 +240,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     @Override
     public void detachMouseAdapter() {
         super.detachMouseAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.removeMouseMotionListener(this);
         paintArea.removeMouseListener(this);
     }

@@ -48,7 +48,7 @@ public class Donatello extends JPanel {
     /**
      * The panel into which the {@link NodeGraph} will be painted.
      */
-    private final NodeGraphViewPanel paintArea;
+    private final GraphViewPanel paintArea;
 
     /**
      * The currently selected nodes for group operations
@@ -125,7 +125,7 @@ public class Donatello extends JPanel {
         super(new BorderLayout());
         this.model = model;
 
-        paintArea = new NodeGraphViewPanel(model);
+        paintArea = new GraphViewPanel(model);
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(paintArea, BorderLayout.CENTER);
@@ -154,7 +154,7 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Sets up the editor as a {@link NodeGraphViewListener} so that it can add editor-specific decorations to the
+     * Sets up the editor as a {@link GraphViewListener} so that it can add editor-specific decorations to the
      * painted nodes.
      */
     private void setupPaintArea() {
@@ -636,7 +636,7 @@ public class Donatello extends JPanel {
         repaint();
     }
 
-    public NodeGraphViewPanel getPaintArea() {
+    public GraphViewPanel getPaintArea() {
         return paintArea;
     }
 

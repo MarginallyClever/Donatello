@@ -66,7 +66,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     @Override
     public void attachMouseAdapter() {
         super.attachMouseAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.addMouseMotionListener(this);
         paintArea.addMouseListener(this);
     }
@@ -74,7 +74,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     @Override
     public void detachMouseAdapter() {
         super.detachMouseAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.removeMouseMotionListener(this);
         paintArea.removeMouseListener(this);
     }
@@ -82,7 +82,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     @Override
     public void detachKeyboardAdapter() {
         super.detachKeyboardAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.getActionMap().put("press",null);
         paintArea.getActionMap().put("release",null);
     }
@@ -90,7 +90,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     @Override
     public void attachKeyboardAdapter() {
         super.attachKeyboardAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
 
         paintArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK,false),"press");
         paintArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0,true),"release");

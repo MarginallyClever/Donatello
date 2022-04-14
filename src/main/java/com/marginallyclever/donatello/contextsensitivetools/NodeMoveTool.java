@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.NodeGraphViewPanel;
+import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.donatello.UnicodeIcon;
 import com.marginallyclever.donatello.edits.MoveNodesEdit;
 import com.marginallyclever.nodegraphcore.Node;
@@ -67,7 +67,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
     @Override
     public void attachMouseAdapter() {
         super.attachMouseAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.addMouseMotionListener(this);
         paintArea.addMouseListener(this);
     }
@@ -75,7 +75,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
     @Override
     public void detachMouseAdapter() {
         super.detachMouseAdapter();
-        NodeGraphViewPanel paintArea = editor.getPaintArea();
+        GraphViewPanel paintArea = editor.getPaintArea();
         paintArea.removeMouseMotionListener(this);
         paintArea.removeMouseListener(this);
     }

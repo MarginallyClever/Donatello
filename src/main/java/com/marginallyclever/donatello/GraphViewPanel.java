@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link NodeGraphViewPanel} visualizes the contents of a {@link NodeGraph} with Java Swing.
- * It can call on {@link NodeGraphViewListener}s to add additional flavor.
+ * {@link GraphViewPanel} visualizes the contents of a {@link NodeGraph} with Java Swing.
+ * It can call on {@link GraphViewListener}s to add additional flavor.
  * Override this to implement a unique look and feel.
  * @author Dan Royer
  * @since 2022-02-11
  */
-public class NodeGraphViewPanel extends JPanel {
+public class GraphViewPanel extends JPanel {
     /**
      * The default {@link Node} background color.
      */
@@ -41,6 +41,12 @@ public class NodeGraphViewPanel extends JPanel {
      * The default {@link JPanel} background color.
      */
     public static final Color PANEL_COLOR_BACKGROUND = Color.LIGHT_GRAY;
+
+    /**
+     * The default grid color.
+     */
+    public static final Color PANEL_GRID_COLOR = Color.GRAY;
+
     /**
      * The default {@link Node} font color.
      */
@@ -112,10 +118,10 @@ public class NodeGraphViewPanel extends JPanel {
     private double zoom = 1.0;
 
     /**
-     * Constructs one new instance of {@link NodeGraphViewPanel}.
+     * Constructs one new instance of {@link GraphViewPanel}.
      * @param model the {@link NodeGraph} model to paint.
      */
-    public NodeGraphViewPanel(NodeGraph model) {
+    public GraphViewPanel(NodeGraph model) {
         super();
         this.model=model;
         this.setBackground(PANEL_COLOR_BACKGROUND);
@@ -171,9 +177,14 @@ public class NodeGraphViewPanel extends JPanel {
             double notches = e.getWheelRotation() * 0.1;
 
             Rectangle r = getBounds();
-            int w2 = (int)(r.getWidth()/2.0);
-            int h2 = (int)(r.getHeight()/2.0);
+
+            Point before = transformMousePoint(e.getPoint());
             setZoom(getZoom() - notches);
+            Point after = transformMousePoint(e.getPoint());
+
+            camera.x -= after.x - before.x;
+            camera.y -= after.y - before.y;
+
             repaint();
         });
     }
@@ -191,6 +202,7 @@ public class NodeGraphViewPanel extends JPanel {
 
         g2.transform(getTransform());
 
+        paintBackgroundGrid(g);
         paintNodesInBackground(g);
 
         for(Node n : model.getNodes()) paintNode(g2,n);
@@ -202,6 +214,27 @@ public class NodeGraphViewPanel extends JPanel {
         //paintOrigin(g2);
 
         firePaintEvent(g2);
+    }
+
+    private void paintBackgroundGrid(Graphics g) {
+        int step = 20;
+
+        g.setColor(PANEL_GRID_COLOR);
+
+        Rectangle r = getBounds();
+        int width = (int)( r.getWidth()*zoom );
+        int height = (int)( r.getHeight()*zoom );
+        int size = Math.max(width,height)+step;
+        int startX = (int)( camera.x - width/2 );
+        int startY = (int)( camera.y - height/2 );
+
+        startX -= startX % step;
+        startY -= startY % step;
+
+        for(int i = 0; i <= size; i+=step) {
+            g.drawLine(startX+i,startY,startX+i,startY+height);
+            g.drawLine(startX,startY+i,startX+width,startY+i);
+        }
     }
 
     private void paintCursor(Graphics2D g2) {
@@ -415,8 +448,8 @@ public class NodeGraphViewPanel extends JPanel {
      * @param g the graphics context
      * @param str the text to paint
      * @param box the bounding limits
-     * @param alignH the desired horizontal alignment.  Can be any one of {@link NodeGraphViewPanel#ALIGN_LEFT}, {@link NodeGraphViewPanel#ALIGN_RIGHT}, or {@link NodeGraphViewPanel#ALIGN_CENTER}
-     * @param alignV the desired vertical alignment.  Can be any one of {@link NodeGraphViewPanel#ALIGN_TOP}, {@link NodeGraphViewPanel#ALIGN_BOTTOM}, or {@link NodeGraphViewPanel#ALIGN_CENTER}
+     * @param alignH the desired horizontal alignment.  Can be any one of {@link GraphViewPanel#ALIGN_LEFT}, {@link GraphViewPanel#ALIGN_RIGHT}, or {@link GraphViewPanel#ALIGN_CENTER}
+     * @param alignV the desired vertical alignment.  Can be any one of {@link GraphViewPanel#ALIGN_TOP}, {@link GraphViewPanel#ALIGN_BOTTOM}, or {@link GraphViewPanel#ALIGN_CENTER}
      */
     public void paintText(Graphics g,String str,Rectangle box,int alignH,int alignV) {
         if(str==null || str.isEmpty()) return;
@@ -501,28 +534,28 @@ public class NodeGraphViewPanel extends JPanel {
     }
 
     /**
-     * listener pattern for painting via {@link NodeGraphViewListener#paint(Graphics, NodeGraphViewPanel)}.
+     * listener pattern for painting via {@link GraphViewListener#paint(Graphics, GraphViewPanel)}.
      */
-    private final List<NodeGraphViewListener> listeners = new ArrayList<>();
+    private final List<GraphViewListener> listeners = new ArrayList<>();
 
     /**
-     * {@link NodeGraphViewListener}s register here.
-     * @param p the {@link NodeGraphViewListener} to register.
+     * {@link GraphViewListener}s register here.
+     * @param p the {@link GraphViewListener} to register.
      */
-    public void addViewListener(NodeGraphViewListener p) {
+    public void addViewListener(GraphViewListener p) {
         listeners.add(p);
     }
 
     /**
-     * {@link NodeGraphViewListener}s unregister here.
-     * @param p the {@link NodeGraphViewListener} to unregister.
+     * {@link GraphViewListener}s unregister here.
+     * @param p the {@link GraphViewListener} to unregister.
      */
-    public void removeViewListener(NodeGraphViewListener p) {
+    public void removeViewListener(GraphViewListener p) {
         listeners.remove(p);
     }
 
     private void firePaintEvent(Graphics g) {
-        for( NodeGraphViewListener p : listeners ) {
+        for( GraphViewListener p : listeners ) {
             p.paint(g, this);
         }
     }
