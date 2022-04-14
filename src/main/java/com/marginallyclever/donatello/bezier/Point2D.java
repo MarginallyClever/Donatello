@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.bezier;
 
 /**
  * Represents a cartesian coordinate in 2D, with double precision.

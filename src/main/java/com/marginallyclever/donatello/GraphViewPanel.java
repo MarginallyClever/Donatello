@@ -1,5 +1,7 @@
 package com.marginallyclever.donatello;
 
+import com.marginallyclever.donatello.bezier.Bezier;
+import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.PrintWithGraphics;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.NodeConnection;
@@ -41,12 +43,14 @@ public class GraphViewPanel extends JPanel {
      * The default {@link JPanel} background color.
      */
     public static final Color PANEL_COLOR_BACKGROUND = Color.LIGHT_GRAY;
-
     /**
      * The default grid color.
      */
     public static final Color PANEL_GRID_COLOR = Color.GRAY;
-
+    /**
+     * size of the grid squares, in pixels.
+     */
+    public static int GRID_SIZE=20;
     /**
      * The default {@link Node} font color.
      */
@@ -108,7 +112,7 @@ public class GraphViewPanel extends JPanel {
      */
     private final NodeGraph model;
 
-    private final Point2D camera = new Point2D();
+    private final Point camera = new Point();
 
     private final Point previousMouse = new Point();
 
@@ -174,12 +178,9 @@ public class GraphViewPanel extends JPanel {
         });
 
         this.addMouseWheelListener(e -> {
-            double notches = e.getWheelRotation() * 0.1;
-
-            Rectangle r = getBounds();
-
+            // adjust the camera position based on the mouse position (zoom to cursor)
             Point before = transformMousePoint(e.getPoint());
-            setZoom(getZoom() - notches);
+            setZoom(getZoom() - e.getWheelRotation() * 0.1);
             Point after = transformMousePoint(e.getPoint());
 
             camera.x -= after.x - before.x;
@@ -217,21 +218,19 @@ public class GraphViewPanel extends JPanel {
     }
 
     private void paintBackgroundGrid(Graphics g) {
-        int step = 20;
-
         g.setColor(PANEL_GRID_COLOR);
 
         Rectangle r = getBounds();
-        int width = (int)( r.getWidth()*zoom );
-        int height = (int)( r.getHeight()*zoom );
-        int size = Math.max(width,height)+step;
-        int startX = (int)( camera.x - width/2 );
-        int startY = (int)( camera.y - height/2 );
+        int width = (int)( r.getWidth()*zoom )+GRID_SIZE*2;
+        int height = (int)( r.getHeight()*zoom )+GRID_SIZE*2;
+        int size = Math.max(width,height);
+        int startX = camera.x - width/2 - GRID_SIZE;
+        int startY = camera.y - height/2 - GRID_SIZE;
 
-        startX -= startX % step;
-        startY -= startY % step;
+        startX -= startX % GRID_SIZE;
+        startY -= startY % GRID_SIZE;
 
-        for(int i = 0; i <= size; i+=step) {
+        for(int i = 0; i <= size; i+=GRID_SIZE) {
             g.drawLine(startX+i,startY,startX+i,startY+height);
             g.drawLine(startX,startY+i,startX+width,startY+i);
         }
@@ -461,16 +460,16 @@ public class GraphViewPanel extends JPanel {
         int w = metrics.stringWidth(str);
 
         int x,y;
-        switch(alignH) {
-            default: x = (int)box.getMinX(); break;
-            case ALIGN_RIGHT: x = (int)( box.getMaxX() - w ); break;
-            case ALIGN_CENTER: x = (int)( box.getMinX() + (box.getWidth() - w )/2); break;
-        }
-        switch(alignV) {
-            default: y = (int)( box.getMinY() + h ); break;
-            case ALIGN_BOTTOM: y = (int)( box.getMaxY() ); break;
-            case ALIGN_CENTER: y = (int)( box.getMinY() + (box.getHeight() + h )/2); break;
-        }
+        x = switch (alignH) {
+            default -> (int) box.getMinX();
+            case ALIGN_RIGHT -> (int) (box.getMaxX() - w);
+            case ALIGN_CENTER -> (int) (box.getMinX() + (box.getWidth() - w) / 2);
+        };
+        y = switch (alignV) {
+            default -> (int) (box.getMinY() + h);
+            case ALIGN_BOTTOM -> (int) (box.getMaxY());
+            case ALIGN_CENTER -> (int) (box.getMinY() + (box.getHeight() + h) / 2);
+        };
         layout.draw((Graphics2D)g,x,y);
     }
 
@@ -586,7 +585,17 @@ public class GraphViewPanel extends JPanel {
         this.zoom = Math.max(1, zoom);
     }
 
-    public Point2D getCamera() {
-        return camera;
+    /**
+     * pan and zoom the camera to fit the rectangle in the view.
+     * @param rectangle the rectangle to fit.
+     */
+    public void moveAndZoomToFit(Rectangle rectangle) {
+        camera.x = (int)rectangle.getCenterX();
+        camera.y = (int)rectangle.getCenterY();
+        Rectangle bounds= getBounds();
+        double sw = rectangle.getWidth() / bounds.getWidth();
+        double sh = rectangle.getHeight() / bounds.getHeight();
+        double s = Math.max(sw, sh);
+        setZoom(s);
     }
 }

@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.bezier;
 
 import java.util.ArrayList;
 import java.util.List;

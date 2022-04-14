@@ -18,6 +18,7 @@ module com.marginallyclever.donatello {
     exports com.marginallyclever.donatello.nodes.color to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.nodes.images to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.search to logback.core;
+    exports com.marginallyclever.donatello.bezier to logback.core;
 
     // A Java module that wants to implement a service interface from a service interface module must:
     // - Require the service interface module in its own module descriptor.

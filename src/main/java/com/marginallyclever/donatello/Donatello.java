@@ -221,6 +221,8 @@ public class Donatello extends JPanel {
         menuBar.add(setupNodeMenu());
         menuBar.add(setupToolMenuAndToolBar());
         menuBar.add(setupHelpMenu());
+
+        updateActionEnableStatus();
     }
 
     private void setupTools() {
@@ -374,6 +376,7 @@ public class Donatello extends JPanel {
         ShrinkSelectionAction shrinkSelectionAction = new ShrinkSelectionAction("Shrink selection",this);
         InvertSelectionAction invertSelectionAction = new InvertSelectionAction("Invert selection",this);
         SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
+        PanAndZoomToSelectedAction panAndZoomToSelectedAction = new PanAndZoomToSelectedAction("Pan and zoom to selected",this);
 
         undoAction.putValue(Action.SMALL_ICON, new UnicodeIcon("↪"));
         redoAction.putValue(Action.SMALL_ICON, new UnicodeIcon("↩"));
@@ -391,6 +394,7 @@ public class Donatello extends JPanel {
         growSelectionAction.putValue(Action.SMALL_ICON, new UnicodeIcon(">"));
         shrinkSelectionAction.putValue(Action.SMALL_ICON, new UnicodeIcon("<"));
         selectShortestPathAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⟵"));
+        panAndZoomToSelectedAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏬"));
 
         actions.add(undoAction);
         actions.add(redoAction);
@@ -409,6 +413,7 @@ public class Donatello extends JPanel {
         actions.add(shrinkSelectionAction);
         actions.add(invertSelectionAction);
         actions.add(selectShortestPathAction);
+        actions.add(panAndZoomToSelectedAction);
 
         undoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
         redoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
@@ -427,6 +432,7 @@ public class Donatello extends JPanel {
         shrinkSelectionAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_DOWN_MASK));
         invertSelectionAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
 
+
         menu.add(undoAction);
         menu.add(redoAction);
         menu.addSeparator();
@@ -435,6 +441,7 @@ public class Donatello extends JPanel {
         menu.add(shrinkSelectionAction);
         menu.add(invertSelectionAction);
         menu.add(selectShortestPathAction);
+        menu.add(panAndZoomToSelectedAction);
         menu.add(copyGraphAction);
         menu.add(cutGraphAction);
         menu.add(pasteGraphAction);
