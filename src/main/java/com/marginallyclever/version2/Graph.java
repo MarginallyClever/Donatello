@@ -1,11 +1,9 @@
 package com.marginallyclever.version2;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatPrecisionException;
 import java.util.List;
-import java.util.Map;
 
-public class Graph extends AbstractNode {
+public class Graph extends AbstractNamedEntity {
     /**
      * The nodes in this graph.
      */
@@ -59,25 +57,22 @@ public class Graph extends AbstractNode {
         for(Node n : nodes) n.update();
     }
 
-
     @Override
     public String toString() {
         return "Graph{" +
-                "name='" + getName() + '\'' +
-                ", uniqueID='" + getUniqueID() + '\'' +
-                ", inputs=[" + getInputsAsString() + ']' +
-                ", outputs=[" + getOutputsAsString() + ']' +
+                ", entryPoints=[" + getEntryPointsAsStrings() + ']' +
+                ", exitPoints=[" + getExitPointsAsStrings() + ']' +
                 ", annotatednodes=" + nodes +
                 ", connections=" + connections +
                 '}';
     }
 
-    public String getInputsAsString() {
-        return getDocksAsString(getInputs());
+    public String getEntryPointsAsStrings() {
+        return getDocksAsString(getEntryPoints());
     }
 
-    public String getOutputsAsString() {
-        return getDocksAsString(getOutputs());
+    public String getExitPointsAsStrings() {
+        return getDocksAsString(getExitPoints());
     }
 
     public String getDocksAsString(List<? extends Dock> docks) {
@@ -96,5 +91,35 @@ public class Graph extends AbstractNode {
 
     public List<ShippingDock> getEntryPoints() {
         return entryPoints;
+    }
+
+    /**
+     * @param name the dock to find
+     * @return the dock with the given name, or null if not found.
+     */
+    public ShippingDock getEntryPoint(String name) {
+        for(ShippingDock d : getEntryPoints()) {
+            if(d.getName().equals(name)) return d;
+        }
+        return null;
+    }
+
+    /**
+     * @param name the dock to find
+     * @return the dock with the given name, or null if not found.
+     */
+    public ReceivingDock getExitPoint(String name) {
+        for(ReceivingDock d : getExitPoints()) {
+            if(d.getName().equals(name)) return d;
+        }
+        return null;
+    }
+
+    public void addEntryPoint(ShippingDock dock) {
+        entryPoints.add(dock);
+    }
+
+    public void addExitPoint(ReceivingDock dock) {
+        exitPoints.add(dock);
     }
 }
