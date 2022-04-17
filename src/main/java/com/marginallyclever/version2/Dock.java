@@ -2,10 +2,10 @@ package com.marginallyclever.version2;
 
 public abstract class Dock {
     private final String name;
-    private final Node owner;
+    private final NamedEntity owner;
     private final Class<?> type;
 
-    public Dock(String name, Class<?> type, Node owner) {
+    public Dock(String name, Class<?> type, NamedEntity owner) {
         this.name = name;
         this.type = type;
         this.owner = owner;
@@ -19,7 +19,7 @@ public abstract class Dock {
         return type;
     }
 
-    public Node getOwner() {
+    public NamedEntity getOwner() {
         return owner;
     }
 

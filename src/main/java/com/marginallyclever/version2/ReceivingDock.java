@@ -3,7 +3,7 @@ package com.marginallyclever.version2;
 public class ReceivingDock extends Dock {
     private Connection from;
 
-    public ReceivingDock(String name, Class<?> type, AbstractNode owner) {
+    public ReceivingDock(String name, Class<?> type, NamedEntity owner) {
         super(name,type,owner);
     }
 
@@ -19,7 +19,7 @@ public class ReceivingDock extends Dock {
         return from!=null;
     }
 
-    public Packet getPacket() {
+    public Packet<?> getPacket() {
         if(!isConnected()) return null;
         return from.getPacket();
     }

@@ -6,7 +6,7 @@ import java.util.List;
 public class ShippingDock extends Dock {
     private final List<Connection> to = new ArrayList<>();
 
-    public ShippingDock(String name, Class<?> type, Node owner) {
+    public ShippingDock(String name, Class<?> type, NamedEntity owner) {
         super(name,type,owner);
     }
 
