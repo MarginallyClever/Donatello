@@ -17,25 +17,25 @@ public class TestGraph {
     @Test
     public void testPassThroughGraph() {
         Graph graph = new Graph();
-        graph.addDock(new ShippingDock("meta_in",Number.class,graph));
-        graph.addDock(new ReceivingDock("meta_out",Number.class,graph));
-        graph.addConnection(new Connection(graph.getOutput("meta_in"),graph.getInput("meta_out")));
+        graph.addEntryPoint(new ShippingDock("meta_in",Number.class,graph));
+        graph.addExitPoint(new ReceivingDock("meta_out",Number.class,graph));
+        graph.addConnection(new Connection(graph.getEntryPoint("meta_in"),graph.getExitPoint("meta_out")));
         graph.update();
     }
 
     @Test
     public void testAdd() {
         Graph graph = new Graph();
-        graph.addDock(new ShippingDock("A",Number.class,graph));
-        graph.addDock(new ShippingDock("B",Number.class,graph));
-        graph.addDock(new ReceivingDock("C",Number.class,graph));
+        graph.addEntryPoint(new ShippingDock("A",Number.class,graph));
+        graph.addEntryPoint(new ShippingDock("B",Number.class,graph));
+        graph.addExitPoint(new ReceivingDock("C",Number.class,graph));
 
         Add add = new Add();
         graph.addNode(add);
 
-        Connection a = new Connection(graph.getOutput("A"),add.getInput("A"));
-        Connection b = new Connection(graph.getOutput("B"),add.getInput("B"));
-        Connection c = new Connection(add.getOutput("result"),graph.getInput("C"));
+        Connection a = new Connection(graph.getEntryPoint("A"),add.getInput("A"));
+        Connection b = new Connection(graph.getEntryPoint("B"),add.getInput("B"));
+        Connection c = new Connection(add.getOutput("result"),graph.getExitPoint("C"));
 
         graph.addConnection(a);
         graph.addConnection(b);
@@ -51,14 +51,14 @@ public class TestGraph {
         assertFalse(c.hasPacket());
     }
 
-    @Test void createGraphThatDoesSomeMath() {
+    private Graph makeGraphThatDoesMath() {
         Graph graph = new Graph();
-        graph.addDock(new ShippingDock("A",Number.class,graph));
-        graph.addDock(new ShippingDock("B",Number.class,graph));
-        graph.addDock(new ReceivingDock("A+B",Number.class,graph));
-        graph.addDock(new ReceivingDock("A-B",Number.class,graph));
-        graph.addDock(new ReceivingDock("A*B",Number.class,graph));
-        graph.addDock(new ReceivingDock("A/B",Number.class,graph));
+        graph.addEntryPoint(new ShippingDock("A",Number.class,graph));
+        graph.addEntryPoint(new ShippingDock("B",Number.class,graph));
+        graph.addExitPoint(new ReceivingDock("A+B",Number.class,graph));
+        graph.addExitPoint(new ReceivingDock("A-B",Number.class,graph));
+        graph.addExitPoint(new ReceivingDock("A*B",Number.class,graph));
+        graph.addExitPoint(new ReceivingDock("A/B",Number.class,graph));
 
         Add add = new Add();
         Subtract subtract = new Subtract();
@@ -70,32 +70,48 @@ public class TestGraph {
         graph.addNode(multiply);
         graph.addNode(divide);
 
-        graph.addConnection(new Connection(graph.getOutput("A"),add.getInput("A")));
-        graph.addConnection(new Connection(graph.getOutput("B"),add.getInput("B")));
-        graph.addConnection(new Connection(add.getOutput("result"),graph.getInput("A+B")));
+        graph.addConnection(new Connection(graph.getEntryPoint("A"),add.getInput("A")));
+        graph.addConnection(new Connection(graph.getEntryPoint("B"),add.getInput("B")));
+        graph.addConnection(new Connection(add.getOutput("result"),graph.getExitPoint("A+B")));
 
-        graph.addConnection(new Connection(graph.getOutput("A"),subtract.getInput("A")));
-        graph.addConnection(new Connection(graph.getOutput("B"),subtract.getInput("B")));
-        graph.addConnection(new Connection(subtract.getOutput("result"),graph.getInput("A-B")));
+        graph.addConnection(new Connection(graph.getEntryPoint("A"),subtract.getInput("A")));
+        graph.addConnection(new Connection(graph.getEntryPoint("B"),subtract.getInput("B")));
+        graph.addConnection(new Connection(subtract.getOutput("result"),graph.getExitPoint("A-B")));
 
-        graph.addConnection(new Connection(graph.getOutput("A"),multiply.getInput("A")));
-        graph.addConnection(new Connection(graph.getOutput("B"),multiply.getInput("B")));
-        graph.addConnection(new Connection(multiply.getOutput("result"),graph.getInput("A*B")));
+        graph.addConnection(new Connection(graph.getEntryPoint("A"),multiply.getInput("A")));
+        graph.addConnection(new Connection(graph.getEntryPoint("B"),multiply.getInput("B")));
+        graph.addConnection(new Connection(multiply.getOutput("result"),graph.getExitPoint("A*B")));
 
-        graph.addConnection(new Connection(graph.getOutput("A"),divide.getInput("A")));
-        graph.addConnection(new Connection(graph.getOutput("B"),divide.getInput("B")));
-        graph.addConnection(new Connection(divide.getOutput("result"),graph.getInput("A/B")));
+        graph.addConnection(new Connection(graph.getEntryPoint("A"),divide.getInput("A")));
+        graph.addConnection(new Connection(graph.getEntryPoint("B"),divide.getInput("B")));
+        graph.addConnection(new Connection(divide.getOutput("result"),graph.getExitPoint("A/B")));
 
-        graph.getOutput("A").sendPacket(new Packet<Double>(1.0));
-        graph.getOutput("B").sendPacket(new Packet<Double>(2.0));
+        return graph;
+    }
+
+    @Test
+    public void createGraphThatDoesSomeMath() {
+        Graph graph = makeGraphThatDoesMath();
+        graph.getEntryPoint("A").sendPacket(new Packet<>(1.0));
+        graph.getEntryPoint("B").sendPacket(new Packet<>(2.0));
         graph.update();
         graph.update();
 
-        assertNotNull(graph.getInput("A+B"));
-        assertTrue(graph.getInput("A+B").hasPacket());
-        assertEquals("3.0",graph.getInput("A+B").getPacket().data.toString());
-        assertEquals("-1.0",graph.getInput("A-B").getPacket().data.toString());
-        assertEquals("2.0",graph.getInput("A*B").getPacket().data.toString());
-        assertEquals("0.5",graph.getInput("A/B").getPacket().data.toString());
+        assertNotNull(graph.getExitPoint("A+B"));
+        assertTrue(graph.getExitPoint("A+B").hasPacket());
+        assertEquals("3.0",graph.getExitPoint("A+B").getPacket().data.toString());
+        assertEquals("-1.0",graph.getExitPoint("A-B").getPacket().data.toString());
+        assertEquals("2.0",graph.getExitPoint("A*B").getPacket().data.toString());
+        assertEquals("0.5",graph.getExitPoint("A/B").getPacket().data.toString());
+    }
+
+    @Test
+    public void putAGraphInANode() {
+        Graph graph = makeGraphThatDoesMath();
+        NodeWhichContainsAGraph nwcag = new NodeWhichContainsAGraph(graph);
+        System.out.println(nwcag.getInputs());
+        System.out.println(nwcag.getOutputs());
+        nwcag.update();
+        nwcag.update();
     }
 }
