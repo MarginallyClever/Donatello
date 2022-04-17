@@ -2,7 +2,7 @@ package com.marginallyclever.version2;
 
 import java.util.List;
 
-public interface Node {
+public interface Node extends NamedEntity {
     void addDock(Dock dock);
 
     void removeDock(Dock dock);
@@ -19,14 +19,6 @@ public interface Node {
      * <p>Note that all inputs should be treated in a read-only manner.</p>
      */
     void update();
-
-    String getName();
-
-    String getUniqueID();
-
-    ReceivingDock getInput(String name);
-
-    ShippingDock getOutput(String name);
 
     List<ReceivingDock> getInputs();
 
