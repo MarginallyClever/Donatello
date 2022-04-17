@@ -3,16 +3,27 @@ package com.marginallyclever.version2;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-public abstract class AbstractNode implements Node {
-    private final String name;
-    private final String uniqueID = UUID.randomUUID().toString();
-    private final List<Dock> allDocks = new ArrayList<>();
-
+/**
+ * Implementation of {@link Node} interface.
+ */
+public abstract class AbstractNode extends AbstractNamedEntity implements Node {
+    /**
+     * All inputs to this node.
+     */
     private final List<ReceivingDock> inputs = new LinkedList<>();
+
+    /**
+     * All outputs from this node.
+     */
     private final List<ShippingDock> outputs = new LinkedList<>();
 
+    /**
+     * All inputs and outputs together in one list for convenience.
+     */
+    private final List<Dock> allDocks = new ArrayList<>();
+
     public AbstractNode() {
-        name = this.getClass().getSimpleName();
+        super();
     }
 
     public void addDock(Dock dock) {
@@ -37,23 +48,13 @@ public abstract class AbstractNode implements Node {
         return allDocks;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getUniqueID() {
-        return uniqueID;
-    }
-
     /**
      * @param name the name of the input to get.
      * @return the input found or null.
      */
-    @Override
     public ReceivingDock getInput(String name) {
-        for( ReceivingDock d : getInputs() ) {
+        List<ReceivingDock> list = getInputs();
+        for( ReceivingDock d : list ) {
             if(d.getName().equals(name)) return d;
         }
         return null;
@@ -63,7 +64,6 @@ public abstract class AbstractNode implements Node {
      * @param name the name of the output to get.
      * @return the input found or null.
      */
-    @Override
     public ShippingDock getOutput(String name) {
         List<ShippingDock> list = getOutputs();
         for( ShippingDock d : list ) {
@@ -91,13 +91,13 @@ public abstract class AbstractNode implements Node {
     }
 
     public String getDocksAsString(List<? extends Dock> docks) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String add="";
         for( Dock dock: docks ) {
-            result += add + dock.toString();
+            result.append(add).append(dock.toString());
             add=",";
         }
-        return result;
+        return result.toString();
     }
 
     @Override
