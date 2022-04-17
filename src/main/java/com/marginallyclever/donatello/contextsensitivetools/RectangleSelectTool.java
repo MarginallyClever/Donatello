@@ -20,7 +20,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     private static final int STROKE_WIDTH=2;
 
     /**
-     * true while drawing a box to select nodes.
+     * true while drawing a box to select annotatednodes.
      */
     private boolean selectionOn=false;
 
@@ -178,7 +178,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
         } else {
             List<Node> already = new ArrayList<>(editor.getSelectedNodes());
             List<Node> intersection = new ArrayList<>(nodesInSelectionArea);
-            // get the intersection of previous and newly selected nodes.
+            // get the intersection of previous and newly selected annotatednodes.
             intersection.retainAll(already);
             // remove the intersecting bit
             nodesInSelectionArea.removeAll(intersection);

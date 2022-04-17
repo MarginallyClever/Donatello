@@ -51,12 +51,12 @@ public class Donatello extends JPanel {
     private final GraphViewPanel paintArea;
 
     /**
-     * The currently selected nodes for group operations
+     * The currently selected annotatednodes for group operations
      */
     private final List<Node> selectedNodes = new ArrayList<>();
 
     /**
-     * Store copied nodes in this buffer.  Could be a user-space file instead.
+     * Store copied annotatednodes in this buffer.  Could be a user-space file instead.
      */
     private final NodeGraph copiedGraph = new NodeGraph();
 
@@ -155,7 +155,7 @@ public class Donatello extends JPanel {
 
     /**
      * Sets up the editor as a {@link GraphViewListener} so that it can add editor-specific decorations to the
-     * painted nodes.
+     * painted annotatednodes.
      */
     private void setupPaintArea() {
         paintArea.addViewListener((g,e)->{
@@ -548,7 +548,7 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Move all selected nodes some relative cartesian amount.
+     * Move all selected annotatednodes some relative cartesian amount.
      * @param dx the x-axis amount.
      * @param dy the y-axis amount.
      */
@@ -559,7 +559,7 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Sets the list of selected nodes to one item.
+     * Sets the list of selected annotatednodes to one item.
      * @param n the new selected node.
      */
     public void setSelectedNode(Node n) {
@@ -569,8 +569,8 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Sets the list of selected nodes.
-     * @param list the new list of selected nodes.
+     * Sets the list of selected annotatednodes.
+     * @param list the new list of selected annotatednodes.
      */
     public void setSelectedNodes(List<Node> list) {
         selectedNodes.clear();
@@ -580,9 +580,9 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Returns all selected nodes.  To change the selected nodes do not edit this list.  Instead,
+     * Returns all selected annotatednodes.  To change the selected annotatednodes do not edit this list.  Instead,
      * call {@link Donatello#setSelectedNodes(List)} or {@link #setSelectedNode(Node)}.
-     * @return all selected nodes.
+     * @return all selected annotatednodes.
      */
     public List<Node> getSelectedNodes() {
         return selectedNodes;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Find and de-select the outer-most {@link Node}s from the list of selected nodes.
+ * Find and de-select the outer-most {@link Node}s from the list of selected annotatednodes.
  */
 public class ShrinkSelectionAction extends AbstractAction implements EditorAction {
     /**
@@ -29,8 +29,8 @@ public class ShrinkSelectionAction extends AbstractAction implements EditorActio
     }
 
     /**
-     * Find all selected nodes that do not have an input to another selected node OR do not have an output to another
-     * selected node.  Then de-select all of the found nodes.
+     * Find all selected annotatednodes that do not have an input to another selected node OR do not have an output to another
+     * selected node.  Then de-select all of the found annotatednodes.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -59,7 +59,7 @@ public class ShrinkSelectionAction extends AbstractAction implements EditorActio
             }
         }
 
-        System.out.println("edge nodes: "+edgeNodes.size());
+        System.out.println("edge annotatednodes: "+edgeNodes.size());
 
         selectedNodes.removeAll(edgeNodes);
         editor.setSelectedNodes(selectedNodes);

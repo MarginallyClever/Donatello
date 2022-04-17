@@ -3,7 +3,7 @@
  * tools for nodegraphcore elements.
  *
  * The main entry point is the {@link com.marginallyclever.donatello.Donatello}, which launches a GUI.
- * The Swing nodes are registered by calling {@link com.marginallyclever.donatello.DonatelloRegistry#registerNodes()}.
+ * The Swing annotatednodes are registered by calling {@link com.marginallyclever.donatello.DonatelloRegistry#registerNodes()}.
  * The Swing DAO are registered by calling {@link com.marginallyclever.donatello.DonatelloRegistry#registerDAO()}.
  */
 package com.marginallyclever.donatello;

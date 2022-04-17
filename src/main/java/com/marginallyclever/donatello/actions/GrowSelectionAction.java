@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Select all the {@link com.marginallyclever.nodegraphcore.Node}s directly connected to the already selected nodes.
+ * Select all the {@link com.marginallyclever.nodegraphcore.Node}s directly connected to the already selected annotatednodes.
  */
 public class GrowSelectionAction extends AbstractAction implements EditorAction {
     /**

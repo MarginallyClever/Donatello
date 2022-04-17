@@ -41,7 +41,7 @@ public class TestNodeGraphSwing {
     }
 
     /**
-     * Make sure all nodes introduced in this package can be created.
+     * Make sure all annotatednodes introduced in this package can be created.
      */
     @Test
     public void testFactoryCreatesAllSwingTypes() {
