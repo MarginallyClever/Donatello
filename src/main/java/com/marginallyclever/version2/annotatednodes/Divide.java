@@ -15,8 +15,8 @@ public class Divide extends AnnotatedNode {
         if(!getInput("A").hasPacket()) return;
         if(!getInput("B").hasPacket()) return;
 
-        Packet<Double> a = getInput("A").getPacket();
-        Packet<Double> b = getInput("B").getPacket();
-        getOutput("result").sendPacket(new Packet(a.data/b.data));
+        Double a = (Double)getInput("A").getPacket().data;
+        Double b = (Double)getInput("B").getPacket().data;
+        getOutput("result").sendPacket(new Packet<>(a/b));
     }
 }
