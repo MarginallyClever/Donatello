@@ -7,8 +7,8 @@ import java.util.Map;
 public class NodeWhichContainsAGraph extends AbstractNode {
     private final Graph myGraph;
 
-    private final Map<ReceivingDock,ShippingDock> myReceivingDock = new java.util.HashMap<>();
-    private final Map<ReceivingDock,ShippingDock> myShippingDock = new java.util.HashMap<>();
+    private final Map<ReceivingDock,ShippingDock> myOutputGlue = new java.util.HashMap<>();
+    private final Map<ReceivingDock,ShippingDock> myInputGlue = new java.util.HashMap<>();
 
     public NodeWhichContainsAGraph(Graph g) {
         super();
@@ -16,97 +16,73 @@ public class NodeWhichContainsAGraph extends AbstractNode {
 
         myGraph = g;
 
-        for(ReceivingDock input : myGraph.getInputs()) {
-            ShippingDock output = new ShippingDock(input.getName(),input.getType(),this);
-            addDock(output);
-            myReceivingDock.put(input,output);
-        }
-        for(ShippingDock output : myGraph.getOutputs()) {
+        // connect my inputs to the graph entry points
+        for(ShippingDock output : myGraph.getEntryPoints()) {
             ReceivingDock input = new ReceivingDock(output.getName(),output.getType(),this);
             addDock(output);
-            myShippingDock.put(input,output);
+            myInputGlue.put(input,output);
+        }
+
+        // connect my outputs to the graph exit points
+        for(ReceivingDock input : myGraph.getExitPoints()) {
+            ShippingDock output = new ShippingDock(input.getName(),input.getType(),this);
+            addDock(output);
+            myOutputGlue.put(input,output);
         }
     }
 
     /**
-     * NodeWhichContainsAGraph will only
+     * This node contains a graph which may contain other graphs and so on.  This node transfers
+     * waiting {@link Packet}s into the {@link Graph} only when there is one {@link Packet} waiting on each available
+     * input.  This node will transfer out {@link Packet}s as soon as there is room on the {@link Connection}s.
      */
     @Override
     public void update() {
-        if(hasOnePacketWaitingOnEachInput() && hasRoomForInputPackets()) {
-            readInputs();
-        }
+        readInputs();
 
         myGraph.update();
 
-        if(hasOnePacketWaitingOnEachOutput() && hasRoomForOutputPackets()) {
-            writeOutputs();
-        }
+        writeOutputs();
     }
 
-    private boolean hasOnePacketWaitingOnEachInput() {
-        for (ReceivingDock a : myReceivingDock.keySet()) {
+    private boolean hasOnePacketWaitingOnEach( Map<ReceivingDock,ShippingDock> map ) {
+        for (ReceivingDock a : map.keySet()) {
             if (!a.hasPacket()) return false;
         }
         return true;
     }
 
-    private boolean hasRoomForInputPackets() {
-        for(ShippingDock a : myReceivingDock.values()) {
+    private boolean hasRoomForPackets( Map<ReceivingDock,ShippingDock> map ) {
+        for(ShippingDock a : map.values()) {
             if(a.hasPacket()) return false;
         }
         return true;
     }
 
     private void readInputs() {
-        for (ReceivingDock a : myReceivingDock.keySet()) {
-            myReceivingDock.get(a).sendPacket(a.getPacket());
+        if(hasOnePacketWaitingOnEach(myInputGlue) && hasRoomForPackets(myInputGlue)) {
+            for (ReceivingDock a : myInputGlue.keySet()) {
+                myInputGlue.get(a).sendPacket(a.getPacket());
+            }
         }
-    }
-
-    private boolean hasOnePacketWaitingOnEachOutput() {
-        for (ReceivingDock a : myShippingDock.keySet()) {
-            if (!a.hasPacket()) return false;
-        }
-        return true;
-    }
-
-    private boolean hasRoomForOutputPackets() {
-        for(ShippingDock a : myShippingDock.values()) {
-            if(a.hasPacket()) return false;
-        }
-        return true;
     }
 
     private void writeOutputs() {
-        for (ReceivingDock a : myShippingDock.keySet()) {
-            myShippingDock.get(a).sendPacket(a.getPacket());
+        for (ReceivingDock a : myOutputGlue.keySet()) {
+            ShippingDock out = myOutputGlue.get(a);
+            if(a.hasPacket() && !out.hasPacket() ) {
+                out.sendPacket(a.getPacket());
+            }
         }
     }
 
     @Override
     public List<ReceivingDock> getInputs() {
-        return new ArrayList<>(myReceivingDock.keySet());
+        return new ArrayList<>(myInputGlue.keySet());
     }
 
     @Override
     public List<ShippingDock> getOutputs() {
-        return new ArrayList<>(myShippingDock.values());
-    }
-
-    @Override
-    public ReceivingDock getInput(String name) {
-        for( ReceivingDock d : getInputs() ) {
-            if(d.getName().equals(name)) return d;
-        }
-        return null;
-    }
-
-    @Override
-    public ShippingDock getOutput(String name) {
-        for( ShippingDock d : getOutputs() ) {
-            if(d.getName().equals(name)) return d;
-        }
-        return null;
+        return new ArrayList<>(myOutputGlue.values());
     }
 }
