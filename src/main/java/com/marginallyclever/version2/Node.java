@@ -3,12 +3,6 @@ package com.marginallyclever.version2;
 import java.util.List;
 
 public interface Node extends NamedEntity {
-    void addDock(Dock dock);
-
-    void removeDock(Dock dock);
-
-    List<Dock> getDocks();
-
     /**
      * <p>Called once every tick.  This is where annotatednodes should</p>
      * <ul>
@@ -20,7 +14,13 @@ public interface Node extends NamedEntity {
      */
     void update();
 
+    /**
+     * @return all {@link ReceivingDock} for this {@link Node}.
+     */
     List<ReceivingDock> getInputs();
 
+    /**
+     * @return all {@link ShippingDock} for this {@link Node}.
+     */
     List<ShippingDock> getOutputs();
 }

@@ -1,7 +1,11 @@
 package com.marginallyclever.version2;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.marginallyclever.version2.annotatednodes.*;
 import org.junit.jupiter.api.Test;
+
+import java.io.*;
+import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -105,13 +109,59 @@ public class TestGraph {
         assertEquals("0.5",graph.getExitPoint("A/B").getPacket().data.toString());
     }
 
+    public AbstractNode createANodeWhichContainsAGraphWhichDoesMath() {
+        Graph inner = makeGraphThatDoesMath();
+        NodeWhichContainsAGraph outer = new NodeWhichContainsAGraph(inner);
+        return outer;
+    }
+
     @Test
     public void putAGraphInANode() {
-        Graph graph = makeGraphThatDoesMath();
-        NodeWhichContainsAGraph nwcag = new NodeWhichContainsAGraph(graph);
-        System.out.println(nwcag.getInputs());
-        System.out.println(nwcag.getOutputs());
-        nwcag.update();
-        nwcag.update();
+        AbstractNode container = createANodeWhichContainsAGraphWhichDoesMath();
+        assertEquals(2, container.getInputs().size());
+        assertEquals(4, container.getOutputs().size());
+
+        Graph outer = new Graph();
+        outer.addNode(container);
+        outer.addEntryPoint(new ShippingDock("A",Number.class,outer));
+        outer.addEntryPoint(new ShippingDock("B",Number.class,outer));
+        outer.addExitPoint(new ReceivingDock("A",Number.class,outer));
+        outer.addExitPoint(new ReceivingDock("B",Number.class,outer));
+        outer.addExitPoint(new ReceivingDock("C",Number.class,outer));
+        outer.addExitPoint(new ReceivingDock("D",Number.class,outer));
+
+        outer.addConnection(new Connection(outer.getEntryPoint("A"),container.getInput("A")));
+        outer.addConnection(new Connection(outer.getEntryPoint("B"),container.getInput("B")));
+
+        outer.addConnection(new Connection(container.getOutput("A+B"),outer.getExitPoint("A")));
+        outer.addConnection(new Connection(container.getOutput("A-B"),outer.getExitPoint("B")));
+        outer.addConnection(new Connection(container.getOutput("A*B"),outer.getExitPoint("C")));
+        outer.addConnection(new Connection(container.getOutput("A/B"),outer.getExitPoint("D")));
+
+        outer.getEntryPoint("A").sendPacket(new Packet<>(1.0));
+        outer.getEntryPoint("B").sendPacket(new Packet<>(2.0));
+        outer.update();
+        outer.update();
+
+        assertEquals("3.0",outer.getExitPoint("A").getPacket().data.toString());
+        assertEquals("-1.0",outer.getExitPoint("B").getPacket().data.toString());
+        assertEquals("2.0",outer.getExitPoint("C").getPacket().data.toString());
+        assertEquals("0.5",outer.getExitPoint("D").getPacket().data.toString());
+    }
+
+    @Test
+    public void saveAndLoadAGraph() throws IOException {
+        Graph first = makeGraphThatDoesMath();
+
+        File temp = File.createTempFile("hello", ".file");
+        temp.deleteOnExit();
+
+        GraphWriter writer = new GraphWriter();
+        writer.write(first, new FileOutputStream(temp));
+
+        GraphReader reader = new GraphReader();
+        Graph second = reader.parse(new FileInputStream(temp));
+
+        assertEquals(first.toString(),second.toString());
     }
 }

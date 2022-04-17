@@ -17,17 +17,13 @@ public abstract class AbstractNode extends AbstractNamedEntity implements Node {
      */
     private final List<ShippingDock> outputs = new LinkedList<>();
 
-    /**
-     * All inputs and outputs together in one list for convenience.
-     */
-    private final List<Dock> allDocks = new ArrayList<>();
-
     public AbstractNode() {
         super();
     }
 
     public void addDock(Dock dock) {
-        allDocks.add(dock);
+        assertUniqueDockName(dock.getName());
+
         if(dock instanceof ShippingDock) {
             outputs.add((ShippingDock)dock);
         } else if(dock instanceof ReceivingDock) {
@@ -37,15 +33,28 @@ public abstract class AbstractNode extends AbstractNamedEntity implements Node {
         }
     }
 
-    public void removeDock(Dock dock) {
-        allDocks.remove(dock);
-        outputs.remove(dock);
-        inputs.remove(dock);
+    private void assertUniqueDockName(String name) throws InvalidParameterException {
+        assertUniqueInputName(name);
+        assertUniqueOutputName(name);
     }
 
-    @Override
-    public List<Dock> getDocks() {
-        return allDocks;
+    private void assertUniqueInputName(String name) {
+        List<ReceivingDock> list = getInputs();
+        for( ReceivingDock d : list ) {
+            if(d.getName().equals(name)) throw new InvalidParameterException("Dock name already exists: " + name);
+        }
+    }
+
+    private void assertUniqueOutputName(String name) {
+        List<ShippingDock> list = getOutputs();
+        for( ShippingDock d : list ) {
+            if(d.getName().equals(name)) throw new InvalidParameterException("Dock name already exists: " + name);
+        }
+    }
+
+    public void removeDock(Dock dock) {
+        outputs.remove(dock);
+        inputs.remove(dock);
     }
 
     /**

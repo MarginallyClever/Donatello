@@ -7,7 +7,7 @@ public class Graph extends AbstractNamedEntity {
     /**
      * The nodes in this graph.
      */
-    private final List<AbstractNode> nodes = new ArrayList<>();
+    private final List<Node> nodes = new ArrayList<>();
 
     /**
      * The connections between node docks.
@@ -28,24 +28,28 @@ public class Graph extends AbstractNamedEntity {
         super();
     }
 
-    public void addNode(AbstractNode node) {
+    public void addNode(Node node) {
         nodes.add(node);
-    }
-
-    public void addConnection(Connection connection) {
-        connections.add(connection);
-    }
-
-    public List<Connection> getConnections() {
-        return connections;
     }
 
     public void removeNode(AbstractNode node) {
         nodes.remove(node);
     }
 
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    public void addConnection(Connection connection) {
+        connections.add(connection);
+    }
+
     public void removeConnection(Connection connection) {
         connections.remove(connection);
+    }
+
+    public List<Connection> getConnections() {
+        return connections;
     }
 
     public void clear() {
@@ -62,7 +66,7 @@ public class Graph extends AbstractNamedEntity {
         return "Graph{" +
                 ", entryPoints=[" + getEntryPointsAsStrings() + ']' +
                 ", exitPoints=[" + getExitPointsAsStrings() + ']' +
-                ", annotatednodes=" + nodes +
+                ", nodes=" + nodes +
                 ", connections=" + connections +
                 '}';
     }
@@ -85,8 +89,8 @@ public class Graph extends AbstractNamedEntity {
         return result;
     }
 
-    public List<ReceivingDock> getExitPoints() {
-        return exitPoints;
+    public void addEntryPoint(ShippingDock dock) {
+        entryPoints.add(dock);
     }
 
     public List<ShippingDock> getEntryPoints() {
@@ -104,6 +108,14 @@ public class Graph extends AbstractNamedEntity {
         return null;
     }
 
+    public void addExitPoint(ReceivingDock dock) {
+        exitPoints.add(dock);
+    }
+
+    public List<ReceivingDock> getExitPoints() {
+        return exitPoints;
+    }
+
     /**
      * @param name the dock to find
      * @return the dock with the given name, or null if not found.
@@ -113,13 +125,5 @@ public class Graph extends AbstractNamedEntity {
             if(d.getName().equals(name)) return d;
         }
         return null;
-    }
-
-    public void addEntryPoint(ShippingDock dock) {
-        entryPoints.add(dock);
-    }
-
-    public void addExitPoint(ReceivingDock dock) {
-        exitPoints.add(dock);
     }
 }
