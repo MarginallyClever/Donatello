@@ -1,9 +1,12 @@
 package com.marginallyclever.version2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShippingDock extends Dock {
+    private static final long serialVersionUID = 6407191182291082668L;
+
     private final List<Connection> to = new ArrayList<>();
 
     public ShippingDock(String name, Class<?> type, NamedEntity owner) {

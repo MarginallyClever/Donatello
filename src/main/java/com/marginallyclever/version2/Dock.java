@@ -1,9 +1,13 @@
 package com.marginallyclever.version2;
 
-public abstract class Dock {
-    private final String name;
-    private final NamedEntity owner;
-    private final Class<?> type;
+import java.io.Serializable;
+
+public abstract class Dock implements Serializable {
+    private static final long serialVersionUID = 4623327973698656441L;
+
+    private String name;
+    private NamedEntity owner;
+    private Class<?> type;
 
     public Dock(String name, Class<?> type, NamedEntity owner) {
         this.name = name;

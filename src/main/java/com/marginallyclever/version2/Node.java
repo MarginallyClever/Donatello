@@ -2,9 +2,14 @@ package com.marginallyclever.version2;
 
 import java.util.List;
 
+/**
+ * <p>The {@link Node} interface describes a node in a graph.  Each Node is equivalent to a method in <a
+ * href='https://en.wikipedia.org/wiki/Functional_programming'>functional program</a> and a first-class citizen.</p>
+ * <p>Nodes do not contain any state information.  They are simply a way to describe a computation.</p>
+ */
 public interface Node extends NamedEntity {
     /**
-     * <p>Called once every tick.  This is where annotatednodes should</p>
+     * <p>This is where the {@link Node} should</p>
      * <ul>
      *     <li>check for valid inputs</li>
      *     <li>perform calculations</li>

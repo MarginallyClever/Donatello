@@ -1,9 +1,12 @@
 package com.marginallyclever.version2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Graph extends AbstractNamedEntity {
+public class Graph extends AbstractNamedEntity implements Serializable {
+    private static final long serialVersionUID = -569456899240989898L;
+
     /**
      * The nodes in this graph.
      */
@@ -64,22 +67,22 @@ public class Graph extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Graph{" +
-                ", entryPoints=[" + getEntryPointsAsStrings() + ']' +
+                "entryPoints=[" + getEntryPointsAsStrings() + ']' +
                 ", exitPoints=[" + getExitPointsAsStrings() + ']' +
                 ", nodes=" + nodes +
                 ", connections=" + connections +
                 '}';
     }
 
-    public String getEntryPointsAsStrings() {
+    private String getEntryPointsAsStrings() {
         return getDocksAsString(getEntryPoints());
     }
 
-    public String getExitPointsAsStrings() {
+    private String getExitPointsAsStrings() {
         return getDocksAsString(getExitPoints());
     }
 
-    public String getDocksAsString(List<? extends Dock> docks) {
+    private String getDocksAsString(List<? extends Dock> docks) {
         String result = "";
         String add="";
         for( Dock dock: docks ) {

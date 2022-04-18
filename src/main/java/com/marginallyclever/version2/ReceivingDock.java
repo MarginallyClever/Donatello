@@ -1,6 +1,10 @@
 package com.marginallyclever.version2;
 
+import java.io.Serializable;
+
 public class ReceivingDock extends Dock {
+    private static final long serialVersionUID = 8746595028885723976L;
+
     private Connection from;
 
     public ReceivingDock(String name, Class<?> type, NamedEntity owner) {

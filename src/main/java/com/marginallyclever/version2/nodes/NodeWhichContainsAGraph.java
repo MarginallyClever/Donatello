@@ -1,21 +1,29 @@
-package com.marginallyclever.version2;
+package com.marginallyclever.version2.nodes;
+
+import com.marginallyclever.version2.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class NodeWhichContainsAGraph extends AbstractNode {
+    private static final long serialVersionUID = 2510575290223249744L;
+
     private final Graph myGraph;
 
-    private final Map<ReceivingDock,ShippingDock> myOutputGlue = new java.util.HashMap<>();
-    private final Map<ReceivingDock,ShippingDock> myInputGlue = new java.util.HashMap<>();
+    private final Map<ReceivingDock, ShippingDock> myOutputGlue = new LinkedHashMap<>();
 
-    public NodeWhichContainsAGraph(Graph g) {
+    private final Map<ReceivingDock,ShippingDock> myInputGlue = new LinkedHashMap<>();
+
+    public NodeWhichContainsAGraph(Graph graph) {
         super();
-        if(g==null) throw new IllegalArgumentException("Graph cannot be null.");
+        if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
+        myGraph = graph;
+        glueEverything();
+    }
 
-        myGraph = g;
-
+    private void glueEverything() {
         // connect my inputs to the graph entry points
         for(ShippingDock output : myGraph.getEntryPoints()) {
             ReceivingDock input = new ReceivingDock(output.getName(),output.getType(),this);
@@ -39,9 +47,7 @@ public class NodeWhichContainsAGraph extends AbstractNode {
     @Override
     public void update() {
         readInputs();
-
         myGraph.update();
-
         writeOutputs();
     }
 
@@ -84,5 +90,15 @@ public class NodeWhichContainsAGraph extends AbstractNode {
     @Override
     public List<ShippingDock> getOutputs() {
         return new ArrayList<>(myOutputGlue.values());
+    }
+
+    @Override
+    public String toString() {
+        return "NodeWhichContainsAGraph{" +
+                "name='" + getName() + '\'' +
+                ", uniqueID='" + getUniqueID() + '\'' +
+                ", inputs=" + myInputGlue +
+                ", outputs=" + myOutputGlue +
+                '}';
     }
 }

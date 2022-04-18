@@ -1,11 +1,12 @@
 package com.marginallyclever.version2;
 
-import ch.qos.logback.core.util.FileUtil;
-import com.marginallyclever.version2.annotatednodes.*;
+import com.marginallyclever.version2.nodes.HelloWorld;
+import com.marginallyclever.version2.nodes.NodeWhichContainsAGraph;
+import com.marginallyclever.version2.nodes.annotatednodes.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.nio.file.Files;
+import java.security.InvalidParameterException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,11 +46,11 @@ public class TestGraph {
         graph.addConnection(b);
         graph.addConnection(c);
 
-        a.addPacket(new Packet<Double>(1.0));
-        b.addPacket(new Packet<Double>(2.0));
+        a.addPacket(new Packet<>(1.0));
+        b.addPacket(new Packet<>(2.0));
         add.update();
         assertEquals("3.0",c.getPacket().data.toString());
-        assertEquals(null,c.getPacket());
+        assertNull(c.getPacket());
         assertFalse(a.hasPacket());
         assertFalse(b.hasPacket());
         assertFalse(c.hasPacket());
@@ -111,12 +112,10 @@ public class TestGraph {
 
     public AbstractNode createANodeWhichContainsAGraphWhichDoesMath() {
         Graph inner = makeGraphThatDoesMath();
-        NodeWhichContainsAGraph outer = new NodeWhichContainsAGraph(inner);
-        return outer;
+        return new NodeWhichContainsAGraph(inner);
     }
 
-    @Test
-    public void putAGraphInANode() {
+    private Graph makeGraphInsideNodeInsideGraph() {
         AbstractNode container = createANodeWhichContainsAGraphWhichDoesMath();
         assertEquals(2, container.getInputs().size());
         assertEquals(4, container.getOutputs().size());
@@ -137,7 +136,12 @@ public class TestGraph {
         outer.addConnection(new Connection(container.getOutput("A-B"),outer.getExitPoint("B")));
         outer.addConnection(new Connection(container.getOutput("A*B"),outer.getExitPoint("C")));
         outer.addConnection(new Connection(container.getOutput("A/B"),outer.getExitPoint("D")));
+        return outer;
+    }
 
+    @Test
+    public void putAGraphInANode() {
+        Graph outer = makeGraphInsideNodeInsideGraph();
         outer.getEntryPoint("A").sendPacket(new Packet<>(1.0));
         outer.getEntryPoint("B").sendPacket(new Packet<>(2.0));
         outer.update();
@@ -150,7 +154,7 @@ public class TestGraph {
     }
 
     @Test
-    public void saveAndLoadAGraph() throws IOException {
+    public void saveAndLoadAGraph() throws IOException, ClassNotFoundException {
         Graph first = makeGraphThatDoesMath();
 
         File temp = File.createTempFile("hello", ".file");
@@ -162,6 +166,40 @@ public class TestGraph {
         GraphReader reader = new GraphReader();
         Graph second = reader.parse(new FileInputStream(temp));
 
-        assertEquals(first.toString(),second.toString());
+        String s0 = first.toString();
+        String s1 = second.toString();
+        assertEquals(s0,s1);
+    }
+
+    @Test
+    public void saveAndLoadANestedGraph() throws IOException, ClassNotFoundException {
+        Graph first = makeGraphInsideNodeInsideGraph();
+
+        File temp = File.createTempFile("hello", ".ser");
+        temp.deleteOnExit();
+
+        GraphWriter writer = new GraphWriter();
+        writer.write(first, new FileOutputStream(temp));
+
+        GraphReader reader = new GraphReader();
+        Graph second = reader.parse(new FileInputStream(temp));
+
+        String s0 = first.toString();
+        String s1 = second.toString();
+        assertEquals(s0,s1);
+    }
+
+    @Test
+    public void makingInvalidConnectionsShouldFail() {
+        Graph graph = new Graph();
+        graph.addNode(new Add());
+        graph.addEntryPoint(new ShippingDock("A",String.class,graph));
+        assertThrows(InvalidParameterException.class,
+                ()->graph.addConnection(new Connection(graph.getEntryPoint("A"),graph.getNodes().get(0).getInputs().get(0)))
+        );
+        graph.addExitPoint(new ReceivingDock("B",String.class,graph));
+        assertThrows(InvalidParameterException.class,
+                ()->graph.addConnection(new Connection(graph.getNodes().get(0).getOutputs().get(0),graph.getExitPoint("B")))
+        );
     }
 }

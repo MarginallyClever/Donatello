@@ -1,22 +1,33 @@
 package com.marginallyclever.version2;
 
+import java.beans.Transient;
+import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.UUID;
 
-public class Connection {
+public class Connection implements Serializable {
+    private static final long serialVersionUID = 8466086057130123820L;
+
     private final String uniqueID = UUID.randomUUID().toString();
 
-    private Deque<Packet<?>> queue = new LinkedList<>();
+    private transient Deque<Packet<?>> queue = new LinkedList<>();
+
     private ShippingDock from;
+
     private ReceivingDock to;
 
-    public Connection(ShippingDock from,ReceivingDock to) {
-        this.from = from;
-        this.to = to;
+    public Connection(ShippingDock source,ReceivingDock destination) {
+        this.from = source;
+        this.to = destination;
 
-        from.addConnection(this);
-        to.setFrom(this);
+        if(!destination.getType().isAssignableFrom(source.getType())) {
+            throw new InvalidParameterException("source cannot be assigned to destination.");
+        }
+
+        source.addConnection(this);
+        destination.setFrom(this);
     }
 
     public String getUniqueID() {

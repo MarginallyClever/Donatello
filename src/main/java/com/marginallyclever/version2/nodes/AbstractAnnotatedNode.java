@@ -1,15 +1,18 @@
-package com.marginallyclever.version2;
+package com.marginallyclever.version2.nodes;
 
+import com.marginallyclever.version2.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This node reads and loads annotations.
+ * This node reads and loads {@link InPort} and {@link OutPort} annotations.
  */
-public abstract class AnnotatedNode extends AbstractNode {
-    private static final Logger logger = LoggerFactory.getLogger(AnnotatedNode.class);
+public abstract class AbstractAnnotatedNode extends AbstractNode {
+    private static final long serialVersionUID = 650325937917108534L;
 
-    public AnnotatedNode() {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractAnnotatedNode.class);
+
+    public AbstractAnnotatedNode() {
         super();
         parseInPorts();
         parseOutPorts();
