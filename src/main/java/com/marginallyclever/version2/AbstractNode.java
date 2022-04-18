@@ -7,6 +7,8 @@ import java.util.*;
  * Implementation of {@link Node} interface.
  */
 public abstract class AbstractNode extends AbstractNamedEntity implements Node {
+    private static final long serialVersionUID = 1642688351378803867L;
+
     /**
      * All inputs to this node.
      */
@@ -41,14 +43,14 @@ public abstract class AbstractNode extends AbstractNamedEntity implements Node {
     private void assertUniqueInputName(String name) {
         List<ReceivingDock> list = getInputs();
         for( ReceivingDock d : list ) {
-            if(d.getName().equals(name)) throw new InvalidParameterException("Dock name already exists: " + name);
+            if(name.equals(d.getName())) throw new InvalidParameterException("Dock name already exists: " + name);
         }
     }
 
     private void assertUniqueOutputName(String name) {
         List<ShippingDock> list = getOutputs();
         for( ShippingDock d : list ) {
-            if(d.getName().equals(name)) throw new InvalidParameterException("Dock name already exists: " + name);
+            if(name.equals(d.getName())) throw new InvalidParameterException("Dock name already exists: " + name);
         }
     }
 
@@ -62,11 +64,7 @@ public abstract class AbstractNode extends AbstractNamedEntity implements Node {
      * @return the input found or null.
      */
     public ReceivingDock getInput(String name) {
-        List<ReceivingDock> list = getInputs();
-        for( ReceivingDock d : list ) {
-            if(d.getName().equals(name)) return d;
-        }
-        return null;
+        return (ReceivingDock)getDock(name, getInputs());
     }
 
     /**
@@ -74,8 +72,11 @@ public abstract class AbstractNode extends AbstractNamedEntity implements Node {
      * @return the input found or null.
      */
     public ShippingDock getOutput(String name) {
-        List<ShippingDock> list = getOutputs();
-        for( ShippingDock d : list ) {
+        return (ShippingDock)getDock(name, getOutputs());
+    }
+
+    private Dock getDock(String name, List<? extends Dock> list) {
+        for( Dock d : list ) {
             if(d.getName().equals(name)) return d;
         }
         return null;
