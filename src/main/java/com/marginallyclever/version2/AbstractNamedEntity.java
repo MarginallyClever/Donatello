@@ -1,5 +1,6 @@
 package com.marginallyclever.version2;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -7,6 +8,7 @@ import java.util.UUID;
  * Implementation of {@link NamedEntity} interface.
  */
 public abstract class AbstractNamedEntity implements NamedEntity, Serializable {
+    @Serial
     private static final long serialVersionUID = -898552709829394586L;
 
     private String name;

@@ -1,5 +1,6 @@
 package com.marginallyclever.version2;
 
+import java.io.Serial;
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -7,6 +8,7 @@ import java.util.*;
  * Implementation of {@link Node} interface.
  */
 public abstract class AbstractNode extends AbstractNamedEntity implements Node {
+    @Serial
     private static final long serialVersionUID = 1642688351378803867L;
 
     /**

@@ -4,10 +4,13 @@ import com.marginallyclever.version2.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
+
 /**
  * This node reads and loads {@link InPort} and {@link OutPort} annotations.
  */
 public abstract class AbstractAnnotatedNode extends AbstractNode {
+    @Serial
     private static final long serialVersionUID = 650325937917108534L;
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractAnnotatedNode.class);

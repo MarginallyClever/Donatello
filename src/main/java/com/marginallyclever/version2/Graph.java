@@ -1,10 +1,12 @@
 package com.marginallyclever.version2;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Graph extends AbstractNamedEntity implements Serializable {
+    @Serial
     private static final long serialVersionUID = -569456899240989898L;
 
     /**

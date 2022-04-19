@@ -2,7 +2,10 @@ package com.marginallyclever.version2.nodes;
 
 import com.marginallyclever.version2.AbstractNode;
 
+import java.io.Serial;
+
 public class HelloWorld extends AbstractNode {
+    @Serial
     private static final long serialVersionUID = -8114694939008347416L;
     public HelloWorld() {
         super();

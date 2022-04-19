@@ -1,8 +1,10 @@
 package com.marginallyclever.version2;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class Dock implements Serializable {
+    @Serial
     private static final long serialVersionUID = 4623327973698656441L;
 
     private String name;

@@ -2,12 +2,14 @@ package com.marginallyclever.version2.nodes;
 
 import com.marginallyclever.version2.*;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class NodeWhichContainsAGraph extends AbstractNode {
+    @Serial
     private static final long serialVersionUID = 2510575290223249744L;
 
     private final Graph myGraph;

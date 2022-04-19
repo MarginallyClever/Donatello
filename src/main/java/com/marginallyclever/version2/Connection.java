@@ -1,6 +1,7 @@
 package com.marginallyclever.version2;
 
 import java.beans.Transient;
+import java.io.Serial;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.Deque;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 public class Connection implements Serializable {
+    @Serial
     private static final long serialVersionUID = 8466086057130123820L;
 
     private final String uniqueID = UUID.randomUUID().toString();
