@@ -1,14 +1,13 @@
 package com.marginallyclever.version2.nodes.annotatednodes;
 
 import com.marginallyclever.version2.*;
-import com.marginallyclever.version2.nodes.AbstractAnnotatedNode;
 import com.marginallyclever.version2.nodes.InPort;
 import com.marginallyclever.version2.nodes.OutPort;
 
 @InPort(name="A",type=Number.class)
 @InPort(name="B",type=Number.class)
 @OutPort(name="result",type=Number.class)
-public class Multiply extends AbstractAnnotatedNode {
+public class Multiply extends Node {
     private static final long serialVersionUID = -3628963979482070116L;
 
     public Multiply() {

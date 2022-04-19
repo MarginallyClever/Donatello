@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NodeWhichContainsAGraph extends AbstractNode {
+public class NodeWhichContainsAGraph extends Node {
     @Serial
     private static final long serialVersionUID = 2510575290223249744L;
 

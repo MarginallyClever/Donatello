@@ -1,5 +1,6 @@
 package com.marginallyclever.version2;
 
+import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class Graph extends AbstractNamedEntity implements Serializable {
      */
     private final List<ReceivingDock> exitPoints = new ArrayList<>();
 
+    private final Rectangle bounds = new Rectangle();
+
     public Graph() {
         super();
     }
@@ -37,7 +40,7 @@ public class Graph extends AbstractNamedEntity implements Serializable {
         nodes.add(node);
     }
 
-    public void removeNode(AbstractNode node) {
+    public void removeNode(Node node) {
         nodes.remove(node);
     }
 

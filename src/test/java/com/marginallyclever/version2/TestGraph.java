@@ -110,13 +110,13 @@ public class TestGraph {
         assertEquals("0.5",graph.getExitPoint("A/B").getPacket().data.toString());
     }
 
-    public AbstractNode createANodeWhichContainsAGraphWhichDoesMath() {
+    public Node createANodeWhichContainsAGraphWhichDoesMath() {
         Graph inner = makeGraphThatDoesMath();
         return new NodeWhichContainsAGraph(inner);
     }
 
     private Graph makeGraphInsideNodeInsideGraph() {
-        AbstractNode container = createANodeWhichContainsAGraphWhichDoesMath();
+        Node container = createANodeWhichContainsAGraphWhichDoesMath();
         assertEquals(2, container.getInputs().size());
         assertEquals(4, container.getOutputs().size());
 

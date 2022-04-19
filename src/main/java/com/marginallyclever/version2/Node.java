@@ -1,5 +1,14 @@
 package com.marginallyclever.version2;
 
+import com.marginallyclever.version2.nodes.InPort;
+import com.marginallyclever.version2.nodes.OutPort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.io.Serial;
+import java.security.InvalidParameterException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -7,7 +16,52 @@ import java.util.List;
  * href='https://en.wikipedia.org/wiki/Functional_programming'>functional program</a> and a first-class citizen.</p>
  * <p>Nodes do not contain any state information.  They are simply a way to describe a computation.</p>
  */
-public interface Node extends NamedEntity {
+public abstract class Node extends AbstractNamedEntity {
+    @Serial
+    private static final long serialVersionUID = 6772685119452110491L;
+
+    private static final Logger logger = LoggerFactory.getLogger(Node.class);
+
+    /**
+     * All inputs to this node.
+     */
+    private final List<ReceivingDock> inputs = new LinkedList<>();
+
+    /**
+     * All outputs from this node.
+     */
+    private final List<ShippingDock> outputs = new LinkedList<>();
+
+    private final Rectangle bounds = new Rectangle();
+
+    public Node() {
+        super();
+        parseInPorts();
+        parseOutPorts();
+    }
+
+    /**
+     * Read all annotations for {@link InPort} and create a {@link ReceivingDock} for each.
+     */
+    private void parseInPorts() {
+        InPort [] inPorts = this.getClass().getAnnotationsByType(InPort.class);
+        for( InPort p : inPorts ) {
+            logger.debug("{}.{} input type {}",getName(),p.name(),p.type().getName());
+            addDock(new ReceivingDock(p.name(), p.type(), this));
+        }
+    }
+
+    /**
+     * Read all annotations for {@link OutPort} and create a {@link ShippingDock} for each.
+     */
+    private void parseOutPorts() {
+        OutPort [] outPorts = this.getClass().getAnnotationsByType(OutPort.class);
+        for( OutPort p : outPorts ) {
+            logger.debug("{}.{} output type {}",getName(),p.name(),p.type().getName());
+            addDock(new ShippingDock(p.name(), p.type(), this));
+        }
+    }
+
     /**
      * <p>This is where the {@link Node} should</p>
      * <ul>
@@ -17,15 +71,100 @@ public interface Node extends NamedEntity {
      * </ul>
      * <p>Note that all inputs should be treated in a read-only manner.</p>
      */
-    void update();
+    public abstract void update();
+
+    public void addDock(Dock dock) {
+        assertUniqueDockName(dock.getName());
+
+        if(dock instanceof ShippingDock) {
+            outputs.add((ShippingDock)dock);
+        } else if(dock instanceof ReceivingDock) {
+            inputs.add((ReceivingDock)dock);
+        } else {
+            throw new InvalidParameterException("dock must of type ShippingDock or ReceivingDock.");
+        }
+    }
+
+    private void assertUniqueDockName(String name) throws InvalidParameterException {
+        assertUniqueInputName(name);
+        assertUniqueOutputName(name);
+    }
+
+    private void assertUniqueInputName(String name) {
+        List<ReceivingDock> list = getInputs();
+        for( ReceivingDock d : list ) {
+            if(name.equals(d.getName())) throw new InvalidParameterException("Dock name already exists: " + name);
+        }
+    }
+
+    private void assertUniqueOutputName(String name) {
+        List<ShippingDock> list = getOutputs();
+        for( ShippingDock d : list ) {
+            if(name.equals(d.getName())) throw new InvalidParameterException("Dock name already exists: " + name);
+        }
+    }
+
+    public void removeDock(Dock dock) {
+        outputs.remove(dock);
+        inputs.remove(dock);
+    }
 
     /**
-     * @return all {@link ReceivingDock} for this {@link Node}.
+     * @param name the name of the input to get.
+     * @return the input found or null.
      */
-    List<ReceivingDock> getInputs();
+    public ReceivingDock getInput(String name) {
+        return (ReceivingDock)getDock(name, getInputs());
+    }
 
     /**
-     * @return all {@link ShippingDock} for this {@link Node}.
+     * @param name the name of the output to get.
+     * @return the input found or null.
      */
-    List<ShippingDock> getOutputs();
+    public ShippingDock getOutput(String name) {
+        return (ShippingDock)getDock(name, getOutputs());
+    }
+
+    private Dock getDock(String name, List<? extends Dock> list) {
+        for( Dock d : list ) {
+            if(d.getName().equals(name)) return d;
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "name='" + getName() + '\'' +
+                ", uniqueID='" + getUniqueID() + '\'' +
+                ", inputs=[" + getInputsAsString() + ']' +
+                ", outputs=[" + getOutputsAsString() + ']' +
+                '}';
+    }
+
+    public String getInputsAsString() {
+        return getDocksAsString(getInputs());
+    }
+
+    public String getOutputsAsString() {
+        return getDocksAsString(getOutputs());
+    }
+
+    public String getDocksAsString(List<? extends Dock> docks) {
+        StringBuilder result = new StringBuilder();
+        String add="";
+        for( Dock dock: docks ) {
+            result.append(add).append(dock.toString());
+            add=",";
+        }
+        return result.toString();
+    }
+
+    public List<ReceivingDock> getInputs() {
+        return inputs;
+    }
+
+    public List<ShippingDock> getOutputs() {
+        return outputs;
+    }
 }
