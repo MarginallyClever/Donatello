@@ -183,10 +183,10 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         {
             if (lastConnectionPoint.flags == ConnectionPointInfo.IN) {
                 // the output of a connection goes to the input of a node.
-                connectionBeingCreated.setOutput(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
+                connectionBeingCreated.setTo(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
             } else {
                 //the output of a node goes to the input of a connection.
-                connectionBeingCreated.setInput(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
+                connectionBeingCreated.setFrom(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
             }
 
             setActive(true);
@@ -206,8 +206,8 @@ public class ConnectionEditTool extends ContextSensitiveTool {
                 }
             } else {
                 // if any of the tests failed
-                Dock vIn = connectionBeingCreated.getInVariable();
-                Dock vOut = connectionBeingCreated.getOutVariable();
+                Dock vIn = connectionBeingCreated.getFrom();
+                Dock vOut = connectionBeingCreated.getTo();
                 String nameIn = (vIn==null) ? "null" : vIn.getTypeName();
                 String nameOut = (vOut==null) ? "null" : vOut.getTypeName();
                 logger.warn("Invalid types {}, {}",nameOut,nameIn);
