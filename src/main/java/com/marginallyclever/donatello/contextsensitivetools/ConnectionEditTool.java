@@ -9,6 +9,7 @@ import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.donatello.edits.AddConnectionEdit;
 import com.marginallyclever.donatello.edits.RemoveConnectionEdit;
+import com.marginallyclever.version2.GraphHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -197,7 +198,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         if(connectionBeingCreated.isInputValid() && connectionBeingCreated.isOutputValid() ) {
             if(connectionBeingCreated.isValidDataType()) {
                 Graph graph = editor.getGraph();
-                Connection match = graph.getMatchingConnection(connectionBeingCreated);
+                Connection match = GraphHelper.getMatchingConnection(graph,connectionBeingCreated);
                 if(match!=null) {
                     editor.addEdit(new RemoveConnectionEdit(removeName,editor,match));
                 } else {

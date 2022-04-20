@@ -95,4 +95,8 @@ public class Connection implements Serializable {
     public boolean isInputValid() {
         return getFrom() != null;
     }
+
+    public boolean isConnectedTo(Node n) {
+        return (from.getOwner()==n || to.getOwner()==n);
+    }
 }

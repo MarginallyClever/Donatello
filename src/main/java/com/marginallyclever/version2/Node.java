@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.Serial;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -187,6 +188,31 @@ public abstract class Node extends AbstractNamedEntity {
     }
 
     public void updateBounds() {
+        int w=(int)bounds.getWidth();
+        int h=Node.TITLE_HEIGHT;
+        int x=getRectangle().x;
+        int y=getRectangle().y;
+        for(Dock v : getAllDocks()) {
+            Rectangle r = v.getBounds();
+            r.y=h+y;
+            r.x=x;
+            if(w < r.width) w = r.width;
+            h += r.height;
+            Point p = v.getConnectionPoint();
+            p.y = r.y+r.height/2;
+            p.x = x;
+            if(v instanceof ShippingDock) {
+                p.x += r.width;
+            }
+        }
+        bounds.width=w;
+        bounds.height=h;
+    }
 
+    private List<Dock> getAllDocks() {
+        List<Dock> list = new ArrayList<>();
+        list.addAll(getInputs());
+        list.addAll(getOutputs());
+        return list;
     }
 }

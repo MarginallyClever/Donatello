@@ -12,6 +12,7 @@ public abstract class Dock implements Serializable {
     private NamedEntity owner;
     private Class<?> type;
 
+    private final Rectangle bounds = new Rectangle();
     private final Point connectionPoint = new Point();
 
     public Dock(String name, Class<?> type, NamedEntity owner) {
@@ -43,5 +44,9 @@ public abstract class Dock implements Serializable {
 
     public Point getConnectionPoint() {
         return connectionPoint;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
     }
 }

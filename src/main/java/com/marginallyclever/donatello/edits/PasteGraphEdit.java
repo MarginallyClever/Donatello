@@ -2,6 +2,7 @@ package com.marginallyclever.donatello.edits;
 
 import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.version2.GraphHelper;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -17,7 +18,7 @@ public class PasteGraphEdit extends SignificantUndoableEdit {
         super();
         this.name = name;
         this.editor = editor;
-        this.copiedGraph = graph.deepCopy();
+        this.copiedGraph = GraphHelper.deepCopy(graph);
         this.m = editor.getPaintArea().transformMousePoint(editor.getMousePosition());
         doIt();
     }

@@ -1,5 +1,6 @@
 package com.marginallyclever.donatello.actions;
 
+import com.marginallyclever.version2.GraphHelper;
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
@@ -38,11 +39,12 @@ public class FoldGraphAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Graph preserveCopyBehaviour = editor.getCopiedGraph().deepCopy();
+        Graph preserveCopyBehaviour = GraphHelper.deepCopy(editor.getCopiedGraph());
 
         cutGraphAction.actionPerformed(e);
-        Graph justCut = editor.getCopiedGraph().deepCopy();
-        Node n = editor.getGraph().add(new NodeWhichContainsAGraph(justCut));
+        Graph justCut = GraphHelper.deepCopy(editor.getCopiedGraph());
+        Node n = new NodeWhichContainsAGraph(justCut);
+        editor.getGraph().add(n);
         n.setPosition(editor.getPopupPoint());
 
         editor.setCopiedGraph(preserveCopyBehaviour);

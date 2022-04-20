@@ -2,6 +2,7 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.NodeHelper;
+import com.marginallyclever.version2.NamedEntity;
 import com.marginallyclever.version2.Node;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 
 /**
- * Select all the {@link com.marginallyclever.nodegraphcore.Node}s between two selected annotatednodes.
+ * Select all the {@link Node}s between two selected annotatednodes.
  * @author Dan Royer
  * @since 2022-03-24
  */
@@ -138,10 +139,12 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
 
     // get all annotatednodes adjacent to the given node from the unvisited list.
     private List<Node> getAdjacentNodes(DistanceNode current) {
-        List<Node> candidates = NodeHelper.getAllOutgoingConnections(editor.getGraph(),current.node);
+        List<NamedEntity> candidates = NodeHelper.getAllOutgoingConnections(editor.getGraph(),current.node);
         List<Node> adjacentNodes = new ArrayList<>();
 
-        for(Node n : candidates) {
+        for(NamedEntity e : candidates) {
+            if(!(e instanceof Node)) continue;
+            Node n = (Node)e;
             if(getDistanceNode(n)!=null) {
                 adjacentNodes.add(n);
             }

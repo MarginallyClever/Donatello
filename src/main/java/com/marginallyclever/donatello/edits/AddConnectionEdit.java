@@ -3,6 +3,7 @@ package com.marginallyclever.donatello.edits;
 import com.marginallyclever.version2.Connection;
 import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.version2.GraphHelper;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -24,7 +25,7 @@ public class AddConnectionEdit extends SignificantUndoableEdit {
         this.name = name;
         this.editor = editor;
         this.connection = connection;
-        this.connectionsInto = editor.getGraph().getAllConnectionsInto(connection.getOutVariable());
+        this.connectionsInto = GraphHelper.getAllConnectionsInto(editor.getGraph(),connection.getTo());
         doIt();
     }
 

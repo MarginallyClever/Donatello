@@ -350,7 +350,7 @@ public class GraphViewPanel extends JPanel {
      * @param v the {@link Dock} to paint.
      */
     public void paintVariable(Graphics g, Dock v) {
-        Rectangle box = v.getRectangle();
+        Rectangle box = v.getBounds();
         Rectangle insideBox = getNodeInternalBounds(box);
 
         // label
@@ -375,7 +375,7 @@ public class GraphViewPanel extends JPanel {
     /**
      * Returns the adjusted inner bounds of a {@link Node}.
      * Nodes have a left and right margin useful for printing labels and values without overlapping the {@link Connection} points.
-     * these edges form an inner bound.  Given a {@link Dock#getRectangle()}, this
+     * these edges form an inner bound.  Given a {@link Dock#getBounds()}, this
      * @param r the outer bounsd of the node.
      * @return the adjusted inner bounds of a {@link Node}.
      */

@@ -1,20 +1,17 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.version2.Node;
-import com.marginallyclever.version2.Connection;
-import com.marginallyclever.version2.Graph;
-import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NodeHelper {
-    public static List<Node> getAllOutgoingConnections(Graph graph, Node source) {
-        List<Node> adjacent = new ArrayList<>();
+    public static List<NamedEntity> getAllOutgoingConnections(Graph graph, Node source) {
+        List<NamedEntity> adjacent = new ArrayList<>();
 
         for( Connection c : graph.getConnections() ) {
-            if (c.isConnectedTo(source) && c.getInNode()==source) {
-                adjacent.add(c.getOutNode());
+            if (c.isConnectedTo(source) && c.getFrom().getOwner()==source) {
+                adjacent.add(c.getTo().getOwner());
             }
         }
 

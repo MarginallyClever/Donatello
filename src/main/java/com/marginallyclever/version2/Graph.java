@@ -36,23 +36,40 @@ public class Graph extends AbstractNamedEntity implements Serializable {
         super();
     }
 
-    public void addNode(Node node) {
+    public void add(Node node) {
         nodes.add(node);
     }
 
-    public void removeNode(Node node) {
+    public void remove(Node node) {
         nodes.remove(node);
+    }
+
+    /**
+     * Add all {@link Node}s and {@link Connection}s from one model to this model.
+     * @param graph the model to add.
+     */
+    public void add(Graph graph) {
+        if(graph==null) throw new IllegalArgumentException("nodeGraph cannot be null.");
+
+        nodes.addAll(graph.nodes);
+        connections.addAll(graph.connections);
+    }
+
+    public void remove(Graph graph) {
+        if(graph==null) throw new IllegalArgumentException("graph cannot be null.");
+        nodes.removeAll(graph.nodes);
+        connections.removeAll(graph.connections);
     }
 
     public List<Node> getNodes() {
         return nodes;
     }
 
-    public void addConnection(Connection connection) {
+    public void add(Connection connection) {
         connections.add(connection);
     }
 
-    public void removeConnection(Connection connection) {
+    public void remove(Connection connection) {
         connections.remove(connection);
     }
 
@@ -137,6 +154,15 @@ public class Graph extends AbstractNamedEntity implements Serializable {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    /**
+     * update bounds of all nodes in this graph.
+     */
+    public void updateBounds() {
+        for(Node n : nodes) {
+            n.updateBounds();
+        }
     }
 
     public boolean isEmpty() {

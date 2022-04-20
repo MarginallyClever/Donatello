@@ -3,6 +3,7 @@ package com.marginallyclever.donatello.nodes.images;
 import com.marginallyclever.version2.PrintWithGraphics;
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.nodes.InPort;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,24 +13,13 @@ import java.awt.image.BufferedImage;
  * @author Dan Royer
  * @since 2022-02-23
  */
+@InPort(name="image",type=BufferedImage.class)
+@InPort(name="X",type=Integer.class)
+@InPort(name="Y",type=Integer.class)
 public class PrintImage extends Node implements PrintWithGraphics {
-    private final Dock<BufferedImage> image = Dock.newInstance("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final Dock<Number> px = Dock.newInstance("X",Number.class,0,true,false);
-    private final Dock<Number> py = Dock.newInstance("Y",Number.class,0,true,false);
-
-    /**
-     * Constructor for subclasses to call.
-     */
-    public PrintImage() {
-        super("PrintImage");
-        addVariable(image);
-        addVariable(px);
-        addVariable(py);
-    }
-
     @Override
     public void update() {
-        cleanAllInputs();
+
     }
 
     @Override

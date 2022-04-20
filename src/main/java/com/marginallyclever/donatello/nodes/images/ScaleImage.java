@@ -2,6 +2,9 @@ package com.marginallyclever.donatello.nodes.images;
 
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.Packet;
+import com.marginallyclever.version2.nodes.InPort;
+import com.marginallyclever.version2.nodes.OutPort;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -12,36 +15,26 @@ import java.awt.image.BufferedImage;
  * @author Dan Royer
  * @since 2022-02-23
  */
+@InPort(name="image",type=BufferedImage.class)
+@InPort(name="width",type=Integer.class)
+@InPort(name="height",type=Integer.class)
+@OutPort(name="output",type=BufferedImage.class)
 public class ScaleImage extends Node {
-    private final Dock<BufferedImage> image = Dock.newInstance("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final Dock<Number> width = Dock.newInstance("width",Number.class,256,true,false);
-    private final Dock<Number> height = Dock.newInstance("height",Number.class,256,true,false);
-    private final Dock<BufferedImage> output = Dock.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-
-    /**
-     * Constructor for subclasses to call.
-     */
-    public ScaleImage() {
-        super("ScaleImage");
-        addVariable(image);
-        addVariable(width);
-        addVariable(height);
-        addVariable(output);
-    }
-
     @Override
     public void update() {
-        int w = Math.max(1,width.getValue().intValue());
-        int h = Math.max(1,height.getValue().intValue());
-        BufferedImage input = image.getValue();
+        if(!getInput("image").hasPacket()) return;
+        if(!getInput("width").hasPacket()) return;
+        if(!getInput("height").hasPacket()) return;
+
+        int w = Math.max(1,(int)getInput("width").getPacket().data);
+        int h = Math.max(1,(int)getInput("height").getPacket().data);
+        BufferedImage input = (BufferedImage)getInput("image").getPacket().data;
         BufferedImage result = new BufferedImage(w,h,input.getType());
 
         AffineTransform at = new AffineTransform();
         at.scale((double)w/(double)input.getWidth(), (double)h/(double)input.getHeight());
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
-        output.setValue(result);
-
-        cleanAllInputs();
+        getOutput("output").sendPacket(new Packet(result));
     }
 }

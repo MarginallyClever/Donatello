@@ -1,5 +1,6 @@
 package com.marginallyclever.donatello.actions;
 
+import com.marginallyclever.version2.GraphHelper;
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Connection;
 import com.marginallyclever.version2.Graph;
@@ -41,9 +42,9 @@ public class CopyGraphAction extends AbstractAction implements EditorAction {
         Graph modelB = new Graph();
         List<Node> selectedNodes = editor.getSelectedNodes();
         for(Node n : selectedNodes) modelB.add(n);
-        List<Connection> selectedConnections = graph.getInteriorConnections(selectedNodes);
+        List<Connection> selectedConnections = GraphHelper.getInteriorConnections(graph,selectedNodes);
         for(Connection c : selectedConnections) modelB.add(c);
-        editor.setCopiedGraph(modelB.deepCopy());
+        editor.setCopiedGraph(GraphHelper.deepCopy(modelB));
     }
 
     @Override

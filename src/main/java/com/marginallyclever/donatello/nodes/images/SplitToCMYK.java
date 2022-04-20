@@ -2,6 +2,9 @@ package com.marginallyclever.donatello.nodes.images;
 
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.Packet;
+import com.marginallyclever.version2.nodes.InPort;
+import com.marginallyclever.version2.nodes.OutPort;
 
 import java.awt.image.BufferedImage;
 
@@ -10,28 +13,17 @@ import java.awt.image.BufferedImage;
  * @author Dan Royer
  * @since 2022-02-23
  */
+@InPort(name="image",type=BufferedImage.class)
+@OutPort(name="Cyan",   type=BufferedImage.class)
+@OutPort(name="Magenta",type=BufferedImage.class)
+@OutPort(name="Yellow", type=BufferedImage.class)
+@OutPort(name="Black",  type=BufferedImage.class)
 public class SplitToCMYK extends Node {
-    private final Dock<BufferedImage> image   = Dock.newInstance("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final Dock<BufferedImage> cyan    = Dock.newInstance("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final Dock<BufferedImage> magenta = Dock.newInstance("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final Dock<BufferedImage> yellow  = Dock.newInstance("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final Dock<BufferedImage> black   = Dock.newInstance("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-
-    /**
-     * Constructor for subclasses to call.
-     */
-    public SplitToCMYK() {
-        super("SplitToCMYK");
-        addVariable(image);
-        addVariable(cyan);
-        addVariable(magenta);
-        addVariable(yellow);
-        addVariable(black);
-    }
-
     @Override
     public void update() {
-        BufferedImage src = image.getValue();
+        if(!getInput("image").hasPacket()) return;
+
+        BufferedImage src = (BufferedImage)getInput("image").getPacket().data;
         int h = src.getHeight();
         int w = src.getWidth();
 
@@ -55,11 +47,9 @@ public class SplitToCMYK extends Node {
             }
         }
 
-        cyan   .setValue(channelCyan);
-        magenta.setValue(channelMagenta);
-        yellow .setValue(channelYellow);
-        black  .setValue(channelBlack);
-
-        cleanAllInputs();
+        getOutput("cyan").sendPacket(new Packet(channelCyan));
+        getOutput("magenta").sendPacket(new Packet(channelMagenta));
+        getOutput("yellow").sendPacket(new Packet(channelYellow));
+        getOutput("black").sendPacket(new Packet(channelBlack));
     }
 }

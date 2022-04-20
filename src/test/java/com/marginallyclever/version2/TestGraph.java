@@ -6,7 +6,6 @@ import com.marginallyclever.version2.nodes.annotatednodes.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.security.InvalidParameterException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +14,7 @@ public class TestGraph {
     @Test
     public void helloWorld() {
         Graph graph = new Graph();
-        graph.addNode(new HelloWorld());
+        graph.add(new HelloWorld());
         graph.update();
     }
 
@@ -24,7 +23,7 @@ public class TestGraph {
         Graph graph = new Graph();
         graph.addEntryPoint(new ShippingDock("meta_in",Number.class,graph));
         graph.addExitPoint(new ReceivingDock("meta_out",Number.class,graph));
-        graph.addConnection(new Connection(graph.getEntryPoint("meta_in"),graph.getExitPoint("meta_out")));
+        graph.add(new Connection(graph.getEntryPoint("meta_in"),graph.getExitPoint("meta_out")));
         graph.update();
     }
 
@@ -36,15 +35,15 @@ public class TestGraph {
         graph.addExitPoint(new ReceivingDock("C",Number.class,graph));
 
         Add add = new Add();
-        graph.addNode(add);
+        graph.add(add);
 
         Connection a = new Connection(graph.getEntryPoint("A"),add.getInput("A"));
         Connection b = new Connection(graph.getEntryPoint("B"),add.getInput("B"));
         Connection c = new Connection(add.getOutput("result"),graph.getExitPoint("C"));
 
-        graph.addConnection(a);
-        graph.addConnection(b);
-        graph.addConnection(c);
+        graph.add(a);
+        graph.add(b);
+        graph.add(c);
 
         a.addPacket(new Packet<>(1.0));
         b.addPacket(new Packet<>(2.0));
@@ -70,26 +69,26 @@ public class TestGraph {
         Multiply multiply = new Multiply();
         Divide divide = new Divide();
 
-        graph.addNode(add);
-        graph.addNode(subtract);
-        graph.addNode(multiply);
-        graph.addNode(divide);
+        graph.add(add);
+        graph.add(subtract);
+        graph.add(multiply);
+        graph.add(divide);
 
-        graph.addConnection(new Connection(graph.getEntryPoint("A"),add.getInput("A")));
-        graph.addConnection(new Connection(graph.getEntryPoint("B"),add.getInput("B")));
-        graph.addConnection(new Connection(add.getOutput("result"),graph.getExitPoint("A+B")));
+        graph.add(new Connection(graph.getEntryPoint("A"),add.getInput("A")));
+        graph.add(new Connection(graph.getEntryPoint("B"),add.getInput("B")));
+        graph.add(new Connection(add.getOutput("result"),graph.getExitPoint("A+B")));
 
-        graph.addConnection(new Connection(graph.getEntryPoint("A"),subtract.getInput("A")));
-        graph.addConnection(new Connection(graph.getEntryPoint("B"),subtract.getInput("B")));
-        graph.addConnection(new Connection(subtract.getOutput("result"),graph.getExitPoint("A-B")));
+        graph.add(new Connection(graph.getEntryPoint("A"),subtract.getInput("A")));
+        graph.add(new Connection(graph.getEntryPoint("B"),subtract.getInput("B")));
+        graph.add(new Connection(subtract.getOutput("result"),graph.getExitPoint("A-B")));
 
-        graph.addConnection(new Connection(graph.getEntryPoint("A"),multiply.getInput("A")));
-        graph.addConnection(new Connection(graph.getEntryPoint("B"),multiply.getInput("B")));
-        graph.addConnection(new Connection(multiply.getOutput("result"),graph.getExitPoint("A*B")));
+        graph.add(new Connection(graph.getEntryPoint("A"),multiply.getInput("A")));
+        graph.add(new Connection(graph.getEntryPoint("B"),multiply.getInput("B")));
+        graph.add(new Connection(multiply.getOutput("result"),graph.getExitPoint("A*B")));
 
-        graph.addConnection(new Connection(graph.getEntryPoint("A"),divide.getInput("A")));
-        graph.addConnection(new Connection(graph.getEntryPoint("B"),divide.getInput("B")));
-        graph.addConnection(new Connection(divide.getOutput("result"),graph.getExitPoint("A/B")));
+        graph.add(new Connection(graph.getEntryPoint("A"),divide.getInput("A")));
+        graph.add(new Connection(graph.getEntryPoint("B"),divide.getInput("B")));
+        graph.add(new Connection(divide.getOutput("result"),graph.getExitPoint("A/B")));
 
         return graph;
     }
@@ -121,7 +120,7 @@ public class TestGraph {
         assertEquals(4, container.getOutputs().size());
 
         Graph outer = new Graph();
-        outer.addNode(container);
+        outer.add(container);
         outer.addEntryPoint(new ShippingDock("A",Number.class,outer));
         outer.addEntryPoint(new ShippingDock("B",Number.class,outer));
         outer.addExitPoint(new ReceivingDock("A",Number.class,outer));
@@ -129,13 +128,13 @@ public class TestGraph {
         outer.addExitPoint(new ReceivingDock("C",Number.class,outer));
         outer.addExitPoint(new ReceivingDock("D",Number.class,outer));
 
-        outer.addConnection(new Connection(outer.getEntryPoint("A"),container.getInput("A")));
-        outer.addConnection(new Connection(outer.getEntryPoint("B"),container.getInput("B")));
+        outer.add(new Connection(outer.getEntryPoint("A"),container.getInput("A")));
+        outer.add(new Connection(outer.getEntryPoint("B"),container.getInput("B")));
 
-        outer.addConnection(new Connection(container.getOutput("A+B"),outer.getExitPoint("A")));
-        outer.addConnection(new Connection(container.getOutput("A-B"),outer.getExitPoint("B")));
-        outer.addConnection(new Connection(container.getOutput("A*B"),outer.getExitPoint("C")));
-        outer.addConnection(new Connection(container.getOutput("A/B"),outer.getExitPoint("D")));
+        outer.add(new Connection(container.getOutput("A+B"),outer.getExitPoint("A")));
+        outer.add(new Connection(container.getOutput("A-B"),outer.getExitPoint("B")));
+        outer.add(new Connection(container.getOutput("A*B"),outer.getExitPoint("C")));
+        outer.add(new Connection(container.getOutput("A/B"),outer.getExitPoint("D")));
         return outer;
     }
 
@@ -192,14 +191,14 @@ public class TestGraph {
     @Test
     public void makingInvalidConnectionsShouldFail() {
         Graph graph = new Graph();
-        graph.addNode(new Add());
+        graph.add(new Add());
         graph.addEntryPoint(new ShippingDock("A",String.class,graph));
-        assertThrows(InvalidParameterException.class,
-                ()->graph.addConnection(new Connection(graph.getEntryPoint("A"),graph.getNodes().get(0).getInputs().get(0)))
+        assertThrows(IllegalArgumentException.class,
+                ()->graph.add(new Connection(graph.getEntryPoint("A"),graph.getNodes().get(0).getInputs().get(0)))
         );
         graph.addExitPoint(new ReceivingDock("B",String.class,graph));
-        assertThrows(InvalidParameterException.class,
-                ()->graph.addConnection(new Connection(graph.getNodes().get(0).getOutputs().get(0),graph.getExitPoint("B")))
+        assertThrows(IllegalArgumentException.class,
+                ()->graph.add(new Connection(graph.getNodes().get(0).getOutputs().get(0),graph.getExitPoint("B")))
         );
     }
 }

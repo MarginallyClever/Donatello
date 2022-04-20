@@ -1,5 +1,6 @@
 package com.marginallyclever.donatello.edits;
 
+import com.marginallyclever.version2.GraphHelper;
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Connection;
 import com.marginallyclever.version2.Graph;
@@ -22,8 +23,8 @@ public class DeleteGraphEdit extends SignificantUndoableEdit {
         this.name = name;
         this.editor = editor;
         this.nodes.addAll(selectedNodes);
-        exteriorConnections.addAll(editor.getGraph().getExteriorConnections(selectedNodes));
-        interiorConnections.addAll(editor.getGraph().getInteriorConnections(selectedNodes));
+        exteriorConnections.addAll(GraphHelper.getExteriorConnections(editor.getGraph(),selectedNodes));
+        interiorConnections.addAll(GraphHelper.getInteriorConnections(editor.getGraph(),selectedNodes));
         doIt();
     }
 

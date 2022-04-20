@@ -2,6 +2,9 @@ package com.marginallyclever.donatello.nodes.images.blend;
 
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.Packet;
+import com.marginallyclever.version2.nodes.InPort;
+import com.marginallyclever.version2.nodes.OutPort;
 
 import java.awt.image.BufferedImage;
 
@@ -10,25 +13,16 @@ import java.awt.image.BufferedImage;
  * @author Dan Royer
  * @since 2022-02-23
  */
+@InPort(name="a",type=BufferedImage.class)
+@InPort(name="b",type=BufferedImage.class)
+@OutPort(name="output",type=BufferedImage.class)
 public class BlendMultiply extends Node {
-    private final Dock<BufferedImage> a = Dock.newInstance("a", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final Dock<BufferedImage> b = Dock.newInstance("b", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final Dock<BufferedImage> output = Dock.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-
-    /**
-     * Constructor for subclasses to call.
-     */
-    public BlendMultiply() {
-        super("BlendMultiply");
-        addVariable(a);
-        addVariable(b);
-        addVariable(output);
-    }
-
     @Override
     public void update() {
-        BufferedImage A = a.getValue();
-        BufferedImage B = b.getValue();
+        if(!getInput("a").hasPacket()) return;
+        if(!getInput("b").hasPacket()) return;
+        BufferedImage A = (BufferedImage)getInput("a").getPacket().data;
+        BufferedImage B = (BufferedImage)getInput("b").getPacket().data;
 
         int w = (int)Math.min(A.getWidth(),B.getWidth());
         int h = (int)Math.min(A.getHeight(),B.getHeight());
@@ -51,8 +45,7 @@ public class BlendMultiply extends Node {
                 C.setRGB(x,y,cC);
             }
         }
-        output.setValue(C);
-        cleanAllInputs();
+        getOutput("output").sendPacket(new Packet(C));
     }
 
 }
