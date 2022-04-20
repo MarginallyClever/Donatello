@@ -1,6 +1,5 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.version2.DAO4JSONFactory;
 import com.marginallyclever.version2.NodeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
