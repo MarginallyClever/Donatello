@@ -1,5 +1,8 @@
 package com.marginallyclever.version2;
 
+import com.marginallyclever.version2.nodes.OutPort;
+
+import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,5 +54,11 @@ public class ShippingDock extends Dock {
             if(c.hasPacket()) return true;
         }
         return false;
+    }
+
+    @Override
+    public Point getPoint() {
+        Rectangle r = getBounds();
+        return new Point(r.x,r.y+r.height/2);
     }
 }

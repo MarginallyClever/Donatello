@@ -43,4 +43,10 @@ public class ReceivingDock extends Dock {
                 (from==null? "" : ", from=" + from.getUniqueID()) +
                 '}';
     }
+
+    @Override
+    public Point getPoint() {
+        Rectangle r = getBounds();
+        return new Point(r.x,r.y+r.height/2);
+    }
 }

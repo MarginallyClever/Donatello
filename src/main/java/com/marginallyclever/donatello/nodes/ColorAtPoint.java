@@ -2,6 +2,9 @@ package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.Packet;
+import com.marginallyclever.version2.nodes.InPort;
+import com.marginallyclever.version2.nodes.OutPort;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,35 +18,27 @@ import java.awt.image.BufferedImage;
  * @author Dan Royer
  * @since 2022-02-23
  */
+@InPort(name="image",type=BufferedImage.class)
+@InPort(name="x",type=Number.class)
+@InPort(name="y",type=Number.class)
+@InPort(name="samplesize",type=Number.class)
+@OutPort(name="color",type=Color.class)
 public class ColorAtPoint extends Node {
-    private final Dock<BufferedImage> image   = Dock.newInstance("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final Dock<Number> cx = Dock.newInstance("x", Number.class, 0,true,false);
-    private final Dock<Number> cy = Dock.newInstance("y", Number.class, 0,true,false);
-    private final Dock<Number> sampleSize = Dock.newInstance("sampleSize", Number.class, 0,true,false);
-    private final Dock<Color> output   = Dock.newInstance("output", Color.class, new Color(0,0,0,0),false,true);
-
-    /**
-     * Constructor for subclasses to call.
-     */
-    public ColorAtPoint() {
-        super("ColorAtPoint");
-        addVariable(image);
-        addVariable(cx);
-        addVariable(cy);
-        addVariable(sampleSize);
-        addVariable(output);
-    }
-
     @Override
     public void update() {
-        BufferedImage src = image.getValue();
+        if(!getInput("image").hasPacket()) return;
+        if(!getInput("sampleSize").hasPacket()) return;
+        if(!getInput("x").hasPacket()) return;
+        if(!getInput("y").hasPacket()) return;
+
+        BufferedImage src = (BufferedImage)getInput("image").getPacket().data;
         int h = src.getHeight();
         int w = src.getWidth();
 
-        int sample = sampleSize.getValue().intValue();
+        int sample = (int)getInput("sampleSize").getPacket().data;
         int sampleSize = 1 + 2 * sample;
-        int startX = cx.getValue().intValue() - sample - 1;
-        int startY = cy.getValue().intValue() - sample - 1;
+        int startX = (int)getInput("s").getPacket().data - sample - 1;
+        int startY = (int)getInput("y").getPacket().data - sample - 1;
         int endX = startX + sampleSize;
         int endY = startY + sampleSize;
         startX = Math.max(startX,0);
@@ -73,8 +68,7 @@ public class ColorAtPoint extends Node {
             sumR /= sumCount;
             sumG /= sumCount;
             sumB /= sumCount;
-            output.setValue(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
+            getOutput("color").sendPacket(new Packet(new Color((int)sumA,(int)sumR,(int)sumG,(int)sumB)));
         }
-        cleanAllInputs();
     }
 }

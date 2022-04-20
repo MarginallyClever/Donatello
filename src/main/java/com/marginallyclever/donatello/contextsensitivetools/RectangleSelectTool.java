@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.*;
+import com.marginallyclever.version2.GraphHelper;
 import com.marginallyclever.version2.Node;
 
 import javax.swing.*;
@@ -172,7 +173,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
      */
     private void endSelectionArea(Point point) {
         Rectangle selectionArea = getSelectionArea(point);
-        java.util.List<Node> nodesInSelectionArea = editor.getGraph().getNodesInRectangle(selectionArea);
+        java.util.List<Node> nodesInSelectionArea = GraphHelper.getNodesInRectangle(editor.getGraph(),selectionArea);
         if(!keyStateMemory.isShiftKeyDown()) {
             editor.setSelectedNodes(nodesInSelectionArea);
         } else {

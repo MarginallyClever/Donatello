@@ -1,8 +1,10 @@
 package com.marginallyclever.version2;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,10 @@ public class GraphHelper {
         return getConnectionsCounted(graph,selectedNodes,2);
     }
 
-    public static Connection getMatchingConnection(Graph graph, Connection toMatch) {
-        for(Connection c : graph.getConnections()) {
-            if(c.getFrom().getUniqueAddress().equals(toMatch.getFrom().getUniqueAddress()) &&
-                    c.getTo().getUniqueAddress().equals(toMatch.getTo().getUniqueAddress())) {
-                return c;
+    public static Connection getMatchingConnection(Graph graph,ShippingDock from, ReceivingDock to) {
+        for(Connection connection : graph.getConnections()) {
+            if(connection.getFrom() == from && connection.getTo() == to) {
+                return connection;
             }
         }
         return null;
@@ -58,6 +59,38 @@ public class GraphHelper {
             }
         }
         return found;
+    }
+
+    /**
+     * Return the first connection point found within radius of a point
+     * @param graph the graph to search
+     * @param point center of search area
+     * @param radiusLimit radius limit
+     * @return a {@link Dock} describing the point found or null.
+     */
+    public static Dock getNearestConnectionPoint(Graph graph, Point point, double radiusLimit) {
+        double rr = radiusLimit*radiusLimit;
+        Dock info = null;
+
+        for(Node n : graph.getNodes()) {
+            // TODO is this the only time we need getInputs and getOutputs?  then lose them!
+            for( ReceivingDock v : n.getInputs() ) {
+                double r2 = v.getConnectionPoint().distanceSq(point);
+                if (r2 < rr) {
+                    rr = r2;
+                    info = v;
+                }
+            }
+            for( ShippingDock v : n.getOutputs() ) {
+                double r2 = v.getConnectionPoint().distanceSq(point);
+                if (r2 < rr) {
+                    rr = r2;
+                    info = v;
+                }
+            }
+        }
+
+        return info;
     }
 
     /**
@@ -92,5 +125,19 @@ public class GraphHelper {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Returns a {@link List} of all {@link Node}s that intersect the given rectangle
+     * @param searchArea the search area
+     * @return a {@link List} of all {@link Node}s that intersect the given rectangle
+     */
+    public List<Node> getNodesInRectangle(Graph graph,Rectangle searchArea) {
+        if(searchArea==null) throw new InvalidParameterException("selectionArea cannot be null.");
+        ArrayList<Node> found = new ArrayList<>();
+        for(Node n : graph.getNodes()) {
+            if(searchArea.intersects(n.getRectangle())) found.add(n);
+        }
+        return found;
     }
 }

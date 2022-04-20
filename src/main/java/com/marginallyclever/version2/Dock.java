@@ -7,6 +7,15 @@ import java.io.Serializable;
 public abstract class Dock implements Serializable {
     @Serial
     private static final long serialVersionUID = 4623327973698656441L;
+    /**
+     * Dimensions used for bounds calculations and intersection tests.
+     */
+    public static final int DEFAULT_WIDTH = 150;
+
+    /**
+     * Dimensions used for bounds calculations and intersection tests.
+     */
+    public static final int DEFAULT_HEIGHT = 20;
 
     private String name;
     private NamedEntity owner;
@@ -49,4 +58,10 @@ public abstract class Dock implements Serializable {
     public Rectangle getBounds() {
         return bounds;
     }
+
+    public final void setBounds(Rectangle rectangle) {
+        this.bounds.setBounds(rectangle);
+    }
+
+    abstract public Point getPoint();
 }

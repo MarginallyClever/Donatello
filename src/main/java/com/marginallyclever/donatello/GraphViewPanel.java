@@ -403,15 +403,9 @@ public class GraphViewPanel extends JPanel {
      * @param v the {@link Dock} to paint.
      */
     public void paintVariableConnectionPoints(Graphics g, Dock v) {
-        if(v instanceof ReceivingDock) {
-            Point p = v.getInPosition();
-            int radius = (int)Connection.DEFAULT_RADIUS+2;
-            g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
-        } else if(v instanceof ShippingDock) {
-            Point p = v.getOutPosition();
-            int radius = (int)Connection.DEFAULT_RADIUS+2;
-            g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
-        }
+        Point p = v.getPoint();
+        int radius = (int)Connection.DEFAULT_RADIUS+2;
+        g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
     }
 
     /**

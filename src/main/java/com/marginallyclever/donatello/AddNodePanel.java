@@ -21,7 +21,7 @@ public class AddNodePanel extends JPanel implements SearchListener {
     /**
      * The database of names in the list model.
      */
-    private List<String> names = List.of(NodeFactory.getNames());
+    private List<String> names = NodeFactory.getNames();
 
     /**
      * list model controls the contents of the list.  This is needed to add/remove as the search field is changed.
@@ -92,7 +92,7 @@ public class AddNodePanel extends JPanel implements SearchListener {
         panel.confirmButton.addActionListener((e)->{
             try {
                 if(panel.myList.getSelectedIndex()!=-1) {
-                    result.set(NodeFactory.createNode(panel.myList.getSelectedValue()));
+                    result.set(NodeFactory.create(panel.myList.getSelectedValue()));
                 }
             } catch(IllegalArgumentException e1) {
                 e1.printStackTrace();

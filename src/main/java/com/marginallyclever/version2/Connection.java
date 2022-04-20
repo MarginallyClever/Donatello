@@ -1,5 +1,6 @@
 package com.marginallyclever.version2;
 
+import java.awt.*;
 import java.beans.Transient;
 import java.io.Serial;
 import java.io.Serializable;
@@ -98,5 +99,20 @@ public class Connection implements Serializable {
 
     public boolean isConnectedTo(Node n) {
         return (from.getOwner()==n || to.getOwner()==n);
+    }
+
+    public Point getInPosition() {
+        return from.getPoint();
+    }
+
+    public Point getOutPosition() {
+        return to.getPoint();
+    }
+
+    public Rectangle getBounds() {
+        Rectangle r = new Rectangle();
+        r.setLocation(getInPosition());
+        r.add(getOutPosition());
+        return r;
     }
 }
