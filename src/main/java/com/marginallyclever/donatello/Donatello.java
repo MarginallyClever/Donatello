@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.contextsensitivetools.ContextSensitiveTool;
-import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.version2.*;
 import com.marginallyclever.donatello.actions.*;
 import com.marginallyclever.donatello.actions.undoable.*;
 import com.marginallyclever.donatello.contextsensitivetools.ConnectionEditTool;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link Donatello} is a Graphic User Interface to edit a {@link NodeGraph}.
+ * {@link Donatello} is a Graphic User Interface to edit a {@link Graph}.
  * @author Dan Royer
  * @since 2022-02-01
  */
@@ -41,12 +41,12 @@ public class Donatello extends JPanel {
     private static final Color COLOR_CONNECTION_EXTERNAL_OUTBOUND = Color.decode("#00FFFF");
 
     /**
-     * The {@link NodeGraph} to edit.
+     * The {@link Graph} to edit.
      */
-    public final NodeGraph model;
+    public final Graph model;
 
     /**
-     * The panel into which the {@link NodeGraph} will be painted.
+     * The panel into which the {@link Graph} will be painted.
      */
     private final GraphViewPanel paintArea;
 
@@ -58,7 +58,7 @@ public class Donatello extends JPanel {
     /**
      * Store copied annotatednodes in this buffer.  Could be a user-space file instead.
      */
-    private final NodeGraph copiedGraph = new NodeGraph();
+    private final Graph copiedGraph = new Graph();
 
     /**
      * Manages undo/redo in the editor.
@@ -119,9 +119,9 @@ public class Donatello extends JPanel {
 
     /**
      * Default constructor
-     * @param model the {@link NodeGraph} to edit.
+     * @param model the {@link Graph} to edit.
      */
-    public Donatello(NodeGraph model) {
+    public Donatello(Graph model) {
         super(new BorderLayout());
         this.model = model;
 
@@ -173,8 +173,8 @@ public class Donatello extends JPanel {
     private void highlightSelectedNodes(Graphics g) {
         if(selectedNodes.isEmpty()) return;
 
-        ArrayList<NodeConnection> in = new ArrayList<>();
-        ArrayList<NodeConnection> out = new ArrayList<>();
+        ArrayList<Connection> in = new ArrayList<>();
+        ArrayList<Connection> out = new ArrayList<>();
 
         final int size = selectedNodes.size();
         for(int i=0;i<size;++i) {
@@ -186,26 +186,26 @@ public class Donatello extends JPanel {
 
             paintArea.paintNodeBorder(g, n);
 
-            for( NodeConnection c : model.getConnections() ) {
+            for( Connection c : model.getConnections() ) {
                 if(c.getOutNode()==n) in.add(c);
                 if(c.getInNode()==n) out.add(c);
             }
         }
-        ArrayList<NodeConnection> both = new ArrayList<>(in);
+        ArrayList<Connection> both = new ArrayList<>(in);
         both.retainAll(out);
         in.removeAll(both);
         out.removeAll(both);
 
         g.setColor(COLOR_CONNECTION_EXTERNAL_INBOUND);
-        for( NodeConnection c : in ) {
+        for( Connection c : in ) {
             paintArea.paintConnection(g,c);
         }
         g.setColor(COLOR_CONNECTION_INTERNAL);
-        for( NodeConnection c : both ) {
+        for( Connection c : both ) {
             paintArea.paintConnection(g,c);
         }
         g.setColor(COLOR_CONNECTION_EXTERNAL_OUTBOUND);
-        for( NodeConnection c : out ) {
+        for( Connection c : out ) {
             paintArea.paintConnection(g,c);
         }
     }
@@ -240,11 +240,11 @@ public class Donatello extends JPanel {
         JMenu menu = new JMenu("Help");
 
         BrowseURLAction showLog = new BrowseURLAction("Open log file",FileHelper.convertToFileURL(FileHelper.getLogFile()));
-        BrowseURLAction update = new BrowseURLAction("Check for updates","https://github.com/MarginallyClever/NodeGraphCore/releases");
-        BrowseURLAction problem = new BrowseURLAction("I have a problem...","https://github.com/MarginallyClever/NodeGraphCore/issues");
+        BrowseURLAction update = new BrowseURLAction("Check for updates","https://github.com/MarginallyClever/GraphCore/releases");
+        BrowseURLAction problem = new BrowseURLAction("I have a problem...","https://github.com/MarginallyClever/GraphCore/issues");
         BrowseURLAction drink = new BrowseURLAction("Buy me a drink","https://www.paypal.com/donate/?hosted_button_id=Y3VZ66ZFNUWJE");
         BrowseURLAction community = new BrowseURLAction("Join the community","https://discord.gg/TbNHKz6rpy");
-        BrowseURLAction idea = new BrowseURLAction("I have an idea!","https://github.com/MarginallyClever/NodeGraphCore/issues");
+        BrowseURLAction idea = new BrowseURLAction("I have an idea!","https://github.com/MarginallyClever/GraphCore/issues");
 
         community.putValue(Action.SMALL_ICON, new UnicodeIcon("🤝"));
         drink.putValue(Action.SMALL_ICON, new UnicodeIcon("🍹"));
@@ -603,7 +603,7 @@ public class Donatello extends JPanel {
      * Returns the graph being edited.
      * @return the graph being edited.
      */
-    public NodeGraph getGraph() {
+    public Graph getGraph() {
         return model;
     }
 
@@ -619,7 +619,7 @@ public class Donatello extends JPanel {
      * Store a copy of some part of the graph for later.
      * @param graph the graph to set as copied.
      */
-    public void setCopiedGraph(NodeGraph graph) {
+    public void setCopiedGraph(Graph graph) {
         copiedGraph.clear();
         copiedGraph.add(graph);
     }
@@ -628,7 +628,7 @@ public class Donatello extends JPanel {
      * Returns the stored graph marked as copied.
      * @return the stored graph marked as copied.
      */
-    public NodeGraph getCopiedGraph() {
+    public Graph getCopiedGraph() {
         return copiedGraph;
     }
 
@@ -637,7 +637,6 @@ public class Donatello extends JPanel {
      */
     public void clear() {
         model.clear();
-        Node.setUniqueIDSource(0);
         activeTool.restart();
         setSelectedNode(null);
         repaint();
@@ -664,18 +663,13 @@ public class Donatello extends JPanel {
      * @param args command line arguments.
      */
     public static void main(String[] args) throws Exception {
-        FileHelper.createDirectoryIfMissing(FileHelper.getExtensionPath());
-        ServiceLoaderHelper.addAllPathFiles(FileHelper.getExtensionPath());
-        NodeFactory.loadRegistries();
-        DAO4JSONFactory.loadRegistries();
-
         Donatello.setSystemLookAndFeel();
 
         PropertiesHelper.showProperties();
         PropertiesHelper.listAllNodes();
         PropertiesHelper.listAllDAO();
 
-        Donatello panel = new Donatello(new NodeGraph());
+        Donatello panel = new Donatello(new Graph());
 
         JFrame frame = new JFrame("Donatello Node Graph Editor");
         frame.setLocationRelativeTo(null);

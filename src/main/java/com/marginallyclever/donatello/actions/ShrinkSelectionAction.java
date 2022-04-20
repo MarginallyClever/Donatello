@@ -1,8 +1,8 @@
 package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeConnection;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Connection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +34,7 @@ public class ShrinkSelectionAction extends AbstractAction implements EditorActio
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<NodeConnection> connections = editor.getGraph().getConnections();
+        List<Connection> connections = editor.getGraph().getConnections();
         List<Node> selectedNodes = new ArrayList<>(editor.getSelectedNodes());
         List<Node> edgeNodes = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class ShrinkSelectionAction extends AbstractAction implements EditorActio
             int inCount=0;
             int outCount=0;
 
-            for( NodeConnection c : connections ) {
+            for( Connection c : connections ) {
                 if (c.isConnectedTo(n)) {
                     if(c.getInNode()==n) inCount++;
                     if(c.getOutNode()==n) outCount++;

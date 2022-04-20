@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.edits;
 
-import com.marginallyclever.nodegraphcore.NodeConnection;
+import com.marginallyclever.version2.Connection;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.undo.CannotRedoException;
@@ -9,9 +9,9 @@ import javax.swing.undo.CannotUndoException;
 public class RemoveConnectionEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
-    private final NodeConnection connection;
+    private final Connection connection;
 
-    public RemoveConnectionEdit(String name, Donatello editor, NodeConnection connection) {
+    public RemoveConnectionEdit(String name, Donatello editor, Connection connection) {
         super();
         this.name = name;
         this.editor = editor;

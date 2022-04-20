@@ -1,15 +1,14 @@
 import com.marginallyclever.donatello.DonatelloRegistry;
 
 /**
- * donatello contains Swing-based {@link com.marginallyclever.nodegraphcore.Node}s and all Swing-based tools for
- * editing {@link com.marginallyclever.nodegraphcore.NodeGraph}s.
+ * donatello contains Swing-based {@link com.marginallyclever.version2.Node}s and all Swing-based tools for
+ * editing {@link com.marginallyclever.version2.Graph}s.
  */
 module com.marginallyclever.donatello {
     requires java.desktop;
-    requires org.json;
     requires org.slf4j;
     requires logback.core;
-    requires com.marginallyclever.nodegraphcore;
+    requires org.reflections;
 
     exports com.marginallyclever.donatello to logback.core;
 
@@ -19,19 +18,4 @@ module com.marginallyclever.donatello {
     exports com.marginallyclever.donatello.nodes.images to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.search to logback.core;
     exports com.marginallyclever.donatello.bezier to logback.core;
-
-    // A Java module that wants to implement a service interface from a service interface module must:
-    // - Require the service interface module in its own module descriptor.
-    // - Implement the service interface with a Java class.
-    // - Declare the service interface implementation in its module descriptor.
-    provides com.marginallyclever.nodegraphcore.NodeRegistry with
-            com.marginallyclever.donatello.DonatelloRegistry;
-
-    provides com.marginallyclever.nodegraphcore.DAORegistry with
-            com.marginallyclever.donatello.DonatelloRegistry;
-
-    // In order to use the service, the client module must declare in its module descriptor that it uses the service.
-    // http://tutorials.jenkov.com/java/modules.html
-    uses com.marginallyclever.nodegraphcore.NodeRegistry;
-    uses com.marginallyclever.nodegraphcore.DAORegistry;
 }

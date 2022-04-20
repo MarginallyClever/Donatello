@@ -2,7 +2,7 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.NodeHelper;
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.Node;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

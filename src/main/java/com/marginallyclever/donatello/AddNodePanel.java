@@ -2,8 +2,8 @@ package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.search.SearchBar;
 import com.marginallyclever.donatello.search.SearchListener;
-import com.marginallyclever.nodegraphcore.NodeFactory;
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.NodeFactory;
+import com.marginallyclever.version2.Node;
 
 import javax.swing.*;
 import java.awt.*;

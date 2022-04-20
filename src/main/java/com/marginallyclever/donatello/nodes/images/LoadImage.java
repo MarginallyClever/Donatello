@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,10 +14,10 @@ import java.io.IOException;
  * @since 2022-02-23
  */
 public class LoadImage extends Node {
-    private final NodeVariable<String> filename = NodeVariable.newInstance("filename",String.class," ",true,false);
-    private final NodeVariable<BufferedImage> contents = NodeVariable.newInstance("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<Number> width = NodeVariable.newInstance("width",Number.class,0,false,true);
-    private final NodeVariable<Number> height = NodeVariable.newInstance("height",Number.class,0,false,true);
+    private final Dock<String> filename = Dock.newInstance("filename",String.class," ",true,false);
+    private final Dock<BufferedImage> contents = Dock.newInstance("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<Number> width = Dock.newInstance("width",Number.class,0,false,true);
+    private final Dock<Number> height = Dock.newInstance("height",Number.class,0,false,true);
 
     /**
      * Constructor for subclasses to call.

@@ -2,8 +2,8 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.GraphViewPanel;
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Graph;
 
 import javax.swing.*;
 import java.awt.*;

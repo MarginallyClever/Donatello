@@ -1,8 +1,7 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
-import com.marginallyclever.nodegraphcore.NodeFactory;
-import com.marginallyclever.donatello.nodes.images.BufferedImageDAO4JSON;
+import com.marginallyclever.version2.DAO4JSONFactory;
+import com.marginallyclever.version2.NodeFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
-import com.marginallyclever.nodegraphcore.NodeFactory;
+import com.marginallyclever.version2.DAO4JSONFactory;
+import com.marginallyclever.version2.NodeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,15 +35,5 @@ public class PropertiesHelper {
             add = ", ";
         }
         logger.debug("Nodes: {}.",sum);
-    }
-
-    public static void listAllDAO() {
-        String sum = "";
-        String add = "";
-        for(String n : DAO4JSONFactory.getNames()) {
-            sum += add + n;
-            add = ", ";
-        }
-        logger.debug("DAOs: {}.",sum);
     }
 }

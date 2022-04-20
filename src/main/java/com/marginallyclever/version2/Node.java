@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.Serial;
 import java.security.InvalidParameterException;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ import java.util.List;
 public abstract class Node extends AbstractNamedEntity {
     @Serial
     private static final long serialVersionUID = 6772685119452110491L;
+    /**
+     * The default height of the title bar.
+     */
+    public static final int TITLE_HEIGHT = 25;
 
     private static final Logger logger = LoggerFactory.getLogger(Node.class);
 
@@ -166,5 +171,22 @@ public abstract class Node extends AbstractNamedEntity {
 
     public List<ShippingDock> getOutputs() {
         return outputs;
+    }
+
+    public void moveRelative(int dx, int dy) {
+        bounds.x+=dx;
+        bounds.y+=dy;
+    }
+
+    public Rectangle getRectangle() {
+        return bounds;
+    }
+
+    public void setPosition(Point p) {
+        bounds.setLocation(p);
+    }
+
+    public void updateBounds() {
+
     }
 }

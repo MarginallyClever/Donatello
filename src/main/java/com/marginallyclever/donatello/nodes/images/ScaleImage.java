@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -13,10 +13,10 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ScaleImage extends Node {
-    private final NodeVariable<BufferedImage> image = NodeVariable.newInstance("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<Number> width = NodeVariable.newInstance("width",Number.class,256,true,false);
-    private final NodeVariable<Number> height = NodeVariable.newInstance("height",Number.class,256,true,false);
-    private final NodeVariable<BufferedImage> output = NodeVariable.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<BufferedImage> image = Dock.newInstance("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
+    private final Dock<Number> width = Dock.newInstance("width",Number.class,256,true,false);
+    private final Dock<Number> height = Dock.newInstance("height",Number.class,256,true,false);
+    private final Dock<BufferedImage> output = Dock.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
 
     /**
      * Constructor for subclasses to call.

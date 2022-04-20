@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,11 +16,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ColorAtPoint extends Node {
-    private final NodeVariable<BufferedImage> image   = NodeVariable.newInstance("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<Number> cx = NodeVariable.newInstance("x", Number.class, 0,true,false);
-    private final NodeVariable<Number> cy = NodeVariable.newInstance("y", Number.class, 0,true,false);
-    private final NodeVariable<Number> sampleSize = NodeVariable.newInstance("sampleSize", Number.class, 0,true,false);
-    private final NodeVariable<Color> output   = NodeVariable.newInstance("output", Color.class, new Color(0,0,0,0),false,true);
+    private final Dock<BufferedImage> image   = Dock.newInstance("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
+    private final Dock<Number> cx = Dock.newInstance("x", Number.class, 0,true,false);
+    private final Dock<Number> cy = Dock.newInstance("y", Number.class, 0,true,false);
+    private final Dock<Number> sampleSize = Dock.newInstance("sampleSize", Number.class, 0,true,false);
+    private final Dock<Color> output   = Dock.newInstance("output", Color.class, new Color(0,0,0,0),false,true);
 
     /**
      * Constructor for subclasses to call.

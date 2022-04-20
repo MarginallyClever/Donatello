@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.images.blend;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.image.BufferedImage;
 
@@ -11,9 +11,9 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class BlendDifference extends Node {
-    private final NodeVariable<BufferedImage> a = NodeVariable.newInstance("a", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<BufferedImage> b = NodeVariable.newInstance("b", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<BufferedImage> output = NodeVariable.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<BufferedImage> a = Dock.newInstance("a", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
+    private final Dock<BufferedImage> b = Dock.newInstance("b", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
+    private final Dock<BufferedImage> output = Dock.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
 
     /**
      * Constructor for subclasses to call.

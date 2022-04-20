@@ -11,6 +11,10 @@ import java.util.UUID;
 public class Connection implements Serializable {
     @Serial
     private static final long serialVersionUID = 8466086057130123820L;
+    /**
+     * radius of connection points at either end.  Used for generating bounds and testing intersections.
+     */
+    public static final double DEFAULT_RADIUS = 5;
 
     private final String uniqueID = UUID.randomUUID().toString();
 
@@ -82,5 +86,13 @@ public class Connection implements Serializable {
                 "from='" + from.getUniqueAddress() + '\'' +
                 ", to='" + to.getUniqueAddress() + '\'' +
                 '}';
+    }
+
+    public boolean isOutputValid() {
+        return getTo() != null;
+    }
+
+    public boolean isInputValid() {
+        return getFrom() != null;
     }
 }

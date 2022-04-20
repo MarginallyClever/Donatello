@@ -1,8 +1,8 @@
 package com.marginallyclever.donatello.organize;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeFactory;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.NodeFactory;
+import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.AddNodePanel;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.ReorderEdit;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class OrganizeGraphPanel extends JPanel {
     private final Donatello editor;
-    private final NodeGraph myGraph;
+    private final Graph myGraph;
 
     /**
      * list model controls the contents of the list.  This is needed to add/remove as the search field is changed.

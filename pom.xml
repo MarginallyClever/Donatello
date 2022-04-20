@@ -245,12 +245,12 @@
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
             <version>1.0.18</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
             <version>1.0.19</version>
-        </dependency>
+        </dependency>-->
         <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -280,6 +280,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- reflections -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
         </dependency>
     </dependencies>
 

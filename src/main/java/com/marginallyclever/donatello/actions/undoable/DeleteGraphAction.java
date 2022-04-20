@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.actions.undoable;
 
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.Node;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.EditorAction;
 import com.marginallyclever.donatello.edits.DeleteGraphEdit;

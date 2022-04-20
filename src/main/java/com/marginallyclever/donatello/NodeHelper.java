@@ -1,18 +1,18 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeConnection;
-import com.marginallyclever.nodegraphcore.NodeGraph;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Connection;
+import com.marginallyclever.version2.Graph;
+import com.marginallyclever.version2.Dock;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NodeHelper {
-    public static List<Node> getAllOutgoingConnections(NodeGraph graph, Node source) {
+    public static List<Node> getAllOutgoingConnections(Graph graph, Node source) {
         List<Node> adjacent = new ArrayList<>();
 
-        for( NodeConnection c : graph.getConnections() ) {
+        for( Connection c : graph.getConnections() ) {
             if (c.isConnectedTo(source) && c.getInNode()==source) {
                 adjacent.add(c.getOutNode());
             }
@@ -21,11 +21,11 @@ public class NodeHelper {
         return adjacent;
     }
 
-    public static List<Node> getNeighbors(NodeGraph graph, List<Node> startingNodes) {
+    public static List<Node> getNeighbors(Graph graph, List<Node> startingNodes) {
         List<Node> adjacent = new ArrayList<>();
-        List<NodeConnection> potential = new ArrayList<>();
+        List<Connection> potential = new ArrayList<>();
 
-        for( NodeConnection c : graph.getConnections() ) {
+        for( Connection c : graph.getConnections() ) {
             for( Node n : startingNodes ) {
                 if (c.isConnectedTo(n)) {
                     potential.add(c);
@@ -36,7 +36,7 @@ public class NodeHelper {
 
         for( Node n : graph.getNodes() ) {
             if(startingNodes.contains(n)) continue;
-            for( NodeConnection c : potential ) {
+            for( Connection c : potential ) {
                 if (c.isConnectedTo(n)) {
                     adjacent.add(n);
                 }

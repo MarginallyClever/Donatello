@@ -1,4 +1,4 @@
 *.class
 target/*
 .idea
-NodeGraphCore.iml
+GraphCore.iml

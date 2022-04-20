@@ -134,4 +134,12 @@ public class Graph extends AbstractNamedEntity implements Serializable {
         }
         return null;
     }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public boolean isEmpty() {
+        return getNodes().isEmpty() && getConnections().isEmpty();
+    }
 }

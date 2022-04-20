@@ -1,10 +1,9 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.donatello.nodes.color.ColorDAO4JSON;
-import com.marginallyclever.nodegraphcore.DAORegistry;
-import com.marginallyclever.nodegraphcore.NodeFactory;
-import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
-import com.marginallyclever.nodegraphcore.NodeRegistry;
+import com.marginallyclever.version2.DAORegistry;
+import com.marginallyclever.version2.NodeFactory;
+import com.marginallyclever.version2.DAO4JSONFactory;
+import com.marginallyclever.version2.NodeRegistry;
 import com.marginallyclever.donatello.nodes.images.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ import java.awt.image.BufferedImage;
  * @author Dan Royer
  * @since 2022-02-11
  */
-public class DonatelloRegistry implements NodeRegistry, DAORegistry {
+public class DonatelloRegistry implements NodeRegistry {
     private static final Logger logger = LoggerFactory.getLogger(DonatelloRegistry.class);
 
     public String getName() {

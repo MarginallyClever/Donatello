@@ -1,9 +1,9 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
-import com.marginallyclever.nodegraphcore.Subgraph;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.version2.nodes.NodeWhichContainsAGraph;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Uncollapses all the editor's selected items that are {@link Subgraph}s.  The new list of selected items will contain
- * all the new graph elements plus any old elements that were not {@link Subgraph}s.
- * Each newly exposed graph is positioned relative to the original {@link Subgraph}.
+ * Uncollapses all the editor's selected items that are {@link NodeWhichContainsAGraph}s.  The new list of selected items will contain
+ * all the new graph elements plus any old elements that were not {@link NodeWhichContainsAGraph}s.
+ * Each newly exposed graph is positioned relative to the original {@link NodeWhichContainsAGraph}.
  * @author Dan Royer
  * @since 2022-02-21
  */
@@ -41,20 +41,20 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
         List<Node> newSelection = editor.getSelectedNodes();
 
         for(Node n : wasSelected) {
-            if (n instanceof Subgraph) {
+            if (n instanceof NodeWhichContainsAGraph) {
                 toBeDeleted.add(n);
             }
         }
 
         for(Node n : toBeDeleted) {
-            NodeGraph inner = ((Subgraph)n).getGraph();
+            Graph inner = ((NodeWhichContainsAGraph)n).getGraph();
             // add the subgraph to this graph.
             editor.getGraph().add(inner);
             // make sure it is selected
             newSelection.addAll(inner.getNodes());
-            // position it relative to the Subgraph it is replacing
+            // position it relative to the NodeWhichContainsAGraph it is replacing
             positionNodesRelativeTo(inner,n.getRectangle().x,n.getRectangle().y);
-            // make sure to delete the Subgraph and clean up.
+            // make sure to delete the NodeWhichContainsAGraph and clean up.
             editor.getGraph().remove(n);
             inner.clear();
         }
@@ -65,7 +65,7 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
         editor.setSelectedNodes(newSelection);
     }
 
-    private void positionNodesRelativeTo(NodeGraph nodeGraph,int dx, int dy) {
+    private void positionNodesRelativeTo(Graph nodeGraph,int dx, int dy) {
         Rectangle r = nodeGraph.getBounds();
         dx-=r.x;
         dy-=r.y;
@@ -78,7 +78,7 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
     public void updateEnableStatus() {
         List<Node> list = editor.getSelectedNodes();
         for(Node n : list) {
-            if(n instanceof Subgraph) {
+            if(n instanceof NodeWhichContainsAGraph) {
                 setEnabled(true);
                 return;
             }

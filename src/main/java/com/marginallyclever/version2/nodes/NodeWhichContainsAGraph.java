@@ -103,4 +103,8 @@ public class NodeWhichContainsAGraph extends Node {
                 ", outputs=" + myOutputGlue +
                 '}';
     }
+
+    public Graph getGraph() {
+        return myGraph;
+    }
 }

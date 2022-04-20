@@ -20,9 +20,9 @@ that are not fluent in the archaic syntax of text-only languages.
 
 ### Use it, Discuss it, Love it.
 
-- Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/NodeGraphCore/javadoc).
-- Please see guide for [how to Contribute](https://github.com/MarginallyClever/NodeGraphCore/blob/main/CONTRIBUTING.md)
-- The [Official webpage](https://marginallyclever.github.io/NodeGraphCore/)!
+- Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/GraphCore/javadoc).
+- Please see guide for [how to Contribute](https://github.com/MarginallyClever/GraphCore/blob/main/CONTRIBUTING.md)
+- The [Official webpage](https://marginallyclever.github.io/GraphCore/)!
 - Join [the Discord channel](https://discord.gg/Q5TZFmB) and make new friends.
 
 ### Based on work by
@@ -45,5 +45,5 @@ that are not fluent in the archaic syntax of text-only languages.
 - 
 ### Badges
 
-[![Release](https://jitpack.io/v/MarginallyClever/NodeGraphCore.svg)](https://jitpack.io/#MarginallyClever/NodeGraphCore)
-![ workflow](https://github.com/MarginallyClever/NodeGraphCore/actions/workflows/main.yml/badge.svg)
+[![Release](https://jitpack.io/v/MarginallyClever/GraphCore.svg)](https://jitpack.io/#MarginallyClever/GraphCore)
+![ workflow](https://github.com/MarginallyClever/GraphCore/actions/workflows/main.yml/badge.svg)

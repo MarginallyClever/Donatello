@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.Node;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.*;

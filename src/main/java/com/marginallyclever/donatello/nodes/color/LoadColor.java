@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.color;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,11 +12,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-03-19
  */
 public class LoadColor extends Node {
-    private final NodeVariable<Number> r = NodeVariable.newInstance("r", Number.class, 0,true,false);
-    private final NodeVariable<Number> g = NodeVariable.newInstance("g", Number.class, 0,true,false);
-    private final NodeVariable<Number> b = NodeVariable.newInstance("b", Number.class, 0,true,false);
-    private final NodeVariable<Number> a = NodeVariable.newInstance("a", Number.class, 0,true,false);
-    private final NodeVariable<Color> output = NodeVariable.newInstance("output", Color.class, new Color(0,0,0,0),false,true);
+    private final Dock<Number> r = Dock.newInstance("r", Number.class, 0,true,false);
+    private final Dock<Number> g = Dock.newInstance("g", Number.class, 0,true,false);
+    private final Dock<Number> b = Dock.newInstance("b", Number.class, 0,true,false);
+    private final Dock<Number> a = Dock.newInstance("a", Number.class, 0,true,false);
+    private final Dock<Color> output = Dock.newInstance("output", Color.class, new Color(0,0,0,0),false,true);
 
     /**
      * Constructor for subclasses to call.

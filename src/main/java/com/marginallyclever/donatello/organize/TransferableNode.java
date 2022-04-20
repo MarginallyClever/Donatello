@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.organize;
 
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.Node;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

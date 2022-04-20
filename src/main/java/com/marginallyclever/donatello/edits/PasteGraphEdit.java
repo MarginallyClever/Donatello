@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.edits;
 
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.undo.CannotRedoException;
@@ -10,10 +10,10 @@ import java.awt.*;
 public class PasteGraphEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
-    private final NodeGraph copiedGraph;
+    private final Graph copiedGraph;
     private final Point m;
 
-    public PasteGraphEdit(String name, Donatello editor, NodeGraph graph) {
+    public PasteGraphEdit(String name, Donatello editor, Graph graph) {
         super();
         this.name = name;
         this.editor = editor;

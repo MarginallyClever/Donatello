@@ -1,8 +1,8 @@
 package com.marginallyclever.donatello.edits;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeConnection;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Connection;
+import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.undo.CannotRedoException;
@@ -13,7 +13,7 @@ import java.util.List;
 public class IsolateGraphEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
-    private final List<NodeConnection> connections = new ArrayList<>();
+    private final List<Connection> connections = new ArrayList<>();
 
     public IsolateGraphEdit(String name, Donatello editor, List<Node> selectedNodes) {
         super();
@@ -29,15 +29,15 @@ public class IsolateGraphEdit extends SignificantUndoableEdit {
     }
 
     private void doIt() {
-        NodeGraph graph = editor.getGraph();
+        Graph graph = editor.getGraph();
         graph.getConnections().removeAll(connections);
         editor.repaint();
     }
 
     @Override
     public void undo() throws CannotUndoException {
-        NodeGraph g = editor.getGraph();
-        for(NodeConnection c : connections) g.add(c);
+        Graph g = editor.getGraph();
+        for(Connection c : connections) g.add(c);
         editor.repaint();
         super.undo();
     }

@@ -1,10 +1,10 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
-import com.marginallyclever.nodegraphcore.Subgraph;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.undoable.CutGraphAction;
+import com.marginallyclever.version2.nodes.NodeWhichContainsAGraph;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -38,11 +38,11 @@ public class FoldGraphAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NodeGraph preserveCopyBehaviour = editor.getCopiedGraph().deepCopy();
+        Graph preserveCopyBehaviour = editor.getCopiedGraph().deepCopy();
 
         cutGraphAction.actionPerformed(e);
-        NodeGraph justCut = editor.getCopiedGraph().deepCopy();
-        Node n = editor.getGraph().add(new Subgraph(justCut));
+        Graph justCut = editor.getCopiedGraph().deepCopy();
+        Node n = editor.getGraph().add(new NodeWhichContainsAGraph(justCut));
         n.setPosition(editor.getPopupPoint());
 
         editor.setCopiedGraph(preserveCopyBehaviour);

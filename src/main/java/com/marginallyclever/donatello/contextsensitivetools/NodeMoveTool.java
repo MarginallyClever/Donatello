@@ -4,7 +4,7 @@ import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.donatello.UnicodeIcon;
 import com.marginallyclever.donatello.edits.MoveNodesEdit;
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.Node;
 
 import javax.swing.*;
 import java.awt.*;

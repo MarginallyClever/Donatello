@@ -12,11 +12,11 @@ The following is a set of guidelines for contributing.  These are just guideline
 
 ## Reporting bugs
 
-Please use the Github [Issues](https://github.com/MarginallyClever/NodeGraphCore/issues) and fill out the template to make good bug reports.
+Please use the Github [Issues](https://github.com/MarginallyClever/GraphCore/issues) and fill out the template to make good bug reports.
 
 ## Contributing new code
 
-Please see the [Getting Started Guide](https://github.com/MarginallyClever/NodeGraphCore/wiki/Getting-Started) to get setup and running.
+Please see the [Getting Started Guide](https://github.com/MarginallyClever/GraphCore/wiki/Getting-Started) to get setup and running.
 
 We use github to host code, to track issues and feature requests, as well as accept pull requests.
 
@@ -28,7 +28,7 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 3. Write code that passes your tests.
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes.
-5. Send in your [pull request](https://github.com/MarginallyClever/NodeGraphCore/pulls).
+5. Send in your [pull request](https://github.com/MarginallyClever/GraphCore/pulls).
 6. Discuss the changes with the team.
 7. Get the code approved and merged into the `master` branch.
 

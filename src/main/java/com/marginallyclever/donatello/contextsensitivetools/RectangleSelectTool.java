@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.*;
-import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.version2.Node;
 
 import javax.swing.*;
 import java.awt.*;

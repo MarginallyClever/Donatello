@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.image.BufferedImage;
 
@@ -11,11 +11,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class SplitToCMYK extends Node {
-    private final NodeVariable<BufferedImage> image   = NodeVariable.newInstance("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<BufferedImage> cyan    = NodeVariable.newInstance("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<BufferedImage> magenta = NodeVariable.newInstance("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<BufferedImage> yellow  = NodeVariable.newInstance("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<BufferedImage> black   = NodeVariable.newInstance("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<BufferedImage> image   = Dock.newInstance("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
+    private final Dock<BufferedImage> cyan    = Dock.newInstance("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<BufferedImage> magenta = Dock.newInstance("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<BufferedImage> yellow  = Dock.newInstance("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final Dock<BufferedImage> black   = Dock.newInstance("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
 
     /**
      * Constructor for subclasses to call.

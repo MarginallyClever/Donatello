@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
- * Select all the {@link com.marginallyclever.nodegraphcore.Node}s in the {@link com.marginallyclever.nodegraphcore.NodeGraph}.
+ * Select all the {@link com.marginallyclever.nodegraphcore.Node}s in the {@link com.marginallyclever.nodegraphcore.Graph}.
  */
 public class SelectAllAction extends AbstractAction {
     /**

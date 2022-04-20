@@ -2,11 +2,7 @@ package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
-import com.marginallyclever.nodegraphcore.PrintWithGraphics;
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeConnection;
-import com.marginallyclever.nodegraphcore.NodeGraph;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link GraphViewPanel} visualizes the contents of a {@link NodeGraph} with Java Swing.
+ * {@link GraphViewPanel} visualizes the contents of a {@link Graph} with Java Swing.
  * It can call on {@link GraphViewListener}s to add additional flavor.
  * Override this to implement a unique look and feel.
  * @author Dan Royer
@@ -36,7 +32,7 @@ public class GraphViewPanel extends JPanel {
      */
     public static final Color NODE_COLOR_BORDER = Color.BLACK;
     /**
-     * The default {@link Node} internal border between {@link NodeVariable}.
+     * The default {@link Node} internal border between {@link Dock}.
      */
     public static final Color NODE_COLOR_INTERNAL_BORDER = Color.DARK_GRAY;
     /**
@@ -82,35 +78,35 @@ public class GraphViewPanel extends JPanel {
     public static final int CORNER_RADIUS = 5;
 
     /**
-     * Controls horizontal text alignment within a {@link Node} or {@link NodeVariable}.
+     * Controls horizontal text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_LEFT=0;
     /**
-     * Controls horizontal text alignment within a {@link Node} or {@link NodeVariable}.
+     * Controls horizontal text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_RIGHT=1;
     /**
-     * Controls horizontal or vertical text alignment within a {@link Node} or {@link NodeVariable}.
+     * Controls horizontal or vertical text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_CENTER=2;
     /**
-     * Controls vertical text alignment within a {@link Node} or {@link NodeVariable}.
+     * Controls vertical text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_TOP=0;
     /**
-     * Controls vertical text alignment within a {@link Node} or {@link NodeVariable}.
+     * Controls vertical text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_BOTTOM=1;
 
     /**
-     * the {@link NodeGraph} to edit.
+     * the {@link Graph} to edit.
      */
-    private final NodeGraph model;
+    private final Graph model;
 
     private final Point camera = new Point();
 
@@ -123,9 +119,9 @@ public class GraphViewPanel extends JPanel {
 
     /**
      * Constructs one new instance of {@link GraphViewPanel}.
-     * @param model the {@link NodeGraph} model to paint.
+     * @param model the {@link Graph} model to paint.
      */
-    public GraphViewPanel(NodeGraph model) {
+    public GraphViewPanel(Graph model) {
         super();
         this.model=model;
         this.setBackground(PANEL_COLOR_BACKGROUND);
@@ -203,13 +199,12 @@ public class GraphViewPanel extends JPanel {
 
         g2.transform(getTransform());
 
-        paintBackgroundGrid(g);
-        paintNodesInBackground(g);
+        //paintBackgroundGrid(g);
 
         for(Node n : model.getNodes()) paintNode(g2,n);
 
         g2.setColor(CONNECTION_COLOR);
-        for(NodeConnection c : model.getConnections()) paintConnection(g2,c);
+        for(Connection c : model.getConnections()) paintConnection(g2,c);
 
         //paintCursor(g2);
         //paintOrigin(g2);
@@ -217,7 +212,7 @@ public class GraphViewPanel extends JPanel {
         firePaintEvent(g2);
     }
 
-    private void paintBackgroundGrid(Graphics g) {
+    public void paintBackgroundGrid(Graphics g) {
         g.setColor(PANEL_GRID_COLOR);
 
         Rectangle r = getBounds();
@@ -277,19 +272,7 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint all {@link Node}s that implement the {@link PrintWithGraphics} interface.
-     * @param g the {@link Graphics} context.
-     */
-    private void paintNodesInBackground(Graphics g) {
-        for(Node n : model.getNodes()) {
-            if(n instanceof PrintWithGraphics) {
-                ((PrintWithGraphics) n).print(g);
-            }
-        }
-    }
-
-    /**
-     * Update the bounds of every node in the model {@link NodeGraph}.
+     * Update the bounds of every node in the model {@link Graph}.
      */
     public void updatePaintAreaBounds() {
         Rectangle r = this.getBounds();
@@ -317,7 +300,7 @@ public class GraphViewPanel extends JPanel {
 
         paintNodeTitleBar(g, n);
 
-        paintAllNodeVariables(g, n);
+        paintAllDocks(g, n);
 
         g.setColor(NODE_COLOR_BORDER);
         paintNodeBorder(g, n);
@@ -352,43 +335,33 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint all the {@link NodeVariable}s in one {@link Node}.
+     * Paint all the {@link Dock}s in one {@link Node}.
      * @param g the {@link Graphics} context
      * @param n the {@link Node} to paint.
      */
-    private void paintAllNodeVariables(Graphics g, Node n) {
-        for(int i=0;i<n.getNumVariables();++i) {
-            NodeVariable<?> v = n.getVariable(i);
-            paintVariable(g,v);
-        }
+    private void paintAllDocks(Graphics g, Node n) {
+        for( ReceivingDock d : n.getInputs()) paintVariable(g,d);
+        for( ShippingDock d : n.getOutputs()) paintVariable(g,d);
     }
 
     /**
-     * Paint one {@link NodeVariable}.
+     * Paint one {@link Dock}.
      * @param g the {@link Graphics} context
-     * @param v the {@link NodeVariable} to paint.
+     * @param v the {@link Dock} to paint.
      */
-    public void paintVariable(Graphics g, NodeVariable<?> v) {
+    public void paintVariable(Graphics g, Dock v) {
         Rectangle box = v.getRectangle();
         Rectangle insideBox = getNodeInternalBounds(box);
 
         // label
-        g.setColor(v.getIsDirty()?NODE_COLOR_FONT_DIRTY : NODE_COLOR_FONT_CLEAN);
+        g.setColor( NODE_COLOR_FONT_CLEAN );
         paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_CENTER);
 
         // value
-        Object vObj = v.getValue();
-        if(vObj != null) {
-            String val;
-            int MAX_CHARS = 10;
-            if(vObj instanceof String || vObj instanceof Number) {
-                val = vObj.toString();
-            } else {
-                val = v.getTypeName();
-            }
-            if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
-            paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
-        }
+        int MAX_CHARS = 10;
+        String val = v.getType().getSimpleName();
+        if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
+        paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
 
         // internal border
         g.setColor(NODE_COLOR_INTERNAL_BORDER);
@@ -401,14 +374,14 @@ public class GraphViewPanel extends JPanel {
 
     /**
      * Returns the adjusted inner bounds of a {@link Node}.
-     * Nodes have a left and right margin useful for printing labels and values without overlapping the {@link NodeConnection} points.
-     * these edges form an inner bound.  Given a {@link NodeVariable#getRectangle()}, this
+     * Nodes have a left and right margin useful for printing labels and values without overlapping the {@link Connection} points.
+     * these edges form an inner bound.  Given a {@link Dock#getRectangle()}, this
      * @param r the outer bounsd of the node.
      * @return the adjusted inner bounds of a {@link Node}.
      */
     public Rectangle getNodeInternalBounds(Rectangle r) {
         Rectangle r2 = new Rectangle(r);
-        int padding = (int)NodeConnection.DEFAULT_RADIUS+4;
+        int padding = (int)Connection.DEFAULT_RADIUS+4;
         r2.x += padding;
         r2.width -= padding*2;
         return r2;
@@ -425,19 +398,18 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint the female end of connection points of one {@link NodeVariable}.
+     * Paint the female end of connection points of one {@link Dock}.
      * @param g the {@link Graphics} context
-     * @param v the {@link NodeVariable} to paint.
+     * @param v the {@link Dock} to paint.
      */
-    public void paintVariableConnectionPoints(Graphics g, NodeVariable<?> v) {
-        if(v.getHasInput()) {
+    public void paintVariableConnectionPoints(Graphics g, Dock v) {
+        if(v instanceof ReceivingDock) {
             Point p = v.getInPosition();
-            int radius = (int)NodeConnection.DEFAULT_RADIUS+2;
+            int radius = (int)Connection.DEFAULT_RADIUS+2;
             g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
-        }
-        if(v.getHasOutput()) {
+        } else if(v instanceof ShippingDock) {
             Point p = v.getOutPosition();
-            int radius = (int)NodeConnection.DEFAULT_RADIUS+2;
+            int radius = (int)Connection.DEFAULT_RADIUS+2;
             g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
         }
     }
@@ -474,17 +446,17 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint the male end of connection points at this {@link NodeVariable}.
+     * Paint the male end of connection points at this {@link Dock}.
      * @param g the {@link Graphics} context
-     * @param c the {@link NodeVariable} to paint.
+     * @param c the {@link Dock} to paint.
      */
-    public void paintConnection(Graphics g, NodeConnection c) {
+    public void paintConnection(Graphics g, Connection c) {
         Point p0 = c.getInPosition();
         Point p3 = c.getOutPosition();
         paintBezierBetweenTwoPoints(g,p0,p3);
 
-        if(c.isOutputValid()) paintConnectionAtPoint(g,c.getOutPosition());
-        if(c.isInputValid()) paintConnectionAtPoint(g,c.getInPosition());
+        if(c.isOutputValid()) paintConnectionAtPoint(g,p3);
+        if(c.isInputValid()) paintConnectionAtPoint(g,p0);
     }
 
     /**
@@ -493,7 +465,7 @@ public class GraphViewPanel extends JPanel {
      * @param p the center of male end to paint.
      */
     public void paintConnectionAtPoint(Graphics g,Point p) {
-        int radius = (int) NodeConnection.DEFAULT_RADIUS;
+        int radius = (int) Connection.DEFAULT_RADIUS;
         g.fillOval( p.x - radius, p.y - radius, radius * 2, radius * 2);
     }
 

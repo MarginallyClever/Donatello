@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.version2.*;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;

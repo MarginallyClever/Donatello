@@ -1,10 +1,10 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.UnicodeIcon;
-import com.marginallyclever.nodegraphcore.NodeConnection;
-import com.marginallyclever.nodegraphcore.NodeConnectionPointInfo;
-import com.marginallyclever.nodegraphcore.NodeGraph;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Connection;
+import com.marginallyclever.version2.ConnectionPointInfo;
+import com.marginallyclever.version2.Graph;
+import com.marginallyclever.version2.Dock;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.donatello.edits.AddConnectionEdit;
@@ -31,15 +31,15 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     private final Point mousePreviousPosition = new Point();
 
     /**
-     * To create a {@link NodeConnection} the user has to select two {@link NodeVariable} connection points.
+     * To create a {@link Connection} the user has to select two {@link Dock} connection points.
      * This is where the first is stored until the user completes the connection or cancels the action.
      */
-    private final NodeConnection connectionBeingCreated = new NodeConnection();
+    private final Connection connectionBeingCreated = new Connection();
 
     /**
      * The last connection point found
      */
-    private NodeConnectionPointInfo lastConnectionPoint = null;
+    private ConnectionPointInfo lastConnectionPoint = null;
 
     private final String addName;
     private final String removeName;
@@ -91,19 +91,19 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     }
 
     /**
-     * Searches for a nearby {@link NodeVariable} connection point and, if found, remembers it.
+     * Searches for a nearby {@link Dock} connection point and, if found, remembers it.
      * @param p the center of the search area.
      */
     private void selectOneNearbyConnectionPoint(Point p) {
-        NodeConnectionPointInfo info = editor.getGraph().getNearestConnectionPoint(p,NEARBY_CONNECTION_DISTANCE_MAX);
+        ConnectionPointInfo info = editor.getGraph().getNearestConnectionPoint(p,NEARBY_CONNECTION_DISTANCE_MAX);
         setLastConnectionPoint(info);
     }
 
     /**
-     * Remembers a connection point as described by a {@link NodeConnectionPointInfo}.
-     * @param info the {@link NodeConnectionPointInfo}
+     * Remembers a connection point as described by a {@link ConnectionPointInfo}.
+     * @param info the {@link ConnectionPointInfo}
      */
-    private void setLastConnectionPoint(NodeConnectionPointInfo info) {
+    private void setLastConnectionPoint(ConnectionPointInfo info) {
         if(info!=lastConnectionPoint && lastConnectionPoint!=null) {
             repaintConnectionPoint(lastConnectionPoint.getPoint());
         }
@@ -180,7 +180,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         // check that the end node is not the same as the start node.
         //if(!connectionBeingCreated.isConnectedTo(lastConnectionPoint.node))
         {
-            if (lastConnectionPoint.flags == NodeConnectionPointInfo.IN) {
+            if (lastConnectionPoint.flags == ConnectionPointInfo.IN) {
                 // the output of a connection goes to the input of a node.
                 connectionBeingCreated.setOutput(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
             } else {
@@ -196,17 +196,17 @@ public class ConnectionEditTool extends ContextSensitiveTool {
 
         if(connectionBeingCreated.isInputValid() && connectionBeingCreated.isOutputValid() ) {
             if(connectionBeingCreated.isValidDataType()) {
-                NodeGraph graph = editor.getGraph();
-                NodeConnection match = graph.getMatchingConnection(connectionBeingCreated);
+                Graph graph = editor.getGraph();
+                Connection match = graph.getMatchingConnection(connectionBeingCreated);
                 if(match!=null) {
                     editor.addEdit(new RemoveConnectionEdit(removeName,editor,match));
                 } else {
-                    editor.addEdit(new AddConnectionEdit(addName,editor,new NodeConnection(connectionBeingCreated)));
+                    editor.addEdit(new AddConnectionEdit(addName,editor,new Connection(connectionBeingCreated)));
                 }
             } else {
                 // if any of the tests failed
-                NodeVariable<?> vIn = connectionBeingCreated.getInVariable();
-                NodeVariable<?> vOut = connectionBeingCreated.getOutVariable();
+                Dock vIn = connectionBeingCreated.getInVariable();
+                Dock vOut = connectionBeingCreated.getOutVariable();
                 String nameIn = (vIn==null) ? "null" : vIn.getTypeName();
                 String nameOut = (vOut==null) ? "null" : vOut.getTypeName();
                 logger.warn("Invalid types {}, {}",nameOut,nameIn);
@@ -221,7 +221,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         }
     }
 
-    public NodeConnectionPointInfo getLastConnectionPoint() {
+    public ConnectionPointInfo getLastConnectionPoint() {
         return lastConnectionPoint;
     }
 

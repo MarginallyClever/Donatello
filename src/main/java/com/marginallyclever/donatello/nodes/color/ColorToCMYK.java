@@ -1,8 +1,8 @@
 package com.marginallyclever.donatello.nodes.color;
 
 import com.marginallyclever.donatello.nodes.images.ColorHelper;
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.*;
 
@@ -12,11 +12,11 @@ import java.awt.*;
  * @since 2022-03-19
  */
 public class ColorToCMYK extends Node {
-    private final NodeVariable<Color> color = NodeVariable.newInstance("color", Color.class, new Color(0,0,0,0),true,false);
-    private final NodeVariable<Number> cyan = NodeVariable.newInstance("cyan", Number.class, 0,false,true);
-    private final NodeVariable<Number> magenta = NodeVariable.newInstance("magenta", Number.class, 0,false,true);
-    private final NodeVariable<Number> yellow = NodeVariable.newInstance("yellow", Number.class, 0,false,true);
-    private final NodeVariable<Number> black = NodeVariable.newInstance("black", Number.class, 0,false,true);
+    private final Dock<Color> color = Dock.newInstance("color", Color.class, new Color(0,0,0,0),true,false);
+    private final Dock<Number> cyan = Dock.newInstance("cyan", Number.class, 0,false,true);
+    private final Dock<Number> magenta = Dock.newInstance("magenta", Number.class, 0,false,true);
+    private final Dock<Number> yellow = Dock.newInstance("yellow", Number.class, 0,false,true);
+    private final Dock<Number> black = Dock.newInstance("black", Number.class, 0,false,true);
 
     /**
      * Constructor for subclasses to call.

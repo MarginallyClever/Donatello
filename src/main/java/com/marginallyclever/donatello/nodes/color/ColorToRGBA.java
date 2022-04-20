@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.color;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.version2.Node;
+import com.marginallyclever.version2.Dock;
 
 import java.awt.*;
 
@@ -11,11 +11,11 @@ import java.awt.*;
  * @since 2022-03-19
  */
 public class ColorToRGBA extends Node {
-    private final NodeVariable<Color> color = NodeVariable.newInstance("color", Color.class, new Color(0,0,0,0),true,false);
-    private final NodeVariable<Number> red = NodeVariable.newInstance("red", Number.class, 0,false,true);
-    private final NodeVariable<Number> green = NodeVariable.newInstance("green", Number.class, 0,false,true);
-    private final NodeVariable<Number> blue = NodeVariable.newInstance("blue", Number.class, 0,false,true);
-    private final NodeVariable<Number> alpha = NodeVariable.newInstance("alpha", Number.class, 0,false,true);
+    private final Dock<Color> color = Dock.newInstance("color", Color.class, new Color(0,0,0,0),true,false);
+    private final Dock<Number> red = Dock.newInstance("red", Number.class, 0,false,true);
+    private final Dock<Number> green = Dock.newInstance("green", Number.class, 0,false,true);
+    private final Dock<Number> blue = Dock.newInstance("blue", Number.class, 0,false,true);
+    private final Dock<Number> alpha = Dock.newInstance("alpha", Number.class, 0,false,true);
 
     /**
      * Constructor for subclasses to call.

@@ -1,5 +1,6 @@
 package com.marginallyclever.version2;
 
+import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -10,6 +11,8 @@ public abstract class Dock implements Serializable {
     private String name;
     private NamedEntity owner;
     private Class<?> type;
+
+    private final Point connectionPoint = new Point();
 
     public Dock(String name, Class<?> type, NamedEntity owner) {
         this.name = name;
@@ -36,5 +39,9 @@ public abstract class Dock implements Serializable {
     @Override
     public String toString() {
         return "Dock: "+getName()+" ("+getType().getSimpleName()+")";
+    }
+
+    public Point getConnectionPoint() {
+        return connectionPoint;
     }
 }
