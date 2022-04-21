@@ -43,7 +43,8 @@ public class FoldGraphAction extends AbstractAction implements EditorAction {
 
         cutGraphAction.actionPerformed(e);
         Graph justCut = GraphHelper.deepCopy(editor.getCopiedGraph());
-        Node n = new NodeWhichContainsAGraph(justCut);
+        NodeWhichContainsAGraph n = new NodeWhichContainsAGraph();
+        n.setGraph(justCut);
         editor.getGraph().add(n);
         n.setPosition(editor.getPopupPoint());
 

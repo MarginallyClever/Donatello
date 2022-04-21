@@ -2,7 +2,10 @@ package com.marginallyclever.version2;
 
 import com.marginallyclever.version2.nodes.HelloWorld;
 import com.marginallyclever.version2.nodes.NodeWhichContainsAGraph;
-import com.marginallyclever.version2.nodes.annotatednodes.*;
+import com.marginallyclever.version2.nodes.nodes.math.Add;
+import com.marginallyclever.version2.nodes.nodes.math.Divide;
+import com.marginallyclever.version2.nodes.nodes.math.Multiply;
+import com.marginallyclever.version2.nodes.nodes.math.Subtract;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -111,7 +114,9 @@ public class TestGraph {
 
     public Node createANodeWhichContainsAGraphWhichDoesMath() {
         Graph inner = makeGraphThatDoesMath();
-        return new NodeWhichContainsAGraph(inner);
+        NodeWhichContainsAGraph outer = new NodeWhichContainsAGraph();
+        outer.setGraph(inner);
+        return outer;
     }
 
     private Graph makeGraphInsideNodeInsideGraph() {

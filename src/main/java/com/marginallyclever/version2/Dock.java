@@ -21,7 +21,7 @@ public abstract class Dock implements Serializable {
     private NamedEntity owner;
     private Class<?> type;
 
-    private final Rectangle bounds = new Rectangle();
+    private final Rectangle bounds = new Rectangle(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
     private final Point connectionPoint = new Point();
 
     public Dock(String name, Class<?> type, NamedEntity owner) {

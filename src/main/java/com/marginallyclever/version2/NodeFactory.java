@@ -83,6 +83,7 @@ public class NodeFactory {
         Node instance;
         try {
             instance = (Node)clazz.getDeclaredConstructors()[0].newInstance();
+            instance.updateBounds();
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -102,5 +103,28 @@ public class NodeFactory {
 
     public static boolean knowsAbout(String name) {
         return suppliers.containsKey(name);
+    }
+
+    /**
+     * Initializes the {@link NodeFactory} by scanning the classpath for {@link Node}s.
+     * Be sure to call {@link ServiceLoaderHelper#addFile(String)} before calling this method.
+     * @throws Exception
+     */
+    public static void loadRegistries() {
+        ServiceLoaderHelper helper = new ServiceLoaderHelper();
+        loadRegistries(helper.getExtensionClassLoader());
+    }
+
+    public static void loadRegistries(ClassLoader classLoader) {
+        ServiceLoader<NodeRegistry> serviceLoader = ServiceLoader.load(NodeRegistry.class, classLoader);
+        for (NodeRegistry registry : serviceLoader) {
+            try {
+                logger.info("Loading node registry: "+registry.getClass().getName());
+                registry.registerNodes();
+            } catch(NoSuchMethodError e) {
+                logger.warn("Plugin out of date: {}", registry.getClass().getName());
+                // TODO which plugin?
+            }
+        }
     }
 }

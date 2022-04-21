@@ -3,6 +3,7 @@ package com.marginallyclever.donatello;
 import com.marginallyclever.donatello.nodes.ColorAtPoint;
 import com.marginallyclever.version2.Node;
 import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.ReceivingDock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,30 +46,34 @@ public class EditNodePanel extends JPanel {
 
         addReadOnlyField(c,"Type",node.getName());
         c.gridy++;
-        addReadOnlyField(c,"ID",Integer.toString(node.getUniqueID()));
+        addReadOnlyField(c,"ID",node.getUniqueID());
         c.gridy++;
         addLabelField(c);
         c.gridy++;
+        addVariableFields(c);
+    }
 
-        for(int i=0;i<node.getNumVariables();++i) {
-            addVariableField(node.getVariable(i),c);
+    private void addVariableFields(GridBagConstraints c) {
+        for(Dock dock : node.getAllDocks()) {
+            addVariableField(dock,c);
             c.gridy++;
         }
     }
 
+
     private void addVariableField(Dock variable,GridBagConstraints c) {
-        if(variable.getHasInput()) {
-            if (variable.getTypeClass().equals(Number.class)) {
+        if(variable instanceof ReceivingDock) {
+            if (variable.getType().equals(Number.class)) {
                 addTextField(variable, c);
-            } else if (variable.getTypeClass().equals(String.class)) {
+            } else if (variable.getType().equals(String.class)) {
                 addTextField(variable, c);
-            } else if (variable.getTypeClass().equals(Boolean.class)) {
+            } else if (variable.getType().equals(Boolean.class)) {
                 addBooleanField(variable, c);
             } else {
-                addReadOnlyField(c, variable.getName(), variable.getTypeName());
+                addReadOnlyField(c, variable.getName(), variable.getType().getSimpleName());
             }
         } else {
-            addReadOnlyField(c, variable.getName(), variable.getTypeName());
+            addReadOnlyField(c, variable.getName(), variable.getType().getSimpleName());
         }
     }
 
@@ -77,7 +82,7 @@ public class EditNodePanel extends JPanel {
      * @param variable the {@link Dock} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addTextField(Dock variable,GridBagConstraints c) {
+    private void addTextField(Dock variable,GridBagConstraints c) {/*
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx=0;
         this.add(new JLabel(variable.getName()),c);
@@ -88,7 +93,7 @@ public class EditNodePanel extends JPanel {
         fields.add(textField);
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx=1;
-        this.add(textField,c);
+        this.add(textField,c);*/
     }
 
     /**
@@ -96,7 +101,7 @@ public class EditNodePanel extends JPanel {
      * @param variable the {@link Dock} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addBooleanField(Dock variable,GridBagConstraints c) {
+    private void addBooleanField(Dock variable,GridBagConstraints c) {/*
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx=0;
         this.add(new JLabel(variable.getName()),c);
@@ -107,7 +112,7 @@ public class EditNodePanel extends JPanel {
         fields.add(checkBox);
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx=1;
-        this.add(checkBox,c);
+        this.add(checkBox,c);*/
     }
 
     /**
@@ -156,48 +161,48 @@ public class EditNodePanel extends JPanel {
         }
     }
 
-    private static void readAllFields(Node subject, EditNodePanel panel) {
+    private static void readAllFields(Node subject, EditNodePanel panel) {/*
         int j=0;
         for(int i=0;i<subject.getNumVariables();++i) {
             Dock variable = subject.getVariable(i);
-            if(variable.getHasInput()) {
-                if (variable.getTypeClass().equals(Number.class)) {
-                    panel.readTextField(j++, subject.getVariable(i));
-                } else if (variable.getTypeClass().equals(String.class)) {
-                    panel.readTextField(j++, subject.getVariable(i));
-                }  else if (variable.getTypeClass().equals(Boolean.class)) {
-                    panel.readBooleanField(j++, subject.getVariable(i));
+            if(variable instanceof ReceivingDock) {
+                if (variable.getType().equals(Number.class)) {
+                    panel.readTextField(j++, variable);
+                } else if (variable.getType().equals(String.class)) {
+                    panel.readTextField(j++, variable);
+                }  else if (variable.getType().equals(Boolean.class)) {
+                    panel.readBooleanField(j++, variable);
                 } else {
                     // TODO ???
                 }
             }
-        }
+        }*/
     }
 
-    private void readBooleanField(int index,Dock variable) {
+    private void readBooleanField(int index,Dock variable) {/*
         JCheckBox f = (JCheckBox)fields.get(index);
         if(f==null) {
             // TODO ???
             return;
         }
 
-        variable.setValue(f.isSelected());
+        variable.setValue(f.isSelected());*/
     }
 
-    private void readTextField(int index,Dock variable) {
+    private void readTextField(int index,Dock variable) {/*
         JTextField f = (JTextField)fields.get(index);
         if(f==null) {
             // TODO ???
             return;
         }
 
-        if(variable.getTypeClass().equals(Number.class)) {
+        if(variable.getType().equals(Number.class)) {
             variable.setValue(Double.parseDouble(f.getText()));
-        } else if(variable.getTypeClass().equals(String.class)) {
+        } else if(variable.getType().equals(String.class)) {
             variable.setValue(f.getText());
         } else {
             // TODO ???
-        }
+        }*/
     }
 
     /**

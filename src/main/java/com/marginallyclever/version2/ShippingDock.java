@@ -59,6 +59,6 @@ public class ShippingDock extends Dock {
     @Override
     public Point getPoint() {
         Rectangle r = getBounds();
-        return new Point(r.x,r.y+r.height/2);
+        return new Point(r.x+r.width,r.y+r.height/2);
     }
 }

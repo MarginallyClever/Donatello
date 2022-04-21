@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 
 /**
- * Select all the {@link Node}s between two selected annotatednodes.
+ * Select all the {@link Node}s between two selected nodes.
  * @author Dan Royer
  * @since 2022-03-24
  */
@@ -52,7 +52,7 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
 
 
     /**
-     * Finds the shortest path between two annotatednodes and selects every node on the path.
+     * Finds the shortest path between two nodes and selects every node on the path.
      * Uses <a href='http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm'>Dijkstra's algorithm</a>.
      */
     @Override
@@ -137,7 +137,7 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
         }
     }
 
-    // get all annotatednodes adjacent to the given node from the unvisited list.
+    // get all nodes adjacent to the given node from the unvisited list.
     private List<Node> getAdjacentNodes(DistanceNode current) {
         List<NamedEntity> candidates = NodeHelper.getAllOutgoingConnections(editor.getGraph(),current.node);
         List<Node> adjacentNodes = new ArrayList<>();
@@ -159,7 +159,7 @@ public class SelectShortestPathAction extends AbstractAction implements EditorAc
         return null;
     }
 
-    // make the initial set of unvisited annotatednodes.  assign each node a distance of infinity.
+    // make the initial set of unvisited nodes.  assign each node a distance of infinity.
     private void initializeAlgorithm() {
         for(Node n : editor.getGraph().getNodes()) {
             unvisitedNodes.add(new DistanceNode(n));

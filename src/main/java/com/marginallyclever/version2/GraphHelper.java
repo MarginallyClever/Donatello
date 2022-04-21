@@ -132,7 +132,7 @@ public class GraphHelper {
      * @param searchArea the search area
      * @return a {@link List} of all {@link Node}s that intersect the given rectangle
      */
-    public List<Node> getNodesInRectangle(Graph graph,Rectangle searchArea) {
+    public static List<Node> getNodesInRectangle(Graph graph, Rectangle searchArea) {
         if(searchArea==null) throw new InvalidParameterException("selectionArea cannot be null.");
         ArrayList<Node> found = new ArrayList<>();
         for(Node n : graph.getNodes()) {

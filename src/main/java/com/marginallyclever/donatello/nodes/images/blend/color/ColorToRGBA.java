@@ -24,9 +24,9 @@ public class ColorToRGBA extends Node {
         if(!getInput("color").hasPacket()) return;
 
         Color c = (Color)getInput("color").getPacket().data;
-        getOutput("red"  ).sendPacket(new Packet(c.getRed()  /255.0));
-        getOutput("green").sendPacket(new Packet(c.getGreen()/255.0));
-        getOutput("blue" ).sendPacket(new Packet(c.getBlue() /255.0));
-        getOutput("alpha").sendPacket(new Packet(c.getAlpha()/255.0));
+        getOutput("red"  ).sendPacket(new Packet<>(c.getRed()  /255.0));
+        getOutput("green").sendPacket(new Packet<>(c.getGreen()/255.0));
+        getOutput("blue" ).sendPacket(new Packet<>(c.getBlue() /255.0));
+        getOutput("alpha").sendPacket(new Packet<>(c.getAlpha()/255.0));
     }
 }

@@ -2,11 +2,14 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.version2.GraphWriter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStream;
 
 /**
  * Launches a "select file to save" dialog and attempts to save the {@link Graph} to disk.
@@ -61,8 +64,9 @@ public class SaveGraphAction extends AbstractAction {
     }
 
     private void saveModelToFile(String absolutePath) {
-        try(BufferedWriter w = new BufferedWriter(new FileWriter(absolutePath))) {
-            w.write(editor.getGraph().toJSON().toString());
+        try(OutputStream out = new FileOutputStream(absolutePath)) {
+            GraphWriter writer = new GraphWriter();
+            writer.write(editor.getGraph(),out);
         } catch(Exception e) {
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor),e.getLocalizedMessage());
             e.printStackTrace();

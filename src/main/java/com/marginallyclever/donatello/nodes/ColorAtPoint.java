@@ -68,7 +68,7 @@ public class ColorAtPoint extends Node {
             sumR /= sumCount;
             sumG /= sumCount;
             sumB /= sumCount;
-            getOutput("color").sendPacket(new Packet(new Color((int)sumA,(int)sumR,(int)sumG,(int)sumB)));
+            getOutput("color").sendPacket(new Packet<>(new Color((int)sumA,(int)sumR,(int)sumG,(int)sumB)));
         }
     }
 }

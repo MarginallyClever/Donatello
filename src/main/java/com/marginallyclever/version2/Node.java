@@ -38,7 +38,9 @@ public abstract class Node extends AbstractNamedEntity {
      */
     private final List<ShippingDock> outputs = new LinkedList<>();
 
-    private final Rectangle bounds = new Rectangle();
+    private final Rectangle bounds = new Rectangle(0,0,150,50);
+
+    private String label = "";
 
     public Node() {
         super();
@@ -209,10 +211,18 @@ public abstract class Node extends AbstractNamedEntity {
         bounds.height=h;
     }
 
-    private List<Dock> getAllDocks() {
+    public List<Dock> getAllDocks() {
         List<Dock> list = new ArrayList<>();
         list.addAll(getInputs());
         list.addAll(getOutputs());
         return list;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 }

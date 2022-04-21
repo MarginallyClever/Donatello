@@ -35,6 +35,6 @@ public class ScaleImage extends Node {
         at.scale((double)w/(double)input.getWidth(), (double)h/(double)input.getHeight());
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
-        getOutput("output").sendPacket(new Packet(result));
+        getOutput("output").sendPacket(new Packet<>(result));
     }
 }

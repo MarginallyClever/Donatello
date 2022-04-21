@@ -15,7 +15,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
     private final Donatello editor;
 
     /**
-     * true while dragging one or more annotatednodes around.
+     * true while dragging one or more nodes around.
      */
     private boolean dragOn=false;
 
@@ -36,7 +36,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
 
     @Override
     public void paint(Graphics g) {
-        // TODO draw rectangle around selected annotatednodes?
+        // TODO draw rectangle around selected nodes?
         // TODO draw start of drag point to current point?
     }
 

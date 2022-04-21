@@ -1,15 +1,11 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.UnicodeIcon;
-import com.marginallyclever.version2.Connection;
-import com.marginallyclever.version2.ConnectionPointInfo;
-import com.marginallyclever.version2.Graph;
-import com.marginallyclever.version2.Dock;
+import com.marginallyclever.version2.*;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.donatello.edits.AddConnectionEdit;
 import com.marginallyclever.donatello.edits.RemoveConnectionEdit;
-import com.marginallyclever.version2.GraphHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +36,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     /**
      * The last connection point found
      */
-    private ConnectionPointInfo lastConnectionPoint = null;
+    private Dock lastConnectionPoint = null;
 
     private final String addName;
     private final String removeName;
@@ -96,15 +92,15 @@ public class ConnectionEditTool extends ContextSensitiveTool {
      * @param p the center of the search area.
      */
     private void selectOneNearbyConnectionPoint(Point p) {
-        ConnectionPointInfo info = editor.getGraph().getNearestConnectionPoint(p,NEARBY_CONNECTION_DISTANCE_MAX);
+        Dock info = GraphHelper.getNearestConnectionPoint(editor.getGraph(),p,NEARBY_CONNECTION_DISTANCE_MAX);
         setLastConnectionPoint(info);
     }
 
     /**
-     * Remembers a connection point as described by a {@link ConnectionPointInfo}.
-     * @param info the {@link ConnectionPointInfo}
+     * Remembers a connection point as described by a {@link Dock}.
+     * @param info the {@link Dock}
      */
-    private void setLastConnectionPoint(ConnectionPointInfo info) {
+    private void setLastConnectionPoint(Dock info) {
         if(info!=lastConnectionPoint && lastConnectionPoint!=null) {
             repaintConnectionPoint(lastConnectionPoint.getPoint());
         }
@@ -163,7 +159,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
             g.setColor(CONNECTION_POINT_COLOR_SELECTED);
             GraphViewPanel paintArea = editor.getPaintArea();
             paintArea.setLineWidth(g,2);
-            paintArea.paintVariableConnectionPoints(g,lastConnectionPoint.getVariable());
+            paintArea.paintVariableConnectionPoints(g,lastConnectionPoint);
             paintArea.setLineWidth(g,1);
         }
     }
@@ -181,12 +177,12 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         // check that the end node is not the same as the start node.
         //if(!connectionBeingCreated.isConnectedTo(lastConnectionPoint.node))
         {
-            if (lastConnectionPoint.flags == ConnectionPointInfo.IN) {
+            if (lastConnectionPoint instanceof ReceivingDock) {
                 // the output of a connection goes to the input of a node.
-                connectionBeingCreated.setTo(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
-            } else {
+                connectionBeingCreated.setTo((ReceivingDock) lastConnectionPoint);
+            } else if(lastConnectionPoint instanceof ShippingDock) {
                 //the output of a node goes to the input of a connection.
-                connectionBeingCreated.setFrom(lastConnectionPoint.node, lastConnectionPoint.nodeVariableIndex);
+                connectionBeingCreated.setFrom((ShippingDock) lastConnectionPoint);
             }
 
             setActive(true);
@@ -196,21 +192,23 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         }
 
         if(connectionBeingCreated.isInputValid() && connectionBeingCreated.isOutputValid() ) {
-            if(connectionBeingCreated.isValidDataType()) {
+            if(connectionBeingCreated.getTo().getType().isAssignableFrom(connectionBeingCreated.getFrom().getType())) {
                 Graph graph = editor.getGraph();
-                Connection match = GraphHelper.getMatchingConnection(graph,connectionBeingCreated);
+                Connection match = GraphHelper.getMatchingConnection(graph,connectionBeingCreated.getFrom(),connectionBeingCreated.getTo());
                 if(match!=null) {
                     editor.addEdit(new RemoveConnectionEdit(removeName,editor,match));
                 } else {
-                    editor.addEdit(new AddConnectionEdit(addName,editor,new Connection(connectionBeingCreated)));
+                    ShippingDock a = connectionBeingCreated.getFrom();
+                    ReceivingDock b = connectionBeingCreated.getTo();
+                    editor.addEdit(new AddConnectionEdit(addName,editor,a,b));
                 }
             } else {
                 // if any of the tests failed
-                Dock vIn = connectionBeingCreated.getFrom();
-                Dock vOut = connectionBeingCreated.getTo();
-                String nameIn = (vIn==null) ? "null" : vIn.getTypeName();
-                String nameOut = (vOut==null) ? "null" : vOut.getTypeName();
-                logger.warn("Invalid types {}, {}",nameOut,nameIn);
+                Dock from = connectionBeingCreated.getFrom();
+                Dock to = connectionBeingCreated.getTo();
+                String fromName = (from==null) ? "null" : from.getType().getSimpleName();
+                String toName = (to==null) ? "null" : to.getType().getSimpleName();
+                logger.warn("{} cannot cast to {}",fromName,toName);
             }
 
             Rectangle r = connectionBeingCreated.getBounds();
@@ -222,7 +220,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         }
     }
 
-    public ConnectionPointInfo getLastConnectionPoint() {
+    public Dock getLastConnectionPoint() {
         return lastConnectionPoint;
     }
 

@@ -1,4 +1,4 @@
-package com.marginallyclever.version2.nodes.annotatednodes;
+package com.marginallyclever.version2.nodes.nodes.math;
 
 import com.marginallyclever.version2.*;
 import com.marginallyclever.version2.nodes.InPort;
@@ -7,10 +7,10 @@ import com.marginallyclever.version2.nodes.OutPort;
 @InPort(name="A",type=Number.class)
 @InPort(name="B",type=Number.class)
 @OutPort(name="result",type=Number.class)
-public class Subtract extends Node {
-    private static final long serialVersionUID = 3630806965554256225L;
+public class Add extends Node {
+    private static final long serialVersionUID = 681866663262961771L;
 
-    public Subtract() {
+    public Add() {
         super();
     }
 
@@ -21,6 +21,6 @@ public class Subtract extends Node {
 
         Double a = (Double)getInput("A").getPacket().data;
         Double b = (Double)getInput("B").getPacket().data;
-        getOutput("result").sendPacket(new Packet<>(a-b));
+        getOutput("result").sendPacket(new Packet<>(a+b));
     }
 }

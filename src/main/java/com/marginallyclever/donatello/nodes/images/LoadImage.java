@@ -30,9 +30,9 @@ public class LoadImage extends Node {
                 File f = new File(filenameValue);
                 if (f.exists()) {
                     BufferedImage image = ImageIO.read(f);
-                    getOutput("contents").sendPacket(new Packet(image));
-                    getOutput("width").sendPacket(new Packet(image.getWidth()));
-                    getOutput("height").sendPacket(new Packet(image.getHeight()));
+                    getOutput("contents").sendPacket(new Packet<>(image));
+                    getOutput("width").sendPacket(new Packet<>(image.getWidth()));
+                    getOutput("height").sendPacket(new Packet<>(image.getHeight()));
                 }
             }
         } catch (IOException e) {

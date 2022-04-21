@@ -59,7 +59,7 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
             inner.clear();
         }
 
-        // the list of selected annotatednodes is all old annotatednodes - subgraphs + newly expanded annotatednodes.
+        // the list of selected nodes is all old nodes - subgraphs + newly expanded nodes.
         wasSelected.removeAll(toBeDeleted);
         newSelection.addAll(wasSelected);
         editor.setSelectedNodes(newSelection);

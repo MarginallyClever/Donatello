@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.version2.NodeFactory;
+import com.marginallyclever.version2.NodeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public class DonatelloRegistry implements NodeRegistry {
      * Perform the registration.
      */
     public void registerNodes() {
-        logger.info("Registering donatello annotatednodes");
-        NodeFactory.registerAllNodesInPackage("com.marginallyclever.donatello.annotatednodes");
+        logger.info("Registering donatello nodes");
+        NodeFactory.registerAllNodesInPackage("com.marginallyclever.donatello.nodes");
     }
 }

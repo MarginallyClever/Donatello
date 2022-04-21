@@ -12,20 +12,22 @@ public class NodeWhichContainsAGraph extends Node {
     @Serial
     private static final long serialVersionUID = 2510575290223249744L;
 
-    private final Graph myGraph;
+    private Graph myGraph;
 
     private final Map<ReceivingDock, ShippingDock> myOutputGlue = new LinkedHashMap<>();
 
     private final Map<ReceivingDock,ShippingDock> myInputGlue = new LinkedHashMap<>();
 
-    public NodeWhichContainsAGraph(Graph graph) {
-        super();
+    public void setGraph(Graph graph) {
         if (graph == null) throw new IllegalArgumentException("Graph cannot be null.");
         myGraph = graph;
         glueEverything();
     }
 
     private void glueEverything() {
+        myOutputGlue.clear();
+        myInputGlue.clear();
+
         // connect my inputs to the graph entry points
         for(ShippingDock output : myGraph.getEntryPoints()) {
             ReceivingDock input = new ReceivingDock(output.getName(),output.getType(),this);

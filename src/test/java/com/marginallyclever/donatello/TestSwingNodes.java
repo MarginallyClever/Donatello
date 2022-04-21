@@ -16,20 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class TestGraphSwing {
+public class TestSwingNodes {
     private static Graph model = new Graph();
 
     @BeforeAll
     public static void beforeAll() {
         DonatelloRegistry r = new DonatelloRegistry();
         r.registerNodes();
-        r.registerDAO();
     }
 
     @AfterAll
     public static void afterAll() {
         NodeFactory.clear();
-        DAO4JSONFactory.clear();
     }
 
     /**
@@ -41,29 +39,15 @@ public class TestGraphSwing {
     }
 
     /**
-     * Make sure all annotatednodes introduced in this package can be created.
+     * Make sure all nodes introduced in this package can be created.
      */
     @Test
     public void testFactoryCreatesAllSwingTypes() {
-        assertNotEquals(0,NodeFactory.getNames().length);
+        assertNotEquals(0,NodeFactory.getNames().size());
         for(String s : NodeFactory.getNames()) {
             System.out.println(s);
-            assertNotNull(NodeFactory.createNode(s));
+            assertNotNull(NodeFactory.create(s));
         }
-    }
-
-    @Test
-    public void testImages() {
-        LoadImage img2 = new LoadImage();
-        img2.getVariable(0).setValue("doesNotExist.png");
-        img2.update();
-
-        LoadImage img = new LoadImage();
-        img.getVariable(0).setValue("src/test/resources/test.png");
-        img.update();
-
-        PrintImage printer = new PrintImage();
-        Connection c = new Connection(img,0,printer,0);
     }
 
     @Test

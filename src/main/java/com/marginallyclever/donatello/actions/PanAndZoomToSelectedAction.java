@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 /**
- * Moves the camera to try and see all selected annotatednodes at once.
+ * Moves the camera to try and see all selected nodes at once.
  * @author Dan Royer
  * @since 2022-04-14
  */

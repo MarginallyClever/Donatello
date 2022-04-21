@@ -25,6 +25,10 @@ public class Connection implements Serializable {
 
     private ReceivingDock to;
 
+    public Connection() {
+
+    }
+
     public Connection(ShippingDock source,ReceivingDock destination) {
         this.from = source;
         this.to = destination;
@@ -111,8 +115,38 @@ public class Connection implements Serializable {
 
     public Rectangle getBounds() {
         Rectangle r = new Rectangle();
-        r.setLocation(getInPosition());
-        r.add(getOutPosition());
+        if(from!=null) {
+            r.setLocation(getInPosition());
+            if(to!=null) {
+                r.add(getOutPosition());
+            }
+        } else if(to!=null) {
+            r.setLocation(getOutPosition());
+        }
         return r;
+    }
+
+    public void disconnectAll() {
+        from=null;
+        to=null;
+    }
+
+    public Node getToNode() {
+        if(to==null) return null;
+        NamedEntity e = to.getOwner();
+        if(e instanceof Node) return (Node)e;
+        return null;
+    }
+
+    public Node getFromNode() {
+        if(from==null) return null;
+        NamedEntity e = from.getOwner();
+        if(e instanceof Node) return (Node)e;
+        return null;
+    }
+
+    public Node getOtherNode(Node n) {
+        Node from = getFromNode();
+        return (from==n) ? getToNode() : from;
     }
 }

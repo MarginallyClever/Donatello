@@ -51,12 +51,12 @@ public class Donatello extends JPanel {
     private final GraphViewPanel paintArea;
 
     /**
-     * The currently selected annotatednodes for group operations
+     * The currently selected nodes for group operations
      */
     private final List<Node> selectedNodes = new ArrayList<>();
 
     /**
-     * Store copied annotatednodes in this buffer.  Could be a user-space file instead.
+     * Store copied nodes in this buffer.  Could be a user-space file instead.
      */
     private final Graph copiedGraph = new Graph();
 
@@ -155,7 +155,7 @@ public class Donatello extends JPanel {
 
     /**
      * Sets up the editor as a {@link GraphViewListener} so that it can add editor-specific decorations to the
-     * painted annotatednodes.
+     * painted nodes.
      */
     private void setupPaintArea() {
         paintArea.addViewListener((g,e)->{
@@ -187,8 +187,8 @@ public class Donatello extends JPanel {
             paintArea.paintNodeBorder(g, n);
 
             for( Connection c : model.getConnections() ) {
-                if(c.getOutNode()==n) in.add(c);
-                if(c.getInNode()==n) out.add(c);
+                if(c.getToNode()==n) in.add(c);
+                if(c.getFromNode()==n) out.add(c);
             }
         }
         ArrayList<Connection> both = new ArrayList<>(in);
@@ -548,7 +548,7 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Move all selected annotatednodes some relative cartesian amount.
+     * Move all selected nodes some relative cartesian amount.
      * @param dx the x-axis amount.
      * @param dy the y-axis amount.
      */
@@ -559,7 +559,7 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Sets the list of selected annotatednodes to one item.
+     * Sets the list of selected nodes to one item.
      * @param n the new selected node.
      */
     public void setSelectedNode(Node n) {
@@ -569,8 +569,8 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Sets the list of selected annotatednodes.
-     * @param list the new list of selected annotatednodes.
+     * Sets the list of selected nodes.
+     * @param list the new list of selected nodes.
      */
     public void setSelectedNodes(List<Node> list) {
         selectedNodes.clear();
@@ -580,9 +580,9 @@ public class Donatello extends JPanel {
     }
 
     /**
-     * Returns all selected annotatednodes.  To change the selected annotatednodes do not edit this list.  Instead,
+     * Returns all selected nodes.  To change the selected nodes do not edit this list.  Instead,
      * call {@link Donatello#setSelectedNodes(List)} or {@link #setSelectedNode(Node)}.
-     * @return all selected annotatednodes.
+     * @return all selected nodes.
      */
     public List<Node> getSelectedNodes() {
         return selectedNodes;
@@ -667,7 +667,8 @@ public class Donatello extends JPanel {
 
         PropertiesHelper.showProperties();
         PropertiesHelper.listAllNodes();
-        PropertiesHelper.listAllDAO();
+
+        NodeFactory.loadRegistries();
 
         Donatello panel = new Donatello(new Graph());
 

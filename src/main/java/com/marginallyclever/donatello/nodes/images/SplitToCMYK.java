@@ -47,9 +47,9 @@ public class SplitToCMYK extends Node {
             }
         }
 
-        getOutput("cyan").sendPacket(new Packet(channelCyan));
-        getOutput("magenta").sendPacket(new Packet(channelMagenta));
-        getOutput("yellow").sendPacket(new Packet(channelYellow));
-        getOutput("black").sendPacket(new Packet(channelBlack));
+        getOutput("cyan").sendPacket(new Packet<>(channelCyan));
+        getOutput("magenta").sendPacket(new Packet<>(channelMagenta));
+        getOutput("yellow").sendPacket(new Packet<>(channelYellow));
+        getOutput("black").sendPacket(new Packet<>(channelBlack));
     }
 }

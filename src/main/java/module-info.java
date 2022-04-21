@@ -13,9 +13,13 @@ module com.marginallyclever.donatello {
     exports com.marginallyclever.donatello to logback.core;
 
     // must export these packages for nodegraphcore to access the classes within.
-    exports com.marginallyclever.donatello.nodes to com.marginallyclever.nodegraphcore;
-    exports com.marginallyclever.donatello.nodes.images.blend.color to com.marginallyclever.nodegraphcore;
-    exports com.marginallyclever.donatello.nodes.images to com.marginallyclever.nodegraphcore;
+    exports com.marginallyclever.donatello.nodes to com.marginallyclever.version2;
+    exports com.marginallyclever.donatello.nodes.images.blend.color to com.marginallyclever.version2;
+    exports com.marginallyclever.donatello.nodes.images to com.marginallyclever.version2;
     exports com.marginallyclever.donatello.search to logback.core;
     exports com.marginallyclever.donatello.bezier to logback.core;
+
+    uses com.marginallyclever.version2.NodeRegistry;
+    provides com.marginallyclever.version2.NodeRegistry with DonatelloRegistry, com.marginallyclever.version2.DefaultRegistry;
+
 }

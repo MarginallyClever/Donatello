@@ -31,6 +31,6 @@ public class LoadColor extends Node {
         int gg = (int)getInput("green").getPacket().data;
         int bb = (int)getInput("blue" ).getPacket().data;
         int aa = (int)getInput("alpha").getPacket().data;
-        getOutput("color").sendPacket(new Packet(new Color(rr,gg,bb,aa)));
+        getOutput("color").sendPacket(new Packet<>(new Color(rr,gg,bb,aa)));
     }
 }

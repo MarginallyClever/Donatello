@@ -3,14 +3,11 @@ package com.marginallyclever.donatello.actions.undoable;
 import com.marginallyclever.version2.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.PasteGraphEdit;
-import org.json.JSONObject;
+import com.marginallyclever.version2.GraphReader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * Launches a "select file to open" dialog and attempts to load the {@link Graph} from disk.
@@ -53,19 +50,13 @@ public class LoadGraphAction extends AbstractAction {
     }
 
     private Graph loadGraphFromFile(String absolutePath) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(absolutePath)));
-        StringBuilder responseStrBuilder = new StringBuilder();
-        String inputStr;
-        while ((inputStr = reader.readLine()) != null) {
-            responseStrBuilder.append(inputStr);
-        }
-        Graph newModel = new Graph();
-        try {
-            newModel.parseJSON(new JSONObject(responseStrBuilder.toString()));
-        } catch(IllegalArgumentException e1) {
+        GraphReader reader = new GraphReader();
+        Graph newModel=null;
+        try (InputStream stream = new FileInputStream(absolutePath)) {
+            newModel = reader.parse(stream);
+        } catch(IllegalArgumentException | ClassNotFoundException e1) {
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor),e1.getLocalizedMessage());
         }
-        newModel.setAllDirty();
 
         return newModel;
     }
