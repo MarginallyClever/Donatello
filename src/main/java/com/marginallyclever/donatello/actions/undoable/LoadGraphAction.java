@@ -65,7 +65,7 @@ public class LoadGraphAction extends AbstractAction {
         } catch(IllegalArgumentException e1) {
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor),e1.getLocalizedMessage());
         }
-        newModel.setAllDirty();
+        //newModel.setAllDirty();
 
         return newModel;
     }

@@ -203,7 +203,7 @@ public class GraphViewPanel extends JPanel {
 
         g2.transform(getTransform());
 
-        paintBackgroundGrid(g);
+        //paintBackgroundGrid(g);
         paintNodesInBackground(g);
 
         for(Node n : model.getNodes()) paintNode(g2,n);

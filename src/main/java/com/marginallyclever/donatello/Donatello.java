@@ -43,7 +43,7 @@ public class Donatello extends JPanel {
     /**
      * The {@link NodeGraph} to edit.
      */
-    public final NodeGraph model;
+    public final NodeGraph graph;
 
     /**
      * The panel into which the {@link NodeGraph} will be painted.
@@ -119,13 +119,13 @@ public class Donatello extends JPanel {
 
     /**
      * Default constructor
-     * @param model the {@link NodeGraph} to edit.
+     * @param graph the {@link NodeGraph} to edit.
      */
-    public Donatello(NodeGraph model) {
+    public Donatello(NodeGraph graph) {
         super(new BorderLayout());
-        this.model = model;
+        this.graph = graph;
 
-        paintArea = new GraphViewPanel(model);
+        paintArea = new GraphViewPanel(graph);
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(paintArea, BorderLayout.CENTER);
@@ -145,9 +145,8 @@ public class Donatello extends JPanel {
         final int[] t = {0};
         updateClock.addListener(()->{
             if(keepGoing) {
-                model.update();
+                graph.update();
                 paintArea.repaint();
-                System.out.println("tick "+ t[0]);
                 ++t[0];
             }
         });
@@ -186,7 +185,7 @@ public class Donatello extends JPanel {
 
             paintArea.paintNodeBorder(g, n);
 
-            for( NodeConnection c : model.getConnections() ) {
+            for( NodeConnection c : graph.getConnections() ) {
                 if(c.getOutNode()==n) in.add(c);
                 if(c.getInNode()==n) out.add(c);
             }
@@ -604,7 +603,7 @@ public class Donatello extends JPanel {
      * @return the graph being edited.
      */
     public NodeGraph getGraph() {
-        return model;
+        return graph;
     }
 
     /**
@@ -636,7 +635,7 @@ public class Donatello extends JPanel {
      * Clears the internal graph and resets everything.
      */
     public void clear() {
-        model.clear();
+        graph.clear();
         Node.setUniqueIDSource(0);
         activeTool.restart();
         setSelectedNode(null);
