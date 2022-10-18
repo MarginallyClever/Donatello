@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test the NodeGraphSwing elements.
+ * Test the GraphSwing elements.
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class TestNodeGraphSwing {
-    private static NodeGraph model = new NodeGraph();
+public class TestGraphSwing {
+    private static Graph model = new Graph();
 
     @BeforeAll
     public static void beforeAll() {
@@ -63,7 +63,7 @@ public class TestNodeGraphSwing {
         img.update();
 
         PrintImage printer = new PrintImage();
-        NodeConnection c = new NodeConnection(img,0,printer,0);
+        Connection c = new Connection(img,1,printer,0);
     }
 
     @Test
