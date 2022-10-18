@@ -2,7 +2,7 @@ import com.marginallyclever.donatello.DonatelloRegistry;
 
 /**
  * donatello contains Swing-based {@link com.marginallyclever.nodegraphcore.Node}s and all Swing-based tools for
- * editing {@link com.marginallyclever.nodegraphcore.NodeGraph}s.
+ * editing {@link com.marginallyclever.nodegraphcore.Graph}s.
  */
 module com.marginallyclever.donatello {
     requires java.desktop;
@@ -17,6 +17,7 @@ module com.marginallyclever.donatello {
     exports com.marginallyclever.donatello.nodes to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.nodes.color to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.nodes.images to com.marginallyclever.nodegraphcore;
+    exports com.marginallyclever.donatello.nodes.images.blend to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.search to logback.core;
     exports com.marginallyclever.donatello.bezier to logback.core;
 
