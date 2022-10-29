@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -13,10 +12,10 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ScaleImage extends Node {
-    private final NodeVariable<BufferedImage> image = NodeVariable.newInstance("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<Number> width = NodeVariable.newInstance("width",Number.class,256,true,false);
-    private final NodeVariable<Number> height = NodeVariable.newInstance("height",Number.class,256,true,false);
-    private final NodeVariable<BufferedImage> output = NodeVariable.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final DockReceiving<BufferedImage> image = new DockReceiving<>("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockReceiving<Number> width = new DockReceiving<>("width",Number.class,1);
+    private final DockReceiving<Number> height = new DockReceiving<>("height",Number.class,1);
+    private final DockShipping<BufferedImage> output = new DockShipping<>("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
 
     /**
      * Constructor for subclasses to call.
@@ -31,6 +30,14 @@ public class ScaleImage extends Node {
 
     @Override
     public void update() {
+        if(0==countReceivingConnections()) return;
+        if(!image.hasPacketWaiting()) return;  // required
+        if(width.hasConnection() && !width.hasPacketWaiting()) return;  // optional
+        if(height.hasConnection() && !height.hasPacketWaiting()) return;  // optional
+        image.receive();
+        width.receive();
+        height.receive();
+
         int w = Math.max(1,width.getValue().intValue());
         int h = Math.max(1,height.getValue().intValue());
         BufferedImage input = image.getValue();
@@ -40,8 +47,6 @@ public class ScaleImage extends Node {
         at.scale((double)w/(double)input.getWidth(), (double)h/(double)input.getHeight());
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
-        output.setValue(result);
-
-        cleanAllInputs();
+        output.send(new Packet<>(result));
     }
 }

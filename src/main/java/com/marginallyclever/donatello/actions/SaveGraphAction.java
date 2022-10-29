@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.*;
@@ -9,7 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 /**
- * Launches a "select file to save" dialog and attempts to save the {@link NodeGraph} to disk.
+ * Launches a "select file to save" dialog and attempts to save the {@link Graph} to disk.
  * @author Dan Royer
  * @since 2022-02-21
  */

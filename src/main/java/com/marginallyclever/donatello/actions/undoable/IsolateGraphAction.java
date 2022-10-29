@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.actions.undoable;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.EditorAction;
 import com.marginallyclever.donatello.edits.IsolateGraphEdit;
@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
- * Disconnects the selected {@link Node}s from any non-selected {@link Node}s of a {@link NodeGraph}.
+ * Disconnects the selected {@link Node}s from any non-selected {@link Node}s of a {@link Graph}.
  * @author Dan Royer
  * @since 2022-03-10
  */

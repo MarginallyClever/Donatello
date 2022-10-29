@@ -1,0 +1,6 @@
+Nodes
+------
+- find on screen
+- nodes that create a list of data
+- path image mask has some kind of step problem.
+- fold/unfold inputs 

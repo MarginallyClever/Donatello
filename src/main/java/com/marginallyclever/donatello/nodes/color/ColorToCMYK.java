@@ -1,8 +1,7 @@
 package com.marginallyclever.donatello.nodes.color;
 
 import com.marginallyclever.donatello.nodes.images.ColorHelper;
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.*;
 
@@ -12,11 +11,11 @@ import java.awt.*;
  * @since 2022-03-19
  */
 public class ColorToCMYK extends Node {
-    private final NodeVariable<Color> color = NodeVariable.newInstance("color", Color.class, new Color(0,0,0,0),true,false);
-    private final NodeVariable<Number> cyan = NodeVariable.newInstance("cyan", Number.class, 0,false,true);
-    private final NodeVariable<Number> magenta = NodeVariable.newInstance("magenta", Number.class, 0,false,true);
-    private final NodeVariable<Number> yellow = NodeVariable.newInstance("yellow", Number.class, 0,false,true);
-    private final NodeVariable<Number> black = NodeVariable.newInstance("black", Number.class, 0,false,true);
+    private final DockReceiving<Color> color = new DockReceiving<>("color", Color.class, new Color(0,0,0,0));
+    private final DockShipping<Number> cyan = new DockShipping<>("cyan", Number.class, 0);
+    private final DockShipping<Number> magenta = new DockShipping<>("magenta", Number.class, 0);
+    private final DockShipping<Number> yellow = new DockShipping<>("yellow", Number.class, 0);
+    private final DockShipping<Number> black = new DockShipping<>("black", Number.class, 0);
 
     /**
      * Constructor for subclasses to call.
@@ -32,12 +31,13 @@ public class ColorToCMYK extends Node {
 
     @Override
     public void update() {
+        if(color.hasConnection() && !color.hasPacketWaiting()) return;
+        color.receive();
         Color c = color.getValue();
         double [] cmyk = ColorHelper.IntToCMYK(ColorHelper.ColorToInt(c));
-        cyan.setValue(   cmyk[0]/255.0);
-        magenta.setValue(cmyk[1]/255.0);
-        yellow.setValue( cmyk[2]/255.0);
-        black.setValue(  cmyk[3]/255.0);
-        cleanAllInputs();
+        cyan.send(new Packet<>(   cmyk[0]/255.0));
+        magenta.send(new Packet<>(cmyk[1]/255.0));
+        yellow.send(new Packet<>( cmyk[2]/255.0));
+        black.send(new Packet<>(  cmyk[3]/255.0));
     }
 }

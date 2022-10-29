@@ -1,7 +1,9 @@
 package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.Dock;
+import com.marginallyclever.nodegraphcore.DockReceiving;
+import com.marginallyclever.nodegraphcore.DockShipping;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,11 +18,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ColorAtPoint extends Node {
-    private final NodeVariable<BufferedImage> image   = NodeVariable.newInstance("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<Number> cx = NodeVariable.newInstance("x", Number.class, 0,true,false);
-    private final NodeVariable<Number> cy = NodeVariable.newInstance("y", Number.class, 0,true,false);
-    private final NodeVariable<Number> sampleSize = NodeVariable.newInstance("sampleSize", Number.class, 0,true,false);
-    private final NodeVariable<Color> output   = NodeVariable.newInstance("output", Color.class, new Color(0,0,0,0),false,true);
+    private final DockReceiving<BufferedImage> image = new DockReceiving<>("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockReceiving<Number> cx = new DockReceiving<>("x", Number.class, 0);
+    private final DockReceiving<Number> cy = new DockReceiving<>("y", Number.class, 0);
+    private final DockReceiving<Number> sampleSize = new DockReceiving<>("sampleSize", Number.class, 0);
+    private final DockShipping<Color> output = new DockShipping<>("output", Color.class, new Color(0,0,0,0));
 
     /**
      * Constructor for subclasses to call.
@@ -36,6 +38,15 @@ public class ColorAtPoint extends Node {
 
     @Override
     public void update() {
+        if(!image.hasPacketWaiting()) return;
+        if(!cx.hasPacketWaiting()) return;
+        if(!cy.hasPacketWaiting()) return;
+        if(!sampleSize.hasPacketWaiting()) return;
+        image.receive();
+        cx.receive();
+        cy.receive();
+        sampleSize.receive();
+
         BufferedImage src = image.getValue();
         int h = src.getHeight();
         int w = src.getWidth();
@@ -75,6 +86,5 @@ public class ColorAtPoint extends Node {
             sumB /= sumCount;
             output.setValue(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
         }
-        cleanAllInputs();
     }
 }

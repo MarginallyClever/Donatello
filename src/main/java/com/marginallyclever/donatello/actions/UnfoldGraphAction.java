@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Subgraph;
 import com.marginallyclever.donatello.Donatello;
 
@@ -47,7 +47,7 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
         }
 
         for(Node n : toBeDeleted) {
-            NodeGraph inner = ((Subgraph)n).getGraph();
+            Graph inner = ((Subgraph)n).getGraph();
             // add the subgraph to this graph.
             editor.getGraph().add(inner);
             // make sure it is selected
@@ -65,7 +65,7 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
         editor.setSelectedNodes(newSelection);
     }
 
-    private void positionNodesRelativeTo(NodeGraph nodeGraph,int dx, int dy) {
+    private void positionNodesRelativeTo(Graph nodeGraph,int dx, int dy) {
         Rectangle r = nodeGraph.getBounds();
         dx-=r.x;
         dy-=r.y;

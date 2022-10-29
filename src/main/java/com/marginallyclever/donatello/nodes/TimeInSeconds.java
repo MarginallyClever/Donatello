@@ -1,13 +1,16 @@
 package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.Dock;
+import com.marginallyclever.nodegraphcore.DockShipping;
+import com.marginallyclever.nodegraphcore.Packet;
 
 /**
  * Publishes the time in seconds continuously.
  */
 public class TimeInSeconds extends Node {
-    private final NodeVariable<Number> seconds = NodeVariable.newInstance("seconds", Number.class, 0,false,true);
+    private final DockShipping<Number> seconds = new DockShipping<>("seconds", Number.class, 0);
+    private final double startTime = System.currentTimeMillis();
 
     public TimeInSeconds() {
         super("TimeInSeconds");
@@ -15,12 +18,8 @@ public class TimeInSeconds extends Node {
     }
 
     @Override
-    public void updateIfNotDirty() throws Exception {
-        update();
-    }
-
-    @Override
-    public void update() throws Exception {
-        seconds.setValue(System.currentTimeMillis()*0.001);
+    public void update() {
+        double t = (System.currentTimeMillis()-startTime)/1000.0;
+        seconds.send(new Packet<>(t));
     }
 }

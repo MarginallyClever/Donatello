@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.nodes.images.blend;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.image.BufferedImage;
 
@@ -11,9 +10,9 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class BlendScreen extends Node {
-    private final NodeVariable<BufferedImage> a = NodeVariable.newInstance("a", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<BufferedImage> b = NodeVariable.newInstance("b", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<BufferedImage> output = NodeVariable.newInstance("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final DockReceiving<BufferedImage> a = new DockReceiving<>("a", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockReceiving<BufferedImage> b = new DockReceiving<>("b", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockShipping<BufferedImage> output = new DockShipping<>("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
 
     /**
      * Constructor for subclasses to call.
@@ -27,6 +26,10 @@ public class BlendScreen extends Node {
 
     @Override
     public void update() {
+        if(!a.hasPacketWaiting()) return;
+        if(!b.hasPacketWaiting()) return;
+        a.receive();
+        b.receive();
         BufferedImage A = a.getValue();
         BufferedImage B = b.getValue();
 
@@ -52,8 +55,7 @@ public class BlendScreen extends Node {
                 C.setRGB(x,y,cC);
             }
         }
-        output.setValue(C);
-        cleanAllInputs();
+        output.send(new Packet<>(C));
     }
 
     /**

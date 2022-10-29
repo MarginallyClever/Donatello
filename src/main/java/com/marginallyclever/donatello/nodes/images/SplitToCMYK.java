@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.image.BufferedImage;
 
@@ -11,11 +10,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class SplitToCMYK extends Node {
-    private final NodeVariable<BufferedImage> image   = NodeVariable.newInstance("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<BufferedImage> cyan    = NodeVariable.newInstance("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<BufferedImage> magenta = NodeVariable.newInstance("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<BufferedImage> yellow  = NodeVariable.newInstance("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<BufferedImage> black   = NodeVariable.newInstance("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
+    private final DockReceiving<BufferedImage> image   = new DockReceiving<>("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockShipping<BufferedImage> cyan    = new DockShipping<>("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockShipping<BufferedImage> magenta = new DockShipping<>("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockShipping<BufferedImage> yellow  = new DockShipping<>("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockShipping<BufferedImage> black   = new DockShipping<>("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
 
     /**
      * Constructor for subclasses to call.
@@ -31,6 +30,9 @@ public class SplitToCMYK extends Node {
 
     @Override
     public void update() {
+        if(!image.hasPacketWaiting()) return;
+        image.receive();
+
         BufferedImage src = image.getValue();
         int h = src.getHeight();
         int w = src.getWidth();
@@ -55,11 +57,9 @@ public class SplitToCMYK extends Node {
             }
         }
 
-        cyan   .setValue(channelCyan);
-        magenta.setValue(channelMagenta);
-        yellow .setValue(channelYellow);
-        black  .setValue(channelBlack);
-
-        cleanAllInputs();
+        cyan   .send(new Packet<>(channelCyan));
+        magenta.send(new Packet<>(channelMagenta));
+        yellow .send(new Packet<>(channelYellow));
+        black  .send(new Packet<>(channelBlack));
     }
 }

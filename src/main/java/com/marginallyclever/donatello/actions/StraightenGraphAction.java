@@ -2,7 +2,7 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.GraphViewPanel;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class StraightenGraphAction extends AbstractAction implements EditorActio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NodeGraph g = editor.getGraph();
+        Graph g = editor.getGraph();
 
         for(Node n : g.getNodes()) {
             Rectangle r = n.getRectangle();

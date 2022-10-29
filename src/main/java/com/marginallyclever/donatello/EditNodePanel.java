@@ -1,8 +1,9 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.nodes.ColorAtPoint;
+import com.marginallyclever.nodegraphcore.DockReceiving;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.Dock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,7 @@ public class EditNodePanel extends JPanel {
 
         addReadOnlyField(c,"Type",node.getName());
         c.gridy++;
-        addReadOnlyField(c,"ID",Integer.toString(node.getUniqueID()));
+        addReadOnlyField(c,"ID",node.getUniqueID());
         c.gridy++;
         addLabelField(c);
         c.gridy++;
@@ -56,14 +57,15 @@ public class EditNodePanel extends JPanel {
         }
     }
 
-    private void addVariableField(NodeVariable<?> variable,GridBagConstraints c) {
-        if(variable.getHasInput()) {
-            if (variable.getTypeClass().equals(Number.class)) {
-                addTextField(variable, c);
+    private void addVariableField(Dock<?> variable,GridBagConstraints c) {
+        if(variable instanceof DockReceiving) {
+            DockReceiving r = (DockReceiving)variable;
+            if (Number.class.isAssignableFrom(variable.getTypeClass())) {
+                addTextField(r, c);
             } else if (variable.getTypeClass().equals(String.class)) {
-                addTextField(variable, c);
+                addTextField(r, c);
             } else if (variable.getTypeClass().equals(Boolean.class)) {
-                addBooleanField(variable, c);
+                addBooleanField(r, c);
             } else {
                 addReadOnlyField(c, variable.getName(), variable.getTypeName());
             }
@@ -74,10 +76,10 @@ public class EditNodePanel extends JPanel {
 
     /**
      * Adds one variable to the panel as a label/text field pair.
-     * @param variable the {@link NodeVariable} to add.
+     * @param variable the {@link Dock} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addTextField(NodeVariable<?> variable,GridBagConstraints c) {
+    private void addTextField(DockReceiving<?> variable,GridBagConstraints c) {
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx=0;
         this.add(new JLabel(variable.getName()),c);
@@ -93,10 +95,10 @@ public class EditNodePanel extends JPanel {
 
     /**
      * Adds one variable to the panel as a label/text field pair.
-     * @param variable the {@link NodeVariable} to add.
+     * @param variable the {@link Dock} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addBooleanField(NodeVariable<?> variable,GridBagConstraints c) {
+    private void addBooleanField(DockReceiving<?> variable,GridBagConstraints c) {
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx=0;
         this.add(new JLabel(variable.getName()),c);
@@ -159,14 +161,15 @@ public class EditNodePanel extends JPanel {
     private static void readAllFields(Node subject, EditNodePanel panel) {
         int j=0;
         for(int i=0;i<subject.getNumVariables();++i) {
-            NodeVariable<?> variable = subject.getVariable(i);
-            if(variable.getHasInput()) {
+            Dock<?> variable = subject.getVariable(i);
+            if(variable instanceof DockReceiving) {
+                DockReceiving r = (DockReceiving)variable;
                 if (variable.getTypeClass().equals(Number.class)) {
-                    panel.readTextField(j++, subject.getVariable(i));
+                    panel.readTextField(j++, r);
                 } else if (variable.getTypeClass().equals(String.class)) {
-                    panel.readTextField(j++, subject.getVariable(i));
+                    panel.readTextField(j++, r);
                 }  else if (variable.getTypeClass().equals(Boolean.class)) {
-                    panel.readBooleanField(j++, subject.getVariable(i));
+                    panel.readBooleanField(j++, r);
                 } else {
                     // TODO ???
                 }
@@ -174,7 +177,7 @@ public class EditNodePanel extends JPanel {
         }
     }
 
-    private void readBooleanField(int index,NodeVariable<?> variable) {
+    private void readBooleanField(int index,DockReceiving<?> variable) {
         JCheckBox f = (JCheckBox)fields.get(index);
         if(f==null) {
             // TODO ???
@@ -184,7 +187,7 @@ public class EditNodePanel extends JPanel {
         variable.setValue(f.isSelected());
     }
 
-    private void readTextField(int index,NodeVariable<?> variable) {
+    private void readTextField(int index,DockReceiving<?> variable) {
         JTextField f = (JTextField)fields.get(index);
         if(f==null) {
             // TODO ???

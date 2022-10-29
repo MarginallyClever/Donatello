@@ -11,8 +11,6 @@ class NodeListCellRenderer implements ListCellRenderer<Node> {
     @Override
     public Component getListCellRendererComponent(JList<? extends Node> list, Node node, int index, boolean isSelected, boolean cellHasFocus) {
         String label = node.getUniqueName() + " " + node.getLabel();
-        JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, label, index,
-                isSelected, cellHasFocus);
-        return renderer;
+        return defaultRenderer.getListCellRendererComponent(list, label, index, isSelected, cellHasFocus);
     }
 }

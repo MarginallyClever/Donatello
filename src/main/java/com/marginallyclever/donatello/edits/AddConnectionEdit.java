@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.edits;
 
-import com.marginallyclever.nodegraphcore.NodeConnection;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Connection;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.undo.CannotRedoException;
@@ -9,17 +9,17 @@ import javax.swing.undo.CannotUndoException;
 import java.util.List;
 
 /**
- * Adds a {@link NodeConnection} to a {@link com.marginallyclever.nodegraphcore.NodeVariable}.
+ * Adds a {@link Connection} to a {@link com.marginallyclever.nodegraphcore.NodeVariable}.
  * Since the inbound node can only have one connection at a time, this edit also preserves any connection that has
  * to be removed.
  */
 public class AddConnectionEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
-    private final NodeConnection connection;
-    private final List<NodeConnection> connectionsInto;
+    private final Connection connection;
+    private final List<Connection> connectionsInto;
 
-    public AddConnectionEdit(String name, Donatello editor, NodeConnection connection) {
+    public AddConnectionEdit(String name, Donatello editor, Connection connection) {
         super();
         this.name = name;
         this.editor = editor;
@@ -34,19 +34,31 @@ public class AddConnectionEdit extends SignificantUndoableEdit {
     }
 
     private void doIt() {
-        NodeGraph graph = editor.getGraph();
-        for(NodeConnection c : connectionsInto) {
-            graph.remove(c);
+        editor.lockClock();
+        try {
+            Graph graph = editor.getGraph();
+            for(Connection c : connectionsInto) {
+                graph.remove(c);
+            }
+            graph.add(connection);
         }
-        graph.add(connection);
+            finally {
+            editor.unlockClock();
+        }
     }
 
     @Override
     public void undo() throws CannotUndoException {
-        NodeGraph graph = editor.getGraph();
-        graph.remove(connection);
-        for(NodeConnection c : connectionsInto) {
-            graph.add(c);
+        editor.lockClock();
+        try {
+            Graph graph = editor.getGraph();
+            graph.remove(connection);
+            for(Connection c : connectionsInto) {
+                graph.add(c);
+            }
+        }
+        finally {
+            editor.unlockClock();
         }
         super.undo();
     }

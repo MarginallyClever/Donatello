@@ -1,4 +1,6 @@
 *.class
 target/*
 .idea
-NodeGraphCore.iml
+GraphCore.iml
+output.svg
+saved.png

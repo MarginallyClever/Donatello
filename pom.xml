@@ -240,16 +240,16 @@
     </build>
 
     <dependencies>
-        <!-- node graph library -->
-        <!--<dependency>
-            <groupId>com.github.marginallyclever</groupId>
-            <artifactId>nodegraphcore</artifactId>
-            <version>1.0.18</version>
-        </dependency>-->
+        <!--
         <dependency>
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
             <version>1.0.19</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.marginallyclever</groupId>
+            <artifactId>nodegraphcore</artifactId>
+            <version>1.0.20-SNAPSHOT</version>
         </dependency>
         <!-- logging -->
         <dependency>

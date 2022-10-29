@@ -27,18 +27,30 @@ public class AddNodeEdit extends SignificantUndoableEdit {
     }
 
     public void doIt() {
-        editor.getGraph().add(node);
-        editor.setSelectedNode(node);
-        editor.repaint(node.getRectangle());
+        editor.lockClock();
+        try {
+            editor.getGraph().add(node);
+            editor.setSelectedNode(node);
+            editor.repaint(node.getRectangle());
+        }
+        finally {
+            editor.unlockClock();
+        }
     }
 
     @Override
     public void undo() throws CannotUndoException {
-        editor.getGraph().remove(node);
+        editor.lockClock();
+        try {
+            editor.getGraph().remove(node);
 
-        List<Node> nodes = new ArrayList<>(editor.getSelectedNodes());
-        nodes.remove(node);
-        editor.setSelectedNodes(nodes);
+            List<Node> nodes = new ArrayList<>(editor.getSelectedNodes());
+            nodes.remove(node);
+            editor.setSelectedNodes(nodes);
+        }
+        finally {
+            editor.unlockClock();
+        }
 
         editor.repaint(node.getRectangle());
 

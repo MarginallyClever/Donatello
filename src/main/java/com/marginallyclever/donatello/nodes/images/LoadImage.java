@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,10 +13,10 @@ import java.io.IOException;
  * @since 2022-02-23
  */
 public class LoadImage extends Node {
-    private final NodeVariable<String> filename = NodeVariable.newInstance("filename",String.class," ",true,false);
-    private final NodeVariable<BufferedImage> contents = NodeVariable.newInstance("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),false,true);
-    private final NodeVariable<Number> width = NodeVariable.newInstance("width",Number.class,0,false,true);
-    private final NodeVariable<Number> height = NodeVariable.newInstance("height",Number.class,0,false,true);
+    private final DockReceiving<String> filename = new DockReceiving<>("filename",String.class,"");
+    private final DockShipping<BufferedImage> contents = new DockShipping<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockShipping<Number> width = new DockShipping<>("width",Number.class,0);
+    private final DockShipping<Number> height = new DockShipping<>("height",Number.class,0);
 
     /**
      * Constructor for subclasses to call.
@@ -32,16 +31,18 @@ public class LoadImage extends Node {
 
     @Override
     public void update() {
+        if(!filename.hasConnection() || !filename.hasPacketWaiting()) return;
+        filename.receive();
         try {
             String filenameValue = filename.getValue();
             if(filenameValue!=null && !filenameValue.isEmpty()) {
                 File f = new File(filenameValue);
                 if (f.exists()) {
+                    System.out.println("loading "+filenameValue);
                     BufferedImage image = ImageIO.read(f);
-                    contents.setValue(image);
-                    width.setValue(image.getWidth());
-                    height.setValue(image.getHeight());
-                    cleanAllInputs();
+                    contents.send(new Packet<>(image));
+                    width.send(new Packet<>(image.getWidth()));
+                    height.send(new Packet<>(image.getHeight()));
                 }
             }
         } catch (IOException e) {

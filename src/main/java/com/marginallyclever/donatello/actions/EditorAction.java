@@ -5,7 +5,7 @@ import com.marginallyclever.donatello.Donatello;
 import javax.swing.*;
 
 /**
- * {@link AbstractAction}s in the {@link Donatello} implement this interface to update their own
+ * {@link AbstractAction}s implement this interface to update their own
  * {@link AbstractAction#setEnabled(boolean)} status.
  * @author Dan Royer
  * @since 2022-02-23

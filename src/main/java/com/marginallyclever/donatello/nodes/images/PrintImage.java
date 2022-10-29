@@ -1,8 +1,6 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.PrintWithGraphics;
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,9 +11,9 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class PrintImage extends Node implements PrintWithGraphics {
-    private final NodeVariable<BufferedImage> image = NodeVariable.newInstance("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),true,false);
-    private final NodeVariable<Number> px = NodeVariable.newInstance("X",Number.class,0,true,false);
-    private final NodeVariable<Number> py = NodeVariable.newInstance("Y",Number.class,0,true,false);
+    private final DockReceiving<BufferedImage> image = new DockReceiving<>("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final DockReceiving<Number> px = new DockReceiving<>("X",Number.class,0);
+    private final DockReceiving<Number> py = new DockReceiving<>("Y",Number.class,0);
 
     /**
      * Constructor for subclasses to call.
@@ -29,7 +27,9 @@ public class PrintImage extends Node implements PrintWithGraphics {
 
     @Override
     public void update() {
-        cleanAllInputs();
+        if(0==countReceivingConnections()) return;
+        if(!image.hasPacketWaiting()) return;
+        image.receive();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.actions.undoable;
 
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.EditorAction;
 import com.marginallyclever.donatello.edits.PasteGraphEdit;
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
- * Duplicates the editor's copy buffer, inserts the contents into the editor's current {@link NodeGraph}, and sets the
+ * Duplicates the editor's copy buffer, inserts the contents into the editor's current {@link Graph}, and sets the
  * new content as the editor's selected items.
  * @author Dan Royer
  * @since 2022-02-21

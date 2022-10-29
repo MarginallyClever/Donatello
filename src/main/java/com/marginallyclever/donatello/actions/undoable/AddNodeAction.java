@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.actions.undoable;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.AddNodePanel;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.AddNodeEdit;
@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Launches the "Add Node" dialog.  If the user clicks "Ok" then the selected {@link Node} type is added to the
- * current editor {@link NodeGraph}.
+ * current editor {@link Graph}.
  * @author Dan Royer
  * @since 2022-02-21
  */

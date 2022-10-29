@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.actions.undoable;
 
-import com.marginallyclever.nodegraphcore.NodeGraph;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.PasteGraphEdit;
 import org.json.JSONObject;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Launches a "select file to open" dialog and attempts to load the {@link NodeGraph} from disk.
+ * Launches a "select file to open" dialog and attempts to load the {@link Graph} from disk.
  * @author Dan Royer
  * @since 2022-02-21
  */
@@ -43,7 +43,7 @@ public class LoadGraphAction extends AbstractAction {
         fc.setFileFilter(Donatello.FILE_FILTER);
         if (fc.showOpenDialog(SwingUtilities.getWindowAncestor(editor)) == JFileChooser.APPROVE_OPTION) {
             try {
-                NodeGraph graph = loadGraphFromFile(fc.getSelectedFile().getAbsolutePath());
+                Graph graph = loadGraphFromFile(fc.getSelectedFile().getAbsolutePath());
                 editor.addEdit(new PasteGraphEdit((String)this.getValue(Action.NAME),editor,graph));
             } catch(IOException e1) {
                 JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor),e1.getLocalizedMessage());
@@ -52,14 +52,14 @@ public class LoadGraphAction extends AbstractAction {
         }
     }
 
-    private NodeGraph loadGraphFromFile(String absolutePath) throws IOException {
+    private Graph loadGraphFromFile(String absolutePath) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(absolutePath)));
         StringBuilder responseStrBuilder = new StringBuilder();
         String inputStr;
         while ((inputStr = reader.readLine()) != null) {
             responseStrBuilder.append(inputStr);
         }
-        NodeGraph newModel = new NodeGraph();
+        Graph newModel = new Graph();
         try {
             newModel.parseJSON(new JSONObject(responseStrBuilder.toString()));
         } catch(IllegalArgumentException e1) {

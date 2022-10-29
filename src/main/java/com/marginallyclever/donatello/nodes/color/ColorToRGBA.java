@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.nodes.color;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.NodeVariable;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.*;
 
@@ -11,11 +10,11 @@ import java.awt.*;
  * @since 2022-03-19
  */
 public class ColorToRGBA extends Node {
-    private final NodeVariable<Color> color = NodeVariable.newInstance("color", Color.class, new Color(0,0,0,0),true,false);
-    private final NodeVariable<Number> red = NodeVariable.newInstance("red", Number.class, 0,false,true);
-    private final NodeVariable<Number> green = NodeVariable.newInstance("green", Number.class, 0,false,true);
-    private final NodeVariable<Number> blue = NodeVariable.newInstance("blue", Number.class, 0,false,true);
-    private final NodeVariable<Number> alpha = NodeVariable.newInstance("alpha", Number.class, 0,false,true);
+    private final DockReceiving<Color> color = new DockReceiving<>("color", Color.class, new Color(0,0,0,0));
+    private final DockShipping<Number> red = new DockShipping<>("red", Number.class, 0);
+    private final DockShipping<Number> green = new DockShipping<>("green", Number.class, 0);
+    private final DockShipping<Number> blue = new DockShipping<>("blue", Number.class, 0);
+    private final DockShipping<Number> alpha = new DockShipping<>("alpha", Number.class, 0);
 
     /**
      * Constructor for subclasses to call.
@@ -31,11 +30,13 @@ public class ColorToRGBA extends Node {
 
     @Override
     public void update() {
+        if(color.hasConnection() && !color.hasPacketWaiting()) return;
+        color.receive();
+
         Color c = color.getValue();
-        red  .setValue(c.getRed()  /255.0);
-        green.setValue(c.getGreen()/255.0);
-        blue .setValue(c.getBlue() /255.0);
-        alpha.setValue(c.getAlpha()/255.0);
-        cleanAllInputs();
+        red  .send(new Packet<>(c.getRed()  /255.0));
+        green.send(new Packet<>(c.getGreen()/255.0));
+        blue .send(new Packet<>(c.getBlue() /255.0));
+        alpha.send(new Packet<>(c.getAlpha()/255.0));
     }
 }

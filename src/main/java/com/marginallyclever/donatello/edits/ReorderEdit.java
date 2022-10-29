@@ -28,19 +28,31 @@ public class ReorderEdit extends SignificantUndoableEdit {
     }
 
     public void doIt() {
-        List<Node> list = editor.getGraph().getNodes();
-        list.remove(node);
-        list.add(to,node);
-        editor.repaint();
+        editor.lockClock();
+        try {
+            List<Node> list = editor.getGraph().getNodes();
+            list.remove(node);
+            list.add(to,node);
+            editor.repaint();
+        }
+        finally {
+            editor.unlockClock();
+        }
     }
 
     @Override
     public void undo() throws CannotUndoException {
-        List<Node> list = editor.getGraph().getNodes();
-        list.remove(node);
-        list.add(from,node);
-        editor.repaint();
-        super.undo();
+        editor.lockClock();
+        try {
+            List<Node> list = editor.getGraph().getNodes();
+            list.remove(node);
+            list.add(from,node);
+            editor.repaint();
+            super.undo();
+        }
+        finally {
+            editor.unlockClock();
+        }
     }
 
     @Override

@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
- * Clears the editor's current {@link com.marginallyclever.nodegraphcore.NodeGraph}.
+ * Clears the editor's current {@link com.marginallyclever.nodegraphcore.Graph}.
  * @author Dan Royer
  * @since 2022-02-21
  */
