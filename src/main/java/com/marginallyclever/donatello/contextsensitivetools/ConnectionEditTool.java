@@ -89,10 +89,13 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
         selectOneNearbyConnectionPoint(editor.getPaintArea().transformMousePoint(e.getPoint()));
 
+        showConnectionPointToolTip();
+    }
+
+    private void showConnectionPointToolTip() {
         GraphViewPanel paintArea = editor.getPaintArea();
         String toolTipName = (lastConnectionPoint!=null) ? lastConnectionPoint.getVariable().getTypeName() : null;
         paintArea.setToolTipText(toolTipName);
-        System.out.println(toolTipName);
     }
 
     /**
