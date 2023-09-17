@@ -488,17 +488,15 @@ public class Donatello extends JPanel {
     }
 
     private void deactivateCurrentTool() {
-        if(activeTool != null) {
-            activeTool.detachKeyboardAdapter();
-            activeTool.detachMouseAdapter();
-        }
+        if(activeTool == null) return;
+        activeTool.detachKeyboardAdapter();
+        activeTool.detachMouseAdapter();
     }
 
     private void activateCurrentTool() {
-        if(activeTool != null) {
-            activeTool.attachKeyboardAdapter();
-            activeTool.attachMouseAdapter();
-        }
+        if(activeTool == null) return;
+        activeTool.attachKeyboardAdapter();
+        activeTool.attachMouseAdapter();
     }
 
     /**
