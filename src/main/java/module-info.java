@@ -10,6 +10,7 @@ module com.marginallyclever.donatello {
     requires org.slf4j;
     requires logback.core;
     requires com.marginallyclever.nodegraphcore;
+    requires io.github.classgraph;
 
     exports com.marginallyclever.donatello to logback.core;
 
@@ -20,6 +21,7 @@ module com.marginallyclever.donatello {
     exports com.marginallyclever.donatello.nodes.images.blend to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.search to logback.core;
     exports com.marginallyclever.donatello.bezier to logback.core;
+    exports com.marginallyclever.donatello.graphview to logback.core;
 
     // A Java module that wants to implement a service interface from a service interface module must:
     // - Require the service interface module in its own module descriptor.
