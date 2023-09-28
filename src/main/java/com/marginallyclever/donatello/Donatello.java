@@ -1,6 +1,9 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.contextsensitivetools.ContextSensitiveTool;
+import com.marginallyclever.donatello.graphview.GraphViewListener;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
+import com.marginallyclever.donatello.graphview.GraphViewSettings;
 import com.marginallyclever.nodegraphcore.*;
 import com.marginallyclever.donatello.actions.*;
 import com.marginallyclever.donatello.actions.undoable.*;
@@ -218,6 +221,7 @@ public class Donatello extends JPanel {
         menuBar.add(setupGraphMenu());
         menuBar.add(setupNodeMenu());
         menuBar.add(setupToolMenuAndToolBar());
+        menuBar.add(setupViewMenu());
         menuBar.add(setupHelpMenu());
     }
 
@@ -274,10 +278,30 @@ public class Donatello extends JPanel {
         return menu;
     }
 
+    private JMenu setupViewMenu() {
+        JMenu menu = new JMenu("View");
+        JMenuItem showGrid   = new JCheckBoxMenuItem("Show grid");
+        JMenuItem showOrigin = new JCheckBoxMenuItem("Show origin");
+        JMenuItem showCursor = new JCheckBoxMenuItem("Show cursor");
+        menu.add(showGrid  );
+        menu.add(showOrigin);
+        menu.add(showCursor);
+
+        showGrid  .addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_BACKGROUND,showGrid  .isSelected()));
+        showOrigin.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_ORIGIN    ,showOrigin.isSelected()));
+        showCursor.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_CURSOR    ,showCursor.isSelected()));
+        return menu;
+    }
+
+    private void changeViewSetting(int key,boolean newValue) {
+        paintArea.getSettings().set(key,newValue);
+        paintArea.repaint();
+    }
+
     private void addPlayAndPause(JMenu menu) {
         ButtonGroup clockGroup = new ButtonGroup();
 
-        UpdateGraphAction updateGraphAction = new UpdateGraphAction("Update",this);
+        UpdateGraphAction updateGraphAction = new UpdateGraphAction("Step",this);
         updateGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_U, 0));
         updateGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("+1"));
         JToggleButton stepButton = new JToggleButton(updateGraphAction);

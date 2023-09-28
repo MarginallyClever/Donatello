@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.graphview;
 
 import java.awt.*;
 

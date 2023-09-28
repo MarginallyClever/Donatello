@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.graphview;
 
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
@@ -32,7 +32,7 @@ public class GraphViewPanel extends JPanel {
      */
     public static final Color NODE_COLOR_BORDER = Color.BLACK;
     /**
-     * The default {@link Node} internal border between {@link NodeVariable}.
+     * The default {@link Node} internal border between {@link Dock}s.
      */
     public static final Color NODE_COLOR_INTERNAL_BORDER = Color.DARK_GRAY;
     /**
@@ -117,6 +117,8 @@ public class GraphViewPanel extends JPanel {
      */
     private double zoom = 1.0;
 
+    private final GraphViewSettings settings = new GraphViewSettings();
+
     /**
      * Constructs one new instance of {@link GraphViewPanel}.
      * @param model the {@link Graph} model to paint.
@@ -156,8 +158,8 @@ public class GraphViewPanel extends JPanel {
                 Point now = new Point(e.getX(),e.getY());
                 if(SwingUtilities.isMiddleMouseButton(e)) {
                     Point delta = new Point(now.x- previousMouse.x,now.y- previousMouse.y);
-                    camera.x -= zoom * delta.x;
-                    camera.y -= zoom * delta.y;
+                    camera.x -= (int)(zoom * delta.x);
+                    camera.y -= (int)(zoom * delta.y);
                     repaint();
                 }
                 previousMouse.setLocation(now);
@@ -199,7 +201,7 @@ public class GraphViewPanel extends JPanel {
 
         g2.transform(getTransform());
 
-        //paintBackgroundGrid(g);
+        if(settings.get(GraphViewSettings.DRAW_BACKGROUND)) paintBackgroundGrid(g);
         paintNodesInBackground(g);
 
         for(Node n : model.getNodes()) paintNode(g2,n);
@@ -207,8 +209,8 @@ public class GraphViewPanel extends JPanel {
         g2.setColor(CONNECTION_COLOR);
         for(Connection c : model.getConnections()) paintConnection(g2,c);
 
-        //paintCursor(g2);
-        //paintOrigin(g2);
+        if(settings.get(GraphViewSettings.DRAW_CURSOR)) paintCursor(g2);
+        if(settings.get(GraphViewSettings.DRAW_ORIGIN)) paintOrigin(g2);
 
         firePaintEvent(g2);
     }
@@ -242,9 +244,10 @@ public class GraphViewPanel extends JPanel {
     }
 
     private void paintOrigin(Graphics2D g2) {
-        g2.setColor(Color.BLUE);
-        int z = (int)(zoom*10);
-        g2.drawOval(-z,-z,z*2,z*2);
+        g2.setColor(Color.RED);
+        g2.drawLine(0,0,10*(int)Math.ceil(zoom),0);
+        g2.setColor(Color.GREEN);
+        g2.drawLine(0,0,0,10*(int)Math.ceil(zoom));
     }
 
     AffineTransform getTransform() {
@@ -338,11 +341,11 @@ public class GraphViewPanel extends JPanel {
         Rectangle r = n.getRectangle();
         g.setColor(NODE_COLOR_TITLE_BACKGROUND);
         g.fillRoundRect(r.x, r.y, r.width, CORNER_RADIUS*2, CORNER_RADIUS, CORNER_RADIUS);
-        g.fillRect(r.x, r.y+CORNER_RADIUS, r.width, Node.TITLE_HEIGHT -CORNER_RADIUS);
+        g.fillRect(r.x, r.y+CORNER_RADIUS, r.width+1, Node.TITLE_HEIGHT -CORNER_RADIUS);
 
         Rectangle box = getNodeInternalBounds(n.getRectangle());
         g.setColor(NODE_COLOR_TITLE_FONT);
-        box.height=Node.TITLE_HEIGHT;
+        box.height = Node.TITLE_HEIGHT;
         paintText(g,n.getLabel(),box,ALIGN_LEFT,ALIGN_CENTER);
         paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
     }
@@ -593,5 +596,9 @@ public class GraphViewPanel extends JPanel {
         double sh = rectangle.getHeight() / bounds.getHeight();
         double s = Math.max(sw, sh);
         setZoom(s);
+    }
+
+    public GraphViewSettings getSettings() {
+        return settings;
     }
 }
