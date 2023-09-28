@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.*;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.nodegraphcore.Node;
 
 import javax.swing.*;

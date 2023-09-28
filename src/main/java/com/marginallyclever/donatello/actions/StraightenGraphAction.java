@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.donatello.GraphViewPanel;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;

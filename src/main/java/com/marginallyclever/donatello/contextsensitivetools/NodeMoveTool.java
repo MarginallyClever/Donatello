@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.GraphViewPanel;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.UnicodeIcon;
 import com.marginallyclever.donatello.edits.MoveNodesEdit;
 import com.marginallyclever.nodegraphcore.Node;

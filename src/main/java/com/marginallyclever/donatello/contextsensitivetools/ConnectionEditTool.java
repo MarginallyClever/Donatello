@@ -6,7 +6,7 @@ import com.marginallyclever.nodegraphcore.ConnectionPointInfo;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Dock;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.GraphViewPanel;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.edits.AddConnectionEdit;
 import com.marginallyclever.donatello.edits.RemoveConnectionEdit;
 import org.slf4j.Logger;
