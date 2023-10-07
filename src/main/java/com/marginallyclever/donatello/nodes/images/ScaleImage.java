@@ -30,13 +30,9 @@ public class ScaleImage extends Node {
 
     @Override
     public void update() {
-        if(0==countReceivingConnections()) return;
-        if(!image.hasPacketWaiting()) return;  // required
-        if(width.hasConnection() && !width.hasPacketWaiting()) return;  // optional
-        if(height.hasConnection() && !height.hasPacketWaiting()) return;  // optional
-        image.receive();
-        width.receive();
-        height.receive();
+        if(image.hasPacketWaiting()) image.receive();
+        if(width.hasPacketWaiting()) width.receive();
+        if(height.hasPacketWaiting()) height.receive();
 
         int w = Math.max(1,width.getValue().intValue());
         int h = Math.max(1,height.getValue().intValue());

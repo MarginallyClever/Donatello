@@ -27,9 +27,7 @@ public class PrintImage extends Node implements PrintWithGraphics {
 
     @Override
     public void update() {
-        if(0==countReceivingConnections()) return;
-        if(!image.hasPacketWaiting()) return;
-        image.receive();
+        if(image.hasPacketWaiting()) image.receive();
     }
 
     @Override

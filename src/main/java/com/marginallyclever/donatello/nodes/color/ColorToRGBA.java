@@ -30,8 +30,7 @@ public class ColorToRGBA extends Node {
 
     @Override
     public void update() {
-        if(color.hasConnection() && !color.hasPacketWaiting()) return;
-        color.receive();
+        if(color.hasPacketWaiting()) color.receive();
 
         Color c = color.getValue();
         red  .send(new Packet<>(c.getRed()  /255.0));

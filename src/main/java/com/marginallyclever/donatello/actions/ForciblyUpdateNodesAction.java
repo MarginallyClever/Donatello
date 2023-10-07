@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
- * Forces all of the editor's selected {@link Node}s to {@link Node#update()}, regarless of {@link Node#isDirty()}
+ * Forces all of the editor's selected {@link Node}s to {@link Node#update()}.
  * status.
  * @author Dan Royer
  * @since 2022-02-21

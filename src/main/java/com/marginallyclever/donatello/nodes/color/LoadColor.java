@@ -31,14 +31,10 @@ public class LoadColor extends Node {
 
     @Override
     public void update() {
-        if(r.hasConnection() && !r.hasPacketWaiting()) return;
-        if(g.hasConnection() && !g.hasPacketWaiting()) return;
-        if(b.hasConnection() && !b.hasPacketWaiting()) return;
-        if(a.hasConnection() && !a.hasPacketWaiting()) return;
-        r.receive();
-        g.receive();
-        b.receive();
-        a.receive();
+        if(r.hasPacketWaiting()) r.receive();
+        if(g.hasPacketWaiting()) g.receive();
+        if(b.hasPacketWaiting()) b.receive();
+        if(a.hasPacketWaiting()) a.receive();
 
         int rr = r.getValue().intValue();
         int gg = g.getValue().intValue();

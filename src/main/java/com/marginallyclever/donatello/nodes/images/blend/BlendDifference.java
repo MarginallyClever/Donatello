@@ -26,10 +26,9 @@ public class BlendDifference extends Node {
 
     @Override
     public void update() {
-        if(!a.hasPacketWaiting()) return;
-        if(!b.hasPacketWaiting()) return;
-        a.receive();
-        b.receive();
+        if(a.hasPacketWaiting()) a.receive();
+        if(b.hasPacketWaiting()) b.receive();
+
         BufferedImage A = a.getValue();
         BufferedImage B = b.getValue();
 

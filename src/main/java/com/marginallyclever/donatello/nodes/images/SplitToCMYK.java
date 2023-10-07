@@ -30,8 +30,7 @@ public class SplitToCMYK extends Node {
 
     @Override
     public void update() {
-        if(!image.hasPacketWaiting()) return;
-        image.receive();
+        if(image.hasPacketWaiting()) image.receive();
 
         BufferedImage src = image.getValue();
         int h = src.getHeight();

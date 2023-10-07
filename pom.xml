@@ -240,16 +240,10 @@
     </build>
 
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>com.github.marginallyclever</groupId>
-            <artifactId>nodegraphcore</artifactId>
-            <version>1.0.19</version>
-        </dependency>-->
         <dependency>
             <groupId>com.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.0.20-SNAPSHOT</version>
+            <version>1.0.21</version>
         </dependency>
         <!-- logging -->
         <dependency>
@@ -308,7 +302,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minimum.maven.version>3.8.1</minimum.maven.version>
-        <minimum.java.version>15</minimum.java.version>
+        <minimum.java.version>21</minimum.java.version>
         <jogl.version>2.4.0-rc-20200307</jogl.version>
         <maven-dependency-plugin.ignoreNonCompile>true</maven-dependency-plugin.ignoreNonCompile>
         <maven.compiler.source>${minimum.java.version}</maven.compiler.source>

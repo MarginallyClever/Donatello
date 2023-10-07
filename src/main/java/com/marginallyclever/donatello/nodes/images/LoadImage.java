@@ -31,22 +31,19 @@ public class LoadImage extends Node {
 
     @Override
     public void update() {
-        if(!filename.hasConnection() || !filename.hasPacketWaiting()) return;
-        filename.receive();
-        try {
-            String filenameValue = filename.getValue();
-            if(filenameValue!=null && !filenameValue.isEmpty()) {
-                File f = new File(filenameValue);
-                if (f.exists()) {
-                    System.out.println("loading "+filenameValue);
-                    BufferedImage image = ImageIO.read(f);
-                    contents.send(new Packet<>(image));
-                    width.send(new Packet<>(image.getWidth()));
-                    height.send(new Packet<>(image.getHeight()));
-                }
+        if(filename.hasPacketWaiting()) filename.receive();
+
+        String filenameValue = filename.getValue();
+        if(filenameValue!=null && !filenameValue.isEmpty()) {
+            try {
+                System.out.println("loading "+filenameValue);
+                BufferedImage image = ImageIO.read(new File(filenameValue));
+                contents.send(new Packet<>(image));
+                width.send(new Packet<>(image.getWidth()));
+                height.send(new Packet<>(image.getHeight()));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

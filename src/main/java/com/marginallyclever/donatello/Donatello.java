@@ -103,7 +103,7 @@ public class Donatello extends JPanel {
     private final ArrayList<AbstractAction> actions = new ArrayList<>();
 
     /**
-     * The list of context sensitive tools, only one of which can be active at any time.
+     * The list of context-sensitive tools, only one of which can be active at any time.
      */
     private final ArrayList<ContextSensitiveTool> tools = new ArrayList<>();
 
@@ -118,6 +118,10 @@ public class Donatello extends JPanel {
     private final Point popupPoint = new Point();
 
     private final UpdateClock updateClock = new UpdateClock(1000/60);
+
+    /**
+     * If true, the graph will update automatically.
+     */
     private boolean keepGoing = false;
 
     /**
@@ -144,14 +148,20 @@ public class Donatello extends JPanel {
     }
 
     private void setupClock() {
-        final int[] t = {0};
         updateClock.addListener(()->{
             if(keepGoing) {
                 graph.update();
                 paintArea.repaint();
-                ++t[0];
             }
         });
+    }
+
+    public boolean getKeepGoing() {
+        return keepGoing;
+    }
+
+    public void setKeepGoing(boolean keepGoing) {
+        this.keepGoing = keepGoing;
     }
 
     /**
@@ -280,19 +290,27 @@ public class Donatello extends JPanel {
 
     private JMenu setupViewMenu() {
         JMenu menu = new JMenu("View");
-        JMenuItem showGrid   = new JCheckBoxMenuItem("Show grid");
-        JMenuItem showOrigin = new JCheckBoxMenuItem("Show origin");
-        JMenuItem showCursor = new JCheckBoxMenuItem("Show cursor");
-        menu.add(showGrid  );
-        menu.add(showOrigin);
-        menu.add(showCursor);
 
-        showGrid  .addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_BACKGROUND,showGrid  .isSelected()));
-        showOrigin.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_ORIGIN    ,showOrigin.isSelected()));
-        showCursor.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_CURSOR    ,showCursor.isSelected()));
+        JMenuItem showGrid = new JCheckBoxMenuItem("Show grid");
+        menu.add(showGrid);
+        showGrid.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        showGrid.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_BACKGROUND,showGrid.isSelected()));
+
+        JMenuItem showOrigin = new JCheckBoxMenuItem("Show origin");
+        menu.add(showOrigin);
+        showOrigin.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_ORIGIN,showOrigin.isSelected()));
+
+        JMenuItem showCursor = new JCheckBoxMenuItem("Show cursor");
+        menu.add(showCursor);
+        showCursor.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_CURSOR,showCursor.isSelected()));
+
         return menu;
     }
 
+    /**
+     * @param key a {@link GraphViewSettings} key
+     * @param newValue the new value for that setting
+     */
     private void changeViewSetting(int key,boolean newValue) {
         paintArea.getSettings().set(key,newValue);
         paintArea.repaint();
@@ -306,18 +324,9 @@ public class Donatello extends JPanel {
         updateGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("+1"));
         JToggleButton stepButton = new JToggleButton(updateGraphAction);
 
-        AbstractAction playAction = new AbstractAction("Play") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                keepGoing=!keepGoing;
-                updateGraphAction.setEnabled(!keepGoing);
-                this.putValue(Action.SMALL_ICON, keepGoing ? new UnicodeIcon("⏸") : new UnicodeIcon("▶"));
-                this.putValue(Action.NAME, keepGoing ? "Pause" : "Play");
-            }
-        };
+        PlayAction playAction = new PlayAction("Play",this, updateGraphAction);
         JToggleButton playButton = new JToggleButton(playAction);
         playAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
-        playAction.putValue(Action.SMALL_ICON, keepGoing ? new UnicodeIcon("⏸") : new UnicodeIcon("▶"));
 
         AbstractAction resetAction = new AbstractAction("Reset") {
             @Override

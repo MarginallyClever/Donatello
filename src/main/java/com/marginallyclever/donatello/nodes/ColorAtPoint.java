@@ -1,9 +1,6 @@
 package com.marginallyclever.donatello.nodes;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Dock;
-import com.marginallyclever.nodegraphcore.DockReceiving;
-import com.marginallyclever.nodegraphcore.DockShipping;
+import com.marginallyclever.nodegraphcore.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,14 +35,10 @@ public class ColorAtPoint extends Node {
 
     @Override
     public void update() {
-        if(!image.hasPacketWaiting()) return;
-        if(!cx.hasPacketWaiting()) return;
-        if(!cy.hasPacketWaiting()) return;
-        if(!sampleSize.hasPacketWaiting()) return;
-        image.receive();
-        cx.receive();
-        cy.receive();
-        sampleSize.receive();
+        if(image.hasPacketWaiting()) image.receive();
+        if(cx.hasPacketWaiting()) cx.receive();
+        if(cy.hasPacketWaiting()) cy.receive();
+        if(sampleSize.hasPacketWaiting()) sampleSize.receive();
 
         BufferedImage src = image.getValue();
         int h = src.getHeight();
@@ -84,7 +77,7 @@ public class ColorAtPoint extends Node {
             sumR /= sumCount;
             sumG /= sumCount;
             sumB /= sumCount;
-            output.setValue(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
+            output.send(new Packet<>(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA)));
         }
     }
 }
