@@ -7,6 +7,9 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import java.util.List;
 
+/**
+ * Reorder nodes in a graph.  Presumably this will change the rendering order to put the later nodes on top.
+ */
 public class ReorderEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;

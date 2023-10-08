@@ -1,19 +1,21 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.nodegraphcore.Graph;
+import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 /**
- * Moves the camera to try and see all selected nodes at once.
+ * Straightens the editor's {@link Node}s by rounding their top-left corner x and y values to the nearest
+ * {@link GraphViewPanel#GRID_SIZE}.
  * @author Dan Royer
- * @since 2022-04-14
+ * @since 2022-02-21
  */
-public class PanAndZoomToSelectedAction extends AbstractAction implements EditorAction {
+public class GraphStraightenAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -24,22 +26,20 @@ public class PanAndZoomToSelectedAction extends AbstractAction implements Editor
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public PanAndZoomToSelectedAction(String name, Donatello editor) {
+    public GraphStraightenAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<Node> list = editor.getSelectedNodes();
-        if(list.isEmpty()) return;
+        Graph g = editor.getGraph();
 
-        Rectangle rect = new Rectangle(list.get(0).getRectangle());
-        for( Node n : list ) {
+        for(Node n : g.getNodes()) {
             Rectangle r = n.getRectangle();
-            rect.add(r);
+            r.x -= r.x % GraphViewPanel.GRID_SIZE;
+            r.y -= r.y % GraphViewPanel.GRID_SIZE;
         }
-        editor.getPaintArea().moveAndZoomToFit(rect);
         editor.repaint();
     }
 

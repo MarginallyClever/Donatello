@@ -13,13 +13,13 @@ import java.util.List;
  * Since the inbound node can only have one connection at a time, this edit also preserves any connection that has
  * to be removed.
  */
-public class AddConnectionEdit extends SignificantUndoableEdit {
+public class ConnectionAddEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
     private final Connection connection;
     private final List<Connection> connectionsInto;
 
-    public AddConnectionEdit(String name, Donatello editor, Connection connection) {
+    public ConnectionAddEdit(String name, Donatello editor, Connection connection) {
         super();
         this.name = name;
         this.editor = editor;

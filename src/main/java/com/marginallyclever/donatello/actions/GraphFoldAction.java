@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class FoldGraphAction extends AbstractAction implements EditorAction {
+public class GraphFoldAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -30,7 +30,7 @@ public class FoldGraphAction extends AbstractAction implements EditorAction {
      * @param editor the editor affected by this Action.
      * @param CutGraphAction the cut action to use with this Action.
      */
-    public FoldGraphAction(String name, Donatello editor, CutGraphAction CutGraphAction) {
+    public GraphFoldAction(String name, Donatello editor, CutGraphAction CutGraphAction) {
         super(name);
         this.editor = editor;
         this.cutGraphAction = CutGraphAction;

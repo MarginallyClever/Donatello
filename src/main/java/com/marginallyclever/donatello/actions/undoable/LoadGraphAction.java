@@ -2,7 +2,7 @@ package com.marginallyclever.donatello.actions.undoable;
 
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.edits.PasteGraphEdit;
+import com.marginallyclever.donatello.edits.GraphPasteEdit;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -44,7 +44,7 @@ public class LoadGraphAction extends AbstractAction {
         if (fc.showOpenDialog(SwingUtilities.getWindowAncestor(editor)) == JFileChooser.APPROVE_OPTION) {
             try {
                 Graph graph = loadGraphFromFile(fc.getSelectedFile().getAbsolutePath());
-                editor.addEdit(new PasteGraphEdit((String)this.getValue(Action.NAME),editor,graph));
+                editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,graph));
             } catch(IOException e1) {
                 JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor),e1.getLocalizedMessage());
                 e1.printStackTrace();

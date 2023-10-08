@@ -319,12 +319,12 @@ public class Donatello extends JPanel {
     private void addPlayAndPause(JMenu menu) {
         ButtonGroup clockGroup = new ButtonGroup();
 
-        UpdateGraphAction updateGraphAction = new UpdateGraphAction("Step",this);
-        updateGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_U, 0));
-        updateGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("+1"));
-        JToggleButton stepButton = new JToggleButton(updateGraphAction);
+        GraphUpdateAction graphUpdateAction = new GraphUpdateAction("Step",this);
+        graphUpdateAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_U, 0));
+        graphUpdateAction.putValue(Action.SMALL_ICON,new UnicodeIcon("+1"));
+        JToggleButton stepButton = new JToggleButton(graphUpdateAction);
 
-        PlayAction playAction = new PlayAction("Play",this, updateGraphAction);
+        PlayAction playAction = new PlayAction("Play",this, graphUpdateAction);
         JToggleButton playButton = new JToggleButton(playAction);
         playAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
 
@@ -352,43 +352,43 @@ public class Donatello extends JPanel {
      */
     private JMenu setupGraphMenu() {
         JMenu menu = new JMenu("Graph");
-        NewGraphAction newGraphAction = new NewGraphAction("New",this);
+        GraphNewAction graphNewAction = new GraphNewAction("New",this);
         LoadGraphAction loadGraphAction = new LoadGraphAction("Load",this);
-        SaveGraphAction saveGraphAction = new SaveGraphAction("Save",this);
-        PrintGraphAction printGraphAction = new PrintGraphAction("Print",this);
-        StraightenGraphAction straightenGraphAction = new StraightenGraphAction("Straighten",this);
-        OrganizeGraphAction organizeGraphAction = new OrganizeGraphAction("Organize",this);
+        GraphSaveAction graphSaveAction = new GraphSaveAction("Save",this);
+        GraphPrintAction graphPrintAction = new GraphPrintAction("Print",this);
+        GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
+        GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
 
-        newGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🌱"));
+        graphNewAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🌱"));
         loadGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🗁"));
-        saveGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🖫"));
-        printGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🖶"));
-        straightenGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🧹"));
-        straightenGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("📐"));
-        organizeGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("📝"));
+        graphSaveAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🖫"));
+        graphPrintAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🖶"));
+        graphStraightenAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🧹"));
+        graphStraightenAction.putValue(Action.SMALL_ICON,new UnicodeIcon("📐"));
+        graphOrganizeAction.putValue(Action.SMALL_ICON,new UnicodeIcon("📝"));
 
         //TODO toggleKeepUpdatingAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🔃"));
 
-        actions.add(newGraphAction);
-        actions.add(saveGraphAction);
+        actions.add(graphNewAction);
+        actions.add(graphSaveAction);
         actions.add(loadGraphAction);
-        actions.add(printGraphAction);
-        actions.add(straightenGraphAction);
-        actions.add(organizeGraphAction);
+        actions.add(graphPrintAction);
+        actions.add(graphStraightenAction);
+        actions.add(graphOrganizeAction);
 
-        newGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-        saveGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+        graphSaveAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         loadGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
-        printGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
-        organizeGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+        graphPrintAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
+        graphOrganizeAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 
-        menu.add(newGraphAction);
+        menu.add(graphNewAction);
         menu.add(loadGraphAction);
-        menu.add(saveGraphAction);
+        menu.add(graphSaveAction);
         menu.addSeparator();
-        menu.add(printGraphAction);
-        menu.add(straightenGraphAction);
-        menu.add(organizeGraphAction);
+        menu.add(graphPrintAction);
+        menu.add(graphStraightenAction);
+        menu.add(graphOrganizeAction);
 
         return menu;
     }
@@ -402,88 +402,88 @@ public class Donatello extends JPanel {
         undoAction.setActionRedo(redoAction);
         redoAction.setActionUndo(undoAction);
 
-        CopyGraphAction copyGraphAction = new CopyGraphAction("Copy",this);
+        GraphCopyAction graphCopyAction = new GraphCopyAction("Copy",this);
         PasteGraphAction pasteGraphAction = new PasteGraphAction("Paste",this);
         DeleteGraphAction deleteGraphAction = new DeleteGraphAction("Delete",this);
-        CutGraphAction cutGraphAction = new CutGraphAction("Cut", deleteGraphAction, copyGraphAction);
+        CutGraphAction cutGraphAction = new CutGraphAction("Cut", deleteGraphAction, graphCopyAction);
         AddNodeAction addNodeAction = new AddNodeAction("Add",this);
         EditNodeAction editNodesAction = new EditNodeAction("Edit",this);
         ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
-        FoldGraphAction foldGraphAction = new FoldGraphAction("Fold",this, cutGraphAction);
-        UnfoldGraphAction unfoldGraphAction = new UnfoldGraphAction("Unfold",this);
+        GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, cutGraphAction);
+        GraphUnfoldAction graphUnfoldAction = new GraphUnfoldAction("Unfold",this);
         IsolateGraphAction isolateGraphAction = new IsolateGraphAction("Isolate",this);
         SelectAllAction selectAllAction = new SelectAllAction("Select all",this);
-        GrowSelectionAction growSelectionAction = new GrowSelectionAction("Grow selection",this);
-        ShrinkSelectionAction shrinkSelectionAction = new ShrinkSelectionAction("Shrink selection",this);
-        InvertSelectionAction invertSelectionAction = new InvertSelectionAction("Invert selection",this);
+        SelectionGrowAction selectionGrowAction = new SelectionGrowAction("Grow selection",this);
+        SelectionShrinkAction selectionShrinkAction = new SelectionShrinkAction("Shrink selection",this);
+        SelectionInvertAction selectionInvertAction = new SelectionInvertAction("Invert selection",this);
         SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
-        PanAndZoomToSelectedAction panAndZoomToSelectedAction = new PanAndZoomToSelectedAction("Pan and zoom to selected",this);
+        ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
 
         undoAction.putValue(Action.SMALL_ICON, new UnicodeIcon("↪"));
         redoAction.putValue(Action.SMALL_ICON, new UnicodeIcon("↩"));
 
-        copyGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("🗐"));
+        graphCopyAction.putValue(Action.SMALL_ICON, new UnicodeIcon("🗐"));
         pasteGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("📎"));
         deleteGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("🗑"));
         cutGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("✂"));
         addNodeAction.putValue(Action.SMALL_ICON, new UnicodeIcon("➕"));
         editNodesAction.putValue(Action.SMALL_ICON, new UnicodeIcon("✏"));
         forciblyUpdateNodesAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏩"));
-        foldGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⫏"));
-        unfoldGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⟃"));
+        graphFoldAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⫏"));
+        graphUnfoldAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⟃"));
         isolateGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("𝄄"));
-        growSelectionAction.putValue(Action.SMALL_ICON, new UnicodeIcon(">"));
-        shrinkSelectionAction.putValue(Action.SMALL_ICON, new UnicodeIcon("<"));
+        selectionGrowAction.putValue(Action.SMALL_ICON, new UnicodeIcon(">"));
+        selectionShrinkAction.putValue(Action.SMALL_ICON, new UnicodeIcon("<"));
         selectShortestPathAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⟵"));
-        panAndZoomToSelectedAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏬"));
+        zoomToFitSelectedAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏬"));
 
         actions.add(undoAction);
         actions.add(redoAction);
-        actions.add(copyGraphAction);
+        actions.add(graphCopyAction);
         actions.add(pasteGraphAction);
         actions.add(deleteGraphAction);
         actions.add(cutGraphAction);
         actions.add(addNodeAction);
         actions.add(editNodesAction);
         actions.add(forciblyUpdateNodesAction);
-        actions.add(foldGraphAction);
-        actions.add(unfoldGraphAction);
+        actions.add(graphFoldAction);
+        actions.add(graphUnfoldAction);
         actions.add(isolateGraphAction);
         actions.add(selectAllAction);
-        actions.add(growSelectionAction);
-        actions.add(shrinkSelectionAction);
-        actions.add(invertSelectionAction);
+        actions.add(selectionGrowAction);
+        actions.add(selectionShrinkAction);
+        actions.add(selectionInvertAction);
         actions.add(selectShortestPathAction);
-        actions.add(panAndZoomToSelectedAction);
+        actions.add(zoomToFitSelectedAction);
 
         undoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
         redoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
 
-        copyGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
+        graphCopyAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
         pasteGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
         deleteGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         cutGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
         addNodeAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, KeyEvent.CTRL_DOWN_MASK));
         editNodesAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
-        foldGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACELEFT, KeyEvent.CTRL_DOWN_MASK));
-        unfoldGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACERIGHT, KeyEvent.CTRL_DOWN_MASK));
+        graphFoldAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACELEFT, KeyEvent.CTRL_DOWN_MASK));
+        graphUnfoldAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACERIGHT, KeyEvent.CTRL_DOWN_MASK));
         isolateGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
         selectAllAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
-        growSelectionAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, KeyEvent.CTRL_DOWN_MASK));
-        shrinkSelectionAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_DOWN_MASK));
-        invertSelectionAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
+        selectionGrowAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, KeyEvent.CTRL_DOWN_MASK));
+        selectionShrinkAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_DOWN_MASK));
+        selectionInvertAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
 
 
         menu.add(undoAction);
         menu.add(redoAction);
         menu.addSeparator();
         menu.add(selectAllAction);
-        menu.add(growSelectionAction);
-        menu.add(shrinkSelectionAction);
-        menu.add(invertSelectionAction);
+        menu.add(selectionGrowAction);
+        menu.add(selectionShrinkAction);
+        menu.add(selectionInvertAction);
         menu.add(selectShortestPathAction);
-        menu.add(panAndZoomToSelectedAction);
-        menu.add(copyGraphAction);
+        menu.add(zoomToFitSelectedAction);
+        menu.add(graphCopyAction);
         menu.add(cutGraphAction);
         menu.add(pasteGraphAction);
         menu.add(deleteGraphAction);
@@ -492,19 +492,19 @@ public class Donatello extends JPanel {
         menu.add(editNodesAction);
         menu.add(forciblyUpdateNodesAction);
         menu.addSeparator();
-        menu.add(foldGraphAction);
-        menu.add(unfoldGraphAction);
+        menu.add(graphFoldAction);
+        menu.add(graphUnfoldAction);
         menu.add(isolateGraphAction);
 
         popupBar.add(addNodeAction);
         popupBar.add(editNodesAction);
         popupBar.add(forciblyUpdateNodesAction);
         popupBar.addSeparator();
-        popupBar.add(foldGraphAction);
-        popupBar.add(unfoldGraphAction);
+        popupBar.add(graphFoldAction);
+        popupBar.add(graphUnfoldAction);
         popupBar.add(isolateGraphAction);
         popupBar.addSeparator();
-        popupBar.add(copyGraphAction);
+        popupBar.add(graphCopyAction);
         popupBar.add(cutGraphAction);
         popupBar.add(pasteGraphAction);
         popupBar.addSeparator();

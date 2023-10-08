@@ -4,7 +4,7 @@ import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.AddNodePanel;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.edits.AddNodeEdit;
+import com.marginallyclever.donatello.edits.NodeAddEdit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -37,7 +37,7 @@ public class AddNodeAction extends AbstractAction {
         Node n = AddNodePanel.runAsDialog((JFrame)SwingUtilities.getWindowAncestor(editor));
         if(n!=null) {
             n.setPosition(editor.getPaintArea().transformMousePoint(editor.getPopupPoint()));
-            editor.addEdit(new AddNodeEdit((String)this.getValue(Action.NAME),editor,n));
+            editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
         }
     }
 }

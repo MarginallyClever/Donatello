@@ -1,14 +1,17 @@
 package com.marginallyclever.donatello.actions;
 
+import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Updates all dirty {@link com.marginallyclever.nodegraphcore.Node}s in the editor's graph.  It cannot be undone.
+ * Invert the selection.
  */
-public class UpdateGraphAction extends AbstractAction {
+public class SelectionInvertAction extends AbstractAction {
     /**
      * The editor being affected.
      */
@@ -19,7 +22,7 @@ public class UpdateGraphAction extends AbstractAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public UpdateGraphAction(String name, Donatello editor) {
+    public SelectionInvertAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
@@ -29,11 +32,9 @@ public class UpdateGraphAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            editor.getGraph().update();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        List<Node> difference = new ArrayList<>(editor.getGraph().getNodes());
+        difference.removeAll(editor.getSelectedNodes());
+        editor.setSelectedNodes(difference);
         editor.repaint();
     }
 }

@@ -3,7 +3,6 @@ package com.marginallyclever.donatello.organize;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.NodeFactory;
 import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.donatello.AddNodePanel;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.ReorderEdit;
 
@@ -13,6 +12,9 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
+/**
+ * A panel to execute {@link ReorderEdit}s on a graph.
+ */
 public class OrganizeGraphPanel extends JPanel {
     private final Donatello editor;
     private final Graph myGraph;
@@ -93,8 +95,7 @@ public class OrganizeGraphPanel extends JPanel {
 
                     return true;
                 }
-                catch (UnsupportedFlavorException e) {}
-                catch (IOException e) {}
+                catch (UnsupportedFlavorException | IOException ignored) {}
 
                 return false;
             }
@@ -115,20 +116,5 @@ public class OrganizeGraphPanel extends JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(frame);
         dialog.setVisible(true);
-    }
-
-    /**
-     * main entry point.  Good for independent test.
-     * @param args command line arguments.
-     */
-    public static void main(String[] args) throws Exception {
-        NodeFactory.loadRegistries();
-
-        JFrame frame = new JFrame(AddNodePanel.class.getSimpleName());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.add(new AddNodePanel());
-        frame.pack();
-        frame.setVisible(true);
     }
 }

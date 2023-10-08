@@ -3,7 +3,7 @@ package com.marginallyclever.donatello.actions.undoable;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.EditorAction;
-import com.marginallyclever.donatello.edits.PasteGraphEdit;
+import com.marginallyclever.donatello.edits.GraphPasteEdit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +32,7 @@ public class PasteGraphAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        editor.addEdit(new PasteGraphEdit((String)this.getValue(Action.NAME),editor,editor.getCopiedGraph()));
+        editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,editor.getCopiedGraph()));
     }
 
     @Override

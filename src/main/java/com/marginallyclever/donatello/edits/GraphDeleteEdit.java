@@ -10,14 +10,14 @@ import javax.swing.undo.CannotUndoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeleteGraphEdit extends SignificantUndoableEdit {
+public class GraphDeleteEdit extends SignificantUndoableEdit {
     private final String name;
     protected final Donatello editor;
     private final List<Node> nodes = new ArrayList<>();
     private final List<Connection> interiorConnections = new ArrayList<>();
     private final List<Connection> exteriorConnections = new ArrayList<>();
 
-    public DeleteGraphEdit(String name, Donatello editor, List<Node> selectedNodes) {
+    public GraphDeleteEdit(String name, Donatello editor, List<Node> selectedNodes) {
         super();
         this.name = name;
         this.editor = editor;

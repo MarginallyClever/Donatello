@@ -3,7 +3,7 @@ package com.marginallyclever.donatello.actions.undoable;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.EditorAction;
-import com.marginallyclever.donatello.edits.DeleteGraphEdit;
+import com.marginallyclever.donatello.edits.GraphDeleteEdit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,7 @@ public class DeleteGraphAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        editor.addEdit(new DeleteGraphEdit((String)this.getValue(Action.NAME),editor,editor.getSelectedNodes()));
+        editor.addEdit(new GraphDeleteEdit((String)this.getValue(Action.NAME),editor,editor.getSelectedNodes()));
     }
 
     @Override

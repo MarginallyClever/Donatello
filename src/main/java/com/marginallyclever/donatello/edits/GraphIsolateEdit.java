@@ -1,24 +1,25 @@
 package com.marginallyclever.donatello.edits;
 
+import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PasteGraphEdit extends SignificantUndoableEdit {
+public class GraphIsolateEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
-    private final Graph copiedGraph;
-    private final Point m;
+    private final List<Connection> connections = new ArrayList<>();
 
-    public PasteGraphEdit(String name, Donatello editor, Graph graph) {
+    public GraphIsolateEdit(String name, Donatello editor, List<Node> selectedNodes) {
         super();
         this.name = name;
         this.editor = editor;
-        this.copiedGraph = graph.deepCopy();
-        this.m = editor.getPaintArea().transformMousePoint(editor.getMousePosition());
+        connections.addAll(editor.getGraph().getExteriorConnections(selectedNodes));
         doIt();
     }
 
@@ -30,11 +31,8 @@ public class PasteGraphEdit extends SignificantUndoableEdit {
     private void doIt() {
         editor.lockClock();
         try {
-            editor.getGraph().add(copiedGraph);
-            editor.setSelectedNodes(copiedGraph.getNodes());
-            copiedGraph.updateBounds();
-            Rectangle r = copiedGraph.getBounds();
-            editor.moveSelectedNodes(m.x - r.x, m.y - r.y);
+            Graph graph = editor.getGraph();
+            graph.getConnections().removeAll(connections);
             editor.repaint();
         }
         finally {
@@ -46,8 +44,8 @@ public class PasteGraphEdit extends SignificantUndoableEdit {
     public void undo() throws CannotUndoException {
         editor.lockClock();
         try {
-            editor.getGraph().remove(copiedGraph);
-            editor.setSelectedNodes(null);
+            Graph g = editor.getGraph();
+            for(Connection c : connections) g.add(c);
             editor.repaint();
         }
         finally {

@@ -18,7 +18,7 @@ import java.util.List;
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class UnfoldGraphAction extends AbstractAction implements EditorAction {
+public class GraphUnfoldAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -29,7 +29,7 @@ public class UnfoldGraphAction extends AbstractAction implements EditorAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public UnfoldGraphAction(String name, Donatello editor) {
+    public GraphUnfoldAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }

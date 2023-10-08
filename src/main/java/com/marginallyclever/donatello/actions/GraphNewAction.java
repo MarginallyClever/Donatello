@@ -1,12 +1,16 @@
 package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.organize.OrganizeGraphPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class OrganizeGraphAction extends AbstractAction {
+/**
+ * Clears the editor's current {@link com.marginallyclever.nodegraphcore.Graph}.
+ * @author Dan Royer
+ * @since 2022-02-21
+ */
+public class GraphNewAction extends AbstractAction {
     /**
      * The editor being affected.
      */
@@ -17,13 +21,13 @@ public class OrganizeGraphAction extends AbstractAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public OrganizeGraphAction(String name, Donatello editor) {
+    public GraphNewAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        OrganizeGraphPanel.runAsDialog((String)this.getValue(Action.NAME),editor);
+        editor.clear();
     }
 }

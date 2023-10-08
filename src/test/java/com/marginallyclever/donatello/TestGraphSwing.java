@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello;
 
+import com.marginallyclever.donatello.actions.GraphSaveAction;
 import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.donatello.actions.SaveGraphAction;
 import com.marginallyclever.donatello.nodes.images.LoadImage;
 import com.marginallyclever.donatello.nodes.images.PrintImage;
 import org.junit.jupiter.api.AfterAll;
@@ -68,7 +68,7 @@ public class TestGraphSwing {
 
     @Test
     public void testAddExtension() {
-        SaveGraphAction actionSaveGraph = new SaveGraphAction("Save",null);
+        GraphSaveAction actionSaveGraph = new GraphSaveAction("Save",null);
         assertEquals("test.graph",actionSaveGraph.addExtensionIfNeeded("test"));
         assertEquals("test.graph",actionSaveGraph.addExtensionIfNeeded("test.graph"));
     }

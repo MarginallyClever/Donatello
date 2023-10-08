@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Find and de-select the outer-most {@link Node}s from the list of selected nodes.
  */
-public class ShrinkSelectionAction extends AbstractAction implements EditorAction {
+public class SelectionShrinkAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -23,7 +23,7 @@ public class ShrinkSelectionAction extends AbstractAction implements EditorActio
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public ShrinkSelectionAction(String name, Donatello editor) {
+    public SelectionShrinkAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }

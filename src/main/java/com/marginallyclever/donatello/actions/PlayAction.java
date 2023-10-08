@@ -8,19 +8,19 @@ import java.awt.event.ActionEvent;
 
 public class PlayAction extends AbstractAction implements EditorAction {
     private final Donatello editor;
-    private final UpdateGraphAction updateGraphAction;
+    private final GraphUpdateAction graphUpdateAction;
 
-    public PlayAction(String name, Donatello editor, UpdateGraphAction updateGraphAction) {
+    public PlayAction(String name, Donatello editor, GraphUpdateAction graphUpdateAction) {
         super(name);
         this.editor = editor;
-        this.updateGraphAction = updateGraphAction;
+        this.graphUpdateAction = graphUpdateAction;
         updateButtonState();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         boolean keepGoing = !editor.getKeepGoing();
         editor.setKeepGoing(keepGoing);
-        updateGraphAction.setEnabled(keepGoing);
+        graphUpdateAction.setEnabled(keepGoing);
         updateButtonState();
     }
 

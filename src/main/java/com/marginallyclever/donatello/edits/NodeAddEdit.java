@@ -1,21 +1,23 @@
 package com.marginallyclever.donatello.edits;
 
-import com.marginallyclever.nodegraphcore.Connection;
+import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.donatello.Donatello;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RemoveConnectionEdit extends SignificantUndoableEdit {
+public class NodeAddEdit extends SignificantUndoableEdit {
     private final String name;
     private final Donatello editor;
-    private final Connection connection;
+    private final Node node;
 
-    public RemoveConnectionEdit(String name, Donatello editor, Connection connection) {
+    public NodeAddEdit(String name, Donatello editor, Node node) {
         super();
         this.name = name;
         this.editor = editor;
-        this.connection = connection;
+        this.node = node;
         doIt();
     }
 
@@ -24,26 +26,35 @@ public class RemoveConnectionEdit extends SignificantUndoableEdit {
         return name;
     }
 
+    public void doIt() {
+        editor.lockClock();
+        try {
+            editor.getGraph().add(node);
+            editor.setSelectedNode(node);
+            editor.repaint(node.getRectangle());
+        }
+        finally {
+            editor.unlockClock();
+        }
+    }
+
     @Override
     public void undo() throws CannotUndoException {
         editor.lockClock();
         try {
-            editor.getGraph().add(connection);
-        }
-        finally {
-            editor.unlockClock();
-        }
-        super.undo();
-    }
+            editor.getGraph().remove(node);
 
-    private void doIt() {
-        editor.lockClock();
-        try {
-            editor.getGraph().remove(connection);
+            List<Node> nodes = new ArrayList<>(editor.getSelectedNodes());
+            nodes.remove(node);
+            editor.setSelectedNodes(nodes);
         }
         finally {
             editor.unlockClock();
         }
+
+        editor.repaint(node.getRectangle());
+
+        super.undo();
     }
 
     @Override

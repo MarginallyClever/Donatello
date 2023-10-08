@@ -7,8 +7,8 @@ import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Dock;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
-import com.marginallyclever.donatello.edits.AddConnectionEdit;
-import com.marginallyclever.donatello.edits.RemoveConnectionEdit;
+import com.marginallyclever.donatello.edits.ConnectionAddEdit;
+import com.marginallyclever.donatello.edits.ConnectionRemoveEdit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -207,9 +207,9 @@ public class ConnectionEditTool extends ContextSensitiveTool {
                 Graph graph = editor.getGraph();
                 Connection match = graph.getMatchingConnection(connectionBeingCreated);
                 if(match!=null) {
-                    editor.addEdit(new RemoveConnectionEdit(removeName,editor,match));
+                    editor.addEdit(new ConnectionRemoveEdit(removeName,editor,match));
                 } else {
-                    editor.addEdit(new AddConnectionEdit(addName,editor,new Connection(connectionBeingCreated)));
+                    editor.addEdit(new ConnectionAddEdit(addName,editor,new Connection(connectionBeingCreated)));
                 }
             } else {
                 // if any of the tests failed

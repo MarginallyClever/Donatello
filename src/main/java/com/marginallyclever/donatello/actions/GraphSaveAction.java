@@ -13,7 +13,7 @@ import java.io.FileWriter;
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class SaveGraphAction extends AbstractAction {
+public class GraphSaveAction extends AbstractAction {
     /**
      * The editor being affected.
      */
@@ -29,7 +29,7 @@ public class SaveGraphAction extends AbstractAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public SaveGraphAction(String name, Donatello editor) {
+    public GraphSaveAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }

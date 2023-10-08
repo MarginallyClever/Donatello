@@ -4,7 +4,7 @@ import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.EditorAction;
-import com.marginallyclever.donatello.edits.IsolateGraphEdit;
+import com.marginallyclever.donatello.edits.GraphIsolateEdit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +32,7 @@ public class IsolateGraphAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        editor.addEdit(new IsolateGraphEdit((String)this.getValue(Action.NAME),editor,editor.getSelectedNodes()));
+        editor.addEdit(new GraphIsolateEdit((String)this.getValue(Action.NAME),editor,editor.getSelectedNodes()));
     }
 
     @Override
