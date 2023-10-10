@@ -12,6 +12,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -313,11 +314,8 @@ public class GraphViewPanel extends JPanel {
     public void paintNode(Graphics g, Node n) {
         g.setColor(NODE_COLOR_BACKGROUND);
         paintNodeBackground(g,n);
-
         paintNodeTitleBar(g, n);
-
         paintAllDocks(g, n);
-
         g.setColor(NODE_COLOR_BORDER);
         paintNodeBorder(g, n);
     }
@@ -357,8 +355,7 @@ public class GraphViewPanel extends JPanel {
      */
     private void paintAllDocks(Graphics g, Node n) {
         for(int i=0;i<n.getNumVariables();++i) {
-            Dock<?> v = n.getVariable(i);
-            paintVariable(g,v);
+            paintOneDock(g,n.getVariable(i));
         }
     }
 
@@ -367,7 +364,9 @@ public class GraphViewPanel extends JPanel {
      * @param g the {@link Graphics} context
      * @param v the {@link Dock} to paint.
      */
-    public void paintVariable(Graphics g, Dock<?> v) {
+    public void paintOneDock(Graphics g, Dock<?> v) {
+        final int MAX_CHARS = 10;
+
         Rectangle box = v.getRectangle();
         Rectangle insideBox = getNodeInternalBounds(box);
 
@@ -378,15 +377,38 @@ public class GraphViewPanel extends JPanel {
         // value
         Object vObj = v.getValue();
         if(vObj != null) {
-            String val;
-            int MAX_CHARS = 10;
-            if(vObj instanceof String || vObj instanceof Number || vObj instanceof Boolean || vObj instanceof Double) {
-                val = vObj.toString();
+            if(vObj instanceof BufferedImage) {
+                BufferedImage img = (BufferedImage)vObj;
+                if(img!=null) {
+                    int w = img.getWidth();
+                    int h = img.getHeight();
+                    int max = Math.max(w, h);
+                    int maxW = (int) insideBox.getWidth();
+                    int maxH = (int) insideBox.getHeight();
+                    if (maxW > max) maxW = max;
+                    if (maxH > max) maxH = max;
+                    int x = (int) insideBox.getX();
+                    int y = (int) insideBox.getY();
+                    g.drawImage(img, x, y, maxW, maxH, null);
+                } else {
+                    String val = v.getTypeName();
+                    if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
+                    paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
+                }
             } else {
-                val = v.getTypeName();
+                String val;
+                if (vObj instanceof String
+                        || vObj instanceof Number
+                        || vObj instanceof Boolean
+                        || vObj instanceof Character
+                        || vObj instanceof Enum) {
+                    val = vObj.toString();
+                } else {
+                    val = v.getTypeName();
+                }
+                if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
+                paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
             }
-            if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
-            paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
         }
 
         // internal border
