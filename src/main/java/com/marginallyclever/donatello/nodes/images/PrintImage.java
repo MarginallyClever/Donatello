@@ -28,6 +28,8 @@ public class PrintImage extends Node implements PrintWithGraphics {
     @Override
     public void update() {
         if(image.hasPacketWaiting()) image.receive();
+        if(px.hasPacketWaiting()) px.receive();
+        if(py.hasPacketWaiting()) py.receive();
     }
 
     @Override
