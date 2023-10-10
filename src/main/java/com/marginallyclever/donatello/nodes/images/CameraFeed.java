@@ -39,11 +39,17 @@ public class CameraFeed extends Node {
             try {
                 //System.out.println("loading "+filenameValue);
                 BufferedImage image = captureFrame();
+                if(image==null) return;
+
                 if(contents.outputHasRoom()) {
                     contents.send(new Packet<>(image));
                 }
-                width.send(new Packet<>(image.getWidth()));
-                height.send(new Packet<>(image.getHeight()));
+                if(width.outputHasRoom()) {
+                    width.send(new Packet<>(image.getWidth()));
+                }
+                if(height.outputHasRoom()) {
+                    height.send(new Packet<>(image.getHeight()));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -51,12 +57,13 @@ public class CameraFeed extends Node {
     }
 
     private BufferedImage captureFrame() {
-        // get default webcam and open it
-        Webcam webcam = Webcam.getDefault();
-        webcam.open();
-
-        // get image
-        BufferedImage image = webcam.getImage();
+        BufferedImage image = null;
+        try {
+            Webcam webcam = Webcam.getDefault();
+            webcam.open();
+            image = webcam.getImage();
+        }
+        catch(Exception ignored) {}
 
         return image;
     }
