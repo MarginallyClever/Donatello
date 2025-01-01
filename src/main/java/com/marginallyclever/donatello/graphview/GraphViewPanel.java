@@ -25,60 +25,6 @@ import java.util.List;
  */
 public class GraphViewPanel extends JPanel {
     /**
-     * The default {@link Node} background color.
-     */
-    public static final Color NODE_COLOR_BACKGROUND = Color.WHITE;
-    /**
-     * The default {@link Node} border color.
-     */
-    public static final Color NODE_COLOR_BORDER = Color.BLACK;
-    /**
-     * The default {@link Node} internal border between {@link Dock}s.
-     */
-    public static final Color NODE_COLOR_INTERNAL_BORDER = Color.DARK_GRAY;
-    /**
-     * The default {@link JPanel} background color.
-     */
-    public static final Color PANEL_COLOR_BACKGROUND = Color.LIGHT_GRAY;
-    /**
-     * The default grid color.
-     */
-    public static final Color PANEL_GRID_COLOR = Color.GRAY;
-    /**
-     * size of the grid squares, in pixels.
-     */
-    public static int GRID_SIZE=20;
-    /**
-     * The default {@link Node} font color.
-     */
-    public static final Color NODE_COLOR_FONT_CLEAN = Color.BLACK;
-    /**
-     * The default {@link Node} font color for variables when <pre>getIsDirty()</pre>. is true.
-     */
-    public static final Color NODE_COLOR_FONT_DIRTY = Color.RED;
-    /**
-     * The default {@link Node} tile bar font color
-     */
-    public static final Color NODE_COLOR_TITLE_FONT = Color.WHITE;
-    /**
-     * The default {@link Node} tile bar background color
-     */
-    public static final Color NODE_COLOR_TITLE_BACKGROUND = Color.BLACK;
-    /**
-     * The default {@link Node} female connection point color.
-     */
-    public static final Color CONNECTION_POINT_COLOR = Color.LIGHT_GRAY;
-    /**
-     * The default {@link Node} male connection point color.
-     */
-    public static final Color CONNECTION_COLOR = Color.BLUE;
-
-    /**
-     * The default {@link Node} outer border radius.
-     */
-    public static final int CORNER_RADIUS = 5;
-
-    /**
      * Controls horizontal text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
@@ -93,6 +39,7 @@ public class GraphViewPanel extends JPanel {
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_CENTER=2;
+
     /**
      * Controls vertical text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
@@ -127,7 +74,7 @@ public class GraphViewPanel extends JPanel {
     public GraphViewPanel(Graph model) {
         super();
         this.model=model;
-        this.setBackground(PANEL_COLOR_BACKGROUND);
+        this.setBackground(GraphViewSettings.PANEL_COLOR_BACKGROUND);
         this.setFocusable(true);
 
         addCameraControls();
@@ -207,7 +154,7 @@ public class GraphViewPanel extends JPanel {
 
         for(Node n : model.getNodes()) paintNode(g2,n);
 
-        g2.setColor(CONNECTION_COLOR);
+        g2.setColor(GraphViewSettings.CONNECTION_COLOR);
         for(Connection c : model.getConnections()) paintConnection(g2,c);
 
         if(settings.get(GraphViewSettings.DRAW_CURSOR)) paintCursor(g2);
@@ -217,19 +164,19 @@ public class GraphViewPanel extends JPanel {
     }
 
     private void paintBackgroundGrid(Graphics g) {
-        g.setColor(PANEL_GRID_COLOR);
+        g.setColor(GraphViewSettings.PANEL_GRID_COLOR);
 
         Rectangle r = getBounds();
-        int width = (int)( r.getWidth()*zoom )+GRID_SIZE*2;
-        int height = (int)( r.getHeight()*zoom )+GRID_SIZE*2;
+        int width = (int)( r.getWidth()*zoom )+GraphViewSettings.GRID_SIZE*2;
+        int height = (int)( r.getHeight()*zoom )+GraphViewSettings.GRID_SIZE*2;
         int size = Math.max(width,height);
-        int startX = camera.x - width/2 - GRID_SIZE;
-        int startY = camera.y - height/2 - GRID_SIZE;
+        int startX = camera.x - width/2 - GraphViewSettings.GRID_SIZE;
+        int startY = camera.y - height/2 - GraphViewSettings.GRID_SIZE;
 
-        startX -= startX % GRID_SIZE;
-        startY -= startY % GRID_SIZE;
+        startX -= startX % GraphViewSettings.GRID_SIZE;
+        startY -= startY % GraphViewSettings.GRID_SIZE;
 
-        for(int i = 0; i <= size; i+=GRID_SIZE) {
+        for(int i = 0; i <= size; i+=GraphViewSettings.GRID_SIZE) {
             g.drawLine(startX+i,startY,startX+i,startY+height);
             g.drawLine(startX,startY+i,startX+width,startY+i);
         }
@@ -312,11 +259,11 @@ public class GraphViewPanel extends JPanel {
      * @param n the {@link Node} to paint.
      */
     public void paintNode(Graphics g, Node n) {
-        g.setColor(NODE_COLOR_BACKGROUND);
+        g.setColor(GraphViewSettings.NODE_COLOR_BACKGROUND);
         paintNodeBackground(g,n);
         paintNodeTitleBar(g, n);
         paintAllDocks(g, n);
-        g.setColor(NODE_COLOR_BORDER);
+        g.setColor(GraphViewSettings.NODE_COLOR_BORDER);
         paintNodeBorder(g, n);
     }
 
@@ -327,7 +274,7 @@ public class GraphViewPanel extends JPanel {
      */
     public void paintNodeBackground(Graphics g, Node n) {
         Rectangle r = n.getRectangle();
-        g.fillRoundRect(r.x, r.y, r.width, r.height, CORNER_RADIUS, CORNER_RADIUS);
+        g.fillRoundRect(r.x, r.y, r.width, r.height, GraphViewSettings.CORNER_RADIUS, GraphViewSettings.CORNER_RADIUS);
     }
 
     /**
@@ -337,12 +284,12 @@ public class GraphViewPanel extends JPanel {
      */
     public void paintNodeTitleBar(Graphics g, Node n) {
         Rectangle r = n.getRectangle();
-        g.setColor(NODE_COLOR_TITLE_BACKGROUND);
-        g.fillRoundRect(r.x, r.y, r.width, CORNER_RADIUS*2, CORNER_RADIUS, CORNER_RADIUS);
-        g.fillRect(r.x, r.y+CORNER_RADIUS, r.width+1, Node.TITLE_HEIGHT -CORNER_RADIUS);
+        g.setColor(GraphViewSettings.NODE_COLOR_TITLE_BACKGROUND);
+        g.fillRoundRect(r.x, r.y, r.width, GraphViewSettings.CORNER_RADIUS*2, GraphViewSettings.CORNER_RADIUS, GraphViewSettings.CORNER_RADIUS);
+        g.fillRect(r.x, r.y+GraphViewSettings.CORNER_RADIUS, r.width+1, Node.TITLE_HEIGHT -GraphViewSettings.CORNER_RADIUS);
 
         Rectangle box = getNodeInternalBounds(n.getRectangle());
-        g.setColor(NODE_COLOR_TITLE_FONT);
+        g.setColor(GraphViewSettings.NODE_COLOR_TITLE_FONT);
         box.height = Node.TITLE_HEIGHT;
         paintText(g,n.getLabel(),box,ALIGN_LEFT,ALIGN_CENTER);
         paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
@@ -370,31 +317,11 @@ public class GraphViewPanel extends JPanel {
         Rectangle box = v.getRectangle();
         Rectangle insideBox = getNodeInternalBounds(box);
 
-        // label
-        g.setColor(NODE_COLOR_FONT_CLEAN);
-        paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_CENTER);
-
         // value
         Object vObj = v.getValue();
         if(vObj != null) {
             if(vObj instanceof BufferedImage) {
-                BufferedImage img = (BufferedImage)vObj;
-                if(img!=null) {
-                    int w = img.getWidth();
-                    int h = img.getHeight();
-                    int max = Math.max(w, h);
-                    int maxW = (int) insideBox.getWidth();
-                    int maxH = (int) insideBox.getHeight();
-                    if (maxW > max) maxW = max;
-                    if (maxH > max) maxH = max;
-                    int x = (int) insideBox.getX();
-                    int y = (int) insideBox.getY();
-                    g.drawImage(img, x, y, maxW, maxH, null);
-                } else {
-                    String val = v.getTypeName();
-                    if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
-                    paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
-                }
+                paintDockBufferedImage(g,(BufferedImage)vObj,insideBox);
             } else {
                 String val;
                 if (vObj instanceof String
@@ -407,17 +334,35 @@ public class GraphViewPanel extends JPanel {
                     val = v.getTypeName();
                 }
                 if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
+                g.setColor(GraphViewSettings.NODE_COLOR_FONT_CLEAN);
                 paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
             }
         }
 
+        // label
+        g.setColor(GraphViewSettings.NODE_COLOR_FONT_CLEAN);
+        paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_CENTER);
+
         // internal border
-        g.setColor(NODE_COLOR_INTERNAL_BORDER);
+        g.setColor(GraphViewSettings.NODE_COLOR_INTERNAL_BORDER);
         g.drawLine((int)box.getMinX(),(int)box.getMinY(),(int)box.getMaxX(),(int)box.getMinY());
 
         // connection points
-        g.setColor(CONNECTION_POINT_COLOR);
+        g.setColor(GraphViewSettings.CONNECTION_POINT_COLOR);
         paintVariableConnectionPoints(g,v);
+    }
+
+    private void paintDockBufferedImage(Graphics g, BufferedImage img, Rectangle insideBox) {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int max = Math.max(w, h);
+        int maxW = (int) insideBox.getWidth();
+        int maxH = (int) insideBox.getHeight();
+        if (maxW > max) maxW = max;
+        if (maxH > max) maxH = max;
+        int x = (int) insideBox.getX();
+        int y = (int) insideBox.getY();
+        g.drawImage(img, x, y, maxW, maxH, null);
     }
 
     /**
@@ -442,7 +387,7 @@ public class GraphViewPanel extends JPanel {
      */
     public void paintNodeBorder(Graphics g,Node n) {
         Rectangle r = n.getRectangle();
-        g.drawRoundRect(r.x, r.y, r.width, r.height,CORNER_RADIUS,CORNER_RADIUS);
+        g.drawRoundRect(r.x, r.y, r.width, r.height,GraphViewSettings.CORNER_RADIUS,GraphViewSettings.CORNER_RADIUS);
     }
 
     /**
@@ -606,6 +551,10 @@ public class GraphViewPanel extends JPanel {
         this.zoom = Math.max(1, zoom);
     }
 
+    public GraphViewSettings getSettings() {
+        return settings;
+    }
+
     /**
      * pan and zoom the camera to fit the rectangle in the view.
      * @param rectangle the rectangle to fit.
@@ -620,7 +569,25 @@ public class GraphViewPanel extends JPanel {
         setZoom(s);
     }
 
-    public GraphViewSettings getSettings() {
-        return settings;
+    /**
+     * pan and zoom the camera such that it can see all the selected nodes.
+     * @param selectedNodes the nodes to fit.  if there are none, allow all.
+     */
+    public void moveAndZoomToFit(List<Node> selectedNodes) {
+        Rectangle r = new Rectangle();
+        if(selectedNodes.isEmpty()) {
+            // consider all
+            for(Node n : model.getNodes()) {
+                r.add(n.getRectangle());
+            }
+        } else {
+            // add selected
+            for(Node n : model.getNodes()) {
+                if (selectedNodes.contains(n)) {
+                    r.add(n.getRectangle());
+                }
+            }
+        }
+        moveAndZoomToFit(r);
     }
 }

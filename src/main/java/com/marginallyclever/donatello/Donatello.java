@@ -243,7 +243,7 @@ public class Donatello extends JPanel {
         tools.add(moveTool);
         tools.add(rectangleSelectTool);
 
-        swapTool(tools.get(0));
+        swapTool(tools.getFirst());
     }
 
     private JMenu setupHelpMenu() {
@@ -278,7 +278,7 @@ public class Donatello extends JPanel {
     private JMenu setupToolMenuAndToolBar() {
         JMenu menu = new JMenu("Tools");
 
-        addPlayAndPause(menu);
+        addPlayAndPause();
 
         JMenuItem showToolBar = new JCheckBoxMenuItem("Show tool bar");
         menu.add(showToolBar);
@@ -304,6 +304,13 @@ public class Donatello extends JPanel {
         menu.add(showCursor);
         showCursor.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_CURSOR,showCursor.isSelected()));
 
+        menu.add(new JSeparator());
+
+        JMenuItem zoomToFit = new JMenuItem("Zoom to fit");
+        menu.add(zoomToFit);
+        zoomToFit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+        zoomToFit.addActionListener(e -> paintArea.moveAndZoomToFit(selectedNodes));
+
         return menu;
     }
 
@@ -316,7 +323,7 @@ public class Donatello extends JPanel {
         paintArea.repaint();
     }
 
-    private void addPlayAndPause(JMenu menu) {
+    private void addPlayAndPause() {
         ButtonGroup clockGroup = new ButtonGroup();
 
         GraphUpdateAction graphUpdateAction = new GraphUpdateAction("Step",this);
