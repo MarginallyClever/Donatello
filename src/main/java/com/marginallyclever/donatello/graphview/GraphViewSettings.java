@@ -68,7 +68,7 @@ public class GraphViewSettings {
      */
     private int cornerRadius = 5;
 
-    private static int DRAW_BACKGROUND = 0;
+    private static int drawBackgroundGrid = 0;
     private static int DRAW_CURSOR = 1;
     private static int DRAW_ORIGIN = 2;
 
@@ -79,7 +79,7 @@ public class GraphViewSettings {
     }
 
     public void reset() {
-        set(DRAW_BACKGROUND,false);
+        set(drawBackgroundGrid,false);
         set(DRAW_CURSOR,false);
         set(DRAW_ORIGIN,false);
     }
@@ -108,7 +108,7 @@ public class GraphViewSettings {
         json.put("connectionColor",connectionColor.getRGB());
         json.put("cornerRadius",cornerRadius);
 
-        json.put("drawBackground",get(DRAW_BACKGROUND));
+        json.put("drawBackground",get(drawBackgroundGrid));
         json.put("drawCursor",get(DRAW_CURSOR));
         json.put("drawOrigin",get(DRAW_ORIGIN));
 
@@ -130,7 +130,7 @@ public class GraphViewSettings {
         json.optInt("connectionColor",connectionColor.getRGB());
         json.optInt("cornerRadius",cornerRadius);
 
-        setDrawBackground(json.optBoolean("drawBackground",getDrawBackground()));
+        setDrawBackground(json.optBoolean("drawBackground", getDrawBackgroundGrid()));
         setDrawCursor(json.optBoolean("drawCursor",getDrawCursor()));
         setDrawOrigin(json.optBoolean("drawOrigin",getDrawOrigin()));
     }
@@ -241,12 +241,12 @@ public class GraphViewSettings {
         this.cornerRadius = radius;
     }
 
-    public boolean getDrawBackground() {
-        return get(DRAW_BACKGROUND);
+    public boolean getDrawBackgroundGrid() {
+        return get(drawBackgroundGrid);
     }
 
-    public void setDrawBackground(boolean drawBackground) {
-        set(GraphViewSettings.DRAW_BACKGROUND, drawBackground);
+    public void setDrawBackground(boolean drawBackgroundGrid) {
+        set(GraphViewSettings.drawBackgroundGrid, drawBackgroundGrid);
     }
 
     public boolean getDrawCursor() {

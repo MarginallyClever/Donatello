@@ -304,9 +304,14 @@ public class Donatello extends JPanel {
         menu.add(settingsPanel);
         settingsPanel.addActionListener(e -> {
             GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
-            // TODO put in a dialog
-            // TODO load
-            // TODO save
+            // put in a modal dialog
+            int result = JOptionPane.showConfirmDialog(this, gvSettingsPanel, "Preferences", JOptionPane.OK_CANCEL_OPTION);
+            if(result==JOptionPane.OK_OPTION) {
+                paintArea.saveSettings();
+            } else {
+                paintArea.loadSettings();
+            }
+
             paintArea.repaint();
         });
         return menu;
@@ -712,6 +717,10 @@ public class Donatello extends JPanel {
         updateClock.unlock();
     }
 
+    public GraphViewPanel getGraphView() {
+        return paintArea;
+    }
+
     /**
      * Main entry point.  Good for independent test.
      * @param args command line arguments.
@@ -730,7 +739,7 @@ public class Donatello extends JPanel {
 
         Donatello panel = new Donatello(new Graph());
 
-        JFrame frame = new JFrame("Donatello Node Graph Editor");
+        JFrame frame = new JFrame("Donatello");
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(new Dimension(1200,800));
@@ -738,9 +747,5 @@ public class Donatello extends JPanel {
         frame.add(panel);
         panel.setupMenuBar();
         frame.setVisible(true);
-    }
-
-    public GraphViewPanel getGraphView() {
-        return paintArea;
     }
 }

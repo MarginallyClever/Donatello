@@ -1,5 +1,7 @@
 package com.marginallyclever.donatello;
 
+import com.marginallyclever.donatello.graphview.GraphViewSettingsPanel;
+
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
@@ -182,5 +184,19 @@ public class PanelHelper {
         panel.add(slider,BorderLayout.CENTER);
         panel.add(f,BorderLayout.EAST);
         return panel;
+    }
+
+    public static void addCheckbox(JPanel parent, String label, Supplier<Boolean> start, Consumer<Boolean> end, GridBagConstraints gbc) {
+        JCheckBox checkBox = new JCheckBox("",start.get());
+        checkBox.addActionListener(e->end.accept(checkBox.isSelected()));
+        PanelHelper.addLabelAndComponent(parent,label,checkBox,gbc);
+    }
+
+    public static void addSeparator(JPanel parent, GridBagConstraints gbc) {
+        var old = gbc.gridwidth;
+        gbc.gridwidth = 2;
+        parent.add(new JSeparator(),gbc);
+        gbc.gridwidth = old;
+        gbc.gridy++;
     }
 }

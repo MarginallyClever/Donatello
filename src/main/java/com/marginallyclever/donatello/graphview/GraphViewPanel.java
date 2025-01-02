@@ -4,7 +4,6 @@ import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.*;
 import org.json.JSONObject;
-import org.reflections.serializers.JsonSerializer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +15,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -174,11 +171,12 @@ public class GraphViewPanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
 
+        setBackground(settings.getPanelColorBackground());
         super.paintComponent(g);
 
         g2.transform(getTransform());
 
-        if(settings.getDrawBackground()) paintBackgroundGrid(g);
+        if(settings.getDrawBackgroundGrid()) paintBackgroundGrid(g);
         paintNodesInBackground(g);
 
         for(Node n : model.getNodes()) paintNode(g2,n);
