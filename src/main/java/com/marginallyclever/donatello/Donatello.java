@@ -25,6 +25,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * {@link Donatello} is a Graphic User Interface to edit a {@link Graph}.
@@ -260,12 +261,12 @@ public class Donatello extends JPanel {
         BrowseURLAction community = new BrowseURLAction("Join the community","https://discord.gg/TbNHKz6rpy");
         BrowseURLAction idea = new BrowseURLAction("I have an idea!","https://github.com/MarginallyClever/GraphCore/issues");
 
-        community.putValue(Action.SMALL_ICON, new UnicodeIcon("🤝"));
-        drink.putValue(Action.SMALL_ICON, new UnicodeIcon("🍹"));
-        update.putValue(Action.SMALL_ICON, new UnicodeIcon("📰"));
-        problem.putValue(Action.SMALL_ICON, new UnicodeIcon("☏"));
-        idea.putValue(Action.SMALL_ICON, new UnicodeIcon("💭"));
-        problem.putValue(Action.SMALL_ICON, new UnicodeIcon("⚡"));
+        community.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-discord-16.png"))));
+        drink.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cocktail-16.png"))));
+        update.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-newspaper-16.png"))));
+        problem.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-telephone-16.png"))));
+        idea.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-light-bulb-16.png"))));
+        problem.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-bug-16.png"))));
 
         menu.add(community);
         menu.add(drink);
@@ -297,10 +298,12 @@ public class Donatello extends JPanel {
 
         JMenuItem zoomToFit = new JMenuItem("Zoom to fit");
         menu.add(zoomToFit);
+        zoomToFit.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-zoom-to-fit-16.png"))));
         zoomToFit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
         zoomToFit.addActionListener(e -> paintArea.moveAndZoomToFit(selectedNodes));
 
         JMenuItem settingsPanel = new JMenuItem("Preferences");
+        settingsPanel.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
         menu.add(settingsPanel);
         settingsPanel.addActionListener(e -> {
             GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
@@ -331,7 +334,7 @@ public class Donatello extends JPanel {
 
         GraphUpdateAction graphUpdateAction = new GraphUpdateAction("Step",this);
         graphUpdateAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_U, 0));
-        graphUpdateAction.putValue(Action.SMALL_ICON,new UnicodeIcon("+1"));
+        graphUpdateAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-end-16.png"))));
         JToggleButton stepButton = new JToggleButton(graphUpdateAction);
 
         PlayAction playAction = new PlayAction("Play",this, graphUpdateAction);
@@ -346,7 +349,7 @@ public class Donatello extends JPanel {
         };
         JToggleButton resetButton = new JToggleButton(resetAction);
         resetAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_R,KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
-        resetAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏪"));
+        resetAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-rewind-16.png"))));
 
         clockGroup.add(stepButton);
         clockGroup.add(playButton);
@@ -369,15 +372,14 @@ public class Donatello extends JPanel {
         GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
         GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
 
-        graphNewAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🌱"));
-        loadGraphAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🗁"));
-        graphSaveAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🖫"));
-        graphPrintAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🖶"));
-        graphStraightenAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🧹"));
-        graphStraightenAction.putValue(Action.SMALL_ICON,new UnicodeIcon("📐"));
-        graphOrganizeAction.putValue(Action.SMALL_ICON,new UnicodeIcon("📝"));
+        graphNewAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-new-16.png"))));
+        loadGraphAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
+        graphSaveAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
+        graphPrintAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-print-16.png"))));
+        graphStraightenAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-square-ruler-16.png"))));
+        graphOrganizeAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-sorting-16.png"))));
 
-        //TODO toggleKeepUpdatingAction.putValue(Action.SMALL_ICON,new UnicodeIcon("🔃"));
+        //TODO toggleKeepUpdatingAction.putValue(Action.SMALL_ICON,new ImageIcon("🔃"));
 
         actions.add(graphNewAction);
         actions.add(graphSaveAction);
@@ -429,23 +431,25 @@ public class Donatello extends JPanel {
         SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
         ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
 
-        undoAction.putValue(Action.SMALL_ICON, new UnicodeIcon("↪"));
-        redoAction.putValue(Action.SMALL_ICON, new UnicodeIcon("↩"));
+        undoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-undo-16.png"))));
+        redoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-redo-16.png"))));
 
-        graphCopyAction.putValue(Action.SMALL_ICON, new UnicodeIcon("🗐"));
-        pasteGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("📎"));
-        deleteGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("🗑"));
-        cutGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("✂"));
-        addNodeAction.putValue(Action.SMALL_ICON, new UnicodeIcon("➕"));
-        editNodesAction.putValue(Action.SMALL_ICON, new UnicodeIcon("✏"));
-        forciblyUpdateNodesAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏩"));
-        graphFoldAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⫏"));
-        graphUnfoldAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⟃"));
-        isolateGraphAction.putValue(Action.SMALL_ICON, new UnicodeIcon("𝄄"));
-        selectionGrowAction.putValue(Action.SMALL_ICON, new UnicodeIcon(">"));
-        selectionShrinkAction.putValue(Action.SMALL_ICON, new UnicodeIcon("<"));
-        selectShortestPathAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⟵"));
-        zoomToFitSelectedAction.putValue(Action.SMALL_ICON, new UnicodeIcon("⏬"));
+        graphCopyAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-copy-16.png"))));
+        pasteGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-paste-16.png"))));
+        deleteGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-delete-16.png"))));
+        cutGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cut-16.png"))));
+        addNodeAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-add-16.png"))));
+        editNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-edit-16.png"))));
+        forciblyUpdateNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-update-16.png"))));
+        graphFoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-fold-16.png"))));
+        graphUnfoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-unfold-16.png"))));
+        isolateGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-isolate-16.png"))));
+        selectAllAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-select-all-16.png"))));
+        selectionGrowAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-expand-16.png"))));
+        selectionShrinkAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-collapse-16.png"))));
+        selectionInvertAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-invert-16.png"))));
+        selectShortestPathAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-path-16.png"))));
+        zoomToFitSelectedAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-zoom-to-fit-16.png"))));
 
         actions.add(undoAction);
         actions.add(redoAction);

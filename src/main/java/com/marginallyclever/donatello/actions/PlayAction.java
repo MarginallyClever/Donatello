@@ -1,10 +1,10 @@
 package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.UnicodeIcon;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 public class PlayAction extends AbstractAction implements EditorAction {
     private final Donatello editor;
@@ -26,7 +26,10 @@ public class PlayAction extends AbstractAction implements EditorAction {
 
     private void updateButtonState() {
         boolean keepGoing = editor.getKeepGoing();
-        this.putValue(Action.SMALL_ICON, keepGoing ? new UnicodeIcon("⏸") : new UnicodeIcon("▶"));
+        this.putValue(Action.SMALL_ICON, keepGoing
+                ? new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-pause-16.png")))
+                : new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-play-16.png")))
+        );
         this.putValue(Action.NAME, keepGoing ? "Pause" : "Play");
     }
 
