@@ -3,6 +3,8 @@ package com.marginallyclever.donatello.graphview;
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.*;
+import org.json.JSONObject;
+import org.reflections.serializers.JsonSerializer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,12 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,10 +82,31 @@ public class GraphViewPanel extends JPanel {
     public GraphViewPanel(Graph model) {
         super();
         this.model=model;
-        this.setBackground(GraphViewSettings.PANEL_COLOR_BACKGROUND);
+        this.setBackground(settings.getPanelColorBackground());
         this.setFocusable(true);
 
+        loadSettings();
         addCameraControls();
+    }
+
+    public void loadSettings() {
+        File f = new File("graphViewSettings.json");
+        if(!f.exists()) return;
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("graphViewSettings.json")));
+            getSettings().fromJSON(new JSONObject(content));
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveSettings() {
+        try {
+            Files.write(Paths.get("graphViewSettings.json"),getSettings().toJSON().toString().getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -149,34 +178,35 @@ public class GraphViewPanel extends JPanel {
 
         g2.transform(getTransform());
 
-        if(settings.get(GraphViewSettings.DRAW_BACKGROUND)) paintBackgroundGrid(g);
+        if(settings.getDrawBackground()) paintBackgroundGrid(g);
         paintNodesInBackground(g);
 
         for(Node n : model.getNodes()) paintNode(g2,n);
 
-        g2.setColor(GraphViewSettings.CONNECTION_COLOR);
+        g2.setColor(settings.getConnectionColor());
         for(Connection c : model.getConnections()) paintConnection(g2,c);
 
-        if(settings.get(GraphViewSettings.DRAW_CURSOR)) paintCursor(g2);
-        if(settings.get(GraphViewSettings.DRAW_ORIGIN)) paintOrigin(g2);
+        if(settings.getDrawCursor()) paintCursor(g2);
+        if(settings.getDrawOrigin()) paintOrigin(g2);
 
         firePaintEvent(g2);
     }
 
     private void paintBackgroundGrid(Graphics g) {
-        g.setColor(GraphViewSettings.PANEL_GRID_COLOR);
+        g.setColor(settings.getPanelGridColor());
 
+        var gs = settings.getGridSize();
         Rectangle r = getBounds();
-        int width = (int)( r.getWidth()*zoom )+GraphViewSettings.GRID_SIZE*2;
-        int height = (int)( r.getHeight()*zoom )+GraphViewSettings.GRID_SIZE*2;
+        int width = (int)( r.getWidth()*zoom )+gs*2;
+        int height = (int)( r.getHeight()*zoom )+gs*2;
         int size = Math.max(width,height);
-        int startX = camera.x - width/2 - GraphViewSettings.GRID_SIZE;
-        int startY = camera.y - height/2 - GraphViewSettings.GRID_SIZE;
+        int startX = camera.x - width/2 - gs;
+        int startY = camera.y - height/2 - gs;
 
-        startX -= startX % GraphViewSettings.GRID_SIZE;
-        startY -= startY % GraphViewSettings.GRID_SIZE;
+        startX -= startX % gs;
+        startY -= startY % gs;
 
-        for(int i = 0; i <= size; i+=GraphViewSettings.GRID_SIZE) {
+        for(int i = 0; i <= size; i+=gs) {
             g.drawLine(startX+i,startY,startX+i,startY+height);
             g.drawLine(startX,startY+i,startX+width,startY+i);
         }
@@ -259,11 +289,11 @@ public class GraphViewPanel extends JPanel {
      * @param n the {@link Node} to paint.
      */
     public void paintNode(Graphics g, Node n) {
-        g.setColor(GraphViewSettings.NODE_COLOR_BACKGROUND);
+        g.setColor(settings.getNodeColorBackground());
         paintNodeBackground(g,n);
         paintNodeTitleBar(g, n);
         paintAllDocks(g, n);
-        g.setColor(GraphViewSettings.NODE_COLOR_BORDER);
+        g.setColor(settings.getNodeColorBorder());
         paintNodeBorder(g, n);
     }
 
@@ -274,7 +304,8 @@ public class GraphViewPanel extends JPanel {
      */
     public void paintNodeBackground(Graphics g, Node n) {
         Rectangle r = n.getRectangle();
-        g.fillRoundRect(r.x, r.y, r.width, r.height, GraphViewSettings.CORNER_RADIUS, GraphViewSettings.CORNER_RADIUS);
+        var cr = settings.getCornerRadius();
+        g.fillRoundRect(r.x, r.y, r.width, r.height, cr, cr);
     }
 
     /**
@@ -284,12 +315,13 @@ public class GraphViewPanel extends JPanel {
      */
     public void paintNodeTitleBar(Graphics g, Node n) {
         Rectangle r = n.getRectangle();
-        g.setColor(GraphViewSettings.NODE_COLOR_TITLE_BACKGROUND);
-        g.fillRoundRect(r.x, r.y, r.width, GraphViewSettings.CORNER_RADIUS*2, GraphViewSettings.CORNER_RADIUS, GraphViewSettings.CORNER_RADIUS);
-        g.fillRect(r.x, r.y+GraphViewSettings.CORNER_RADIUS, r.width+1, Node.TITLE_HEIGHT -GraphViewSettings.CORNER_RADIUS);
+        var cr = settings.getCornerRadius();
+        g.setColor(settings.getNodeColorTitleBackground());
+        g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
+        g.fillRect(r.x, r.y+cr, r.width+1, Node.TITLE_HEIGHT -cr);
 
         Rectangle box = getNodeInternalBounds(n.getRectangle());
-        g.setColor(GraphViewSettings.NODE_COLOR_TITLE_FONT);
+        g.setColor(settings.getNodeColorTitleFont());
         box.height = Node.TITLE_HEIGHT;
         paintText(g,n.getLabel(),box,ALIGN_LEFT,ALIGN_CENTER);
         paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
@@ -334,21 +366,21 @@ public class GraphViewPanel extends JPanel {
                     val = v.getTypeName();
                 }
                 if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
-                g.setColor(GraphViewSettings.NODE_COLOR_FONT_CLEAN);
+                g.setColor(settings.getNodeColorFontClean());
                 paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
             }
         }
 
         // label
-        g.setColor(GraphViewSettings.NODE_COLOR_FONT_CLEAN);
+        g.setColor(settings.getNodeColorFontClean());
         paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_CENTER);
 
         // internal border
-        g.setColor(GraphViewSettings.NODE_COLOR_INTERNAL_BORDER);
+        g.setColor(settings.getNodeColorInternalBorder());
         g.drawLine((int)box.getMinX(),(int)box.getMinY(),(int)box.getMaxX(),(int)box.getMinY());
 
         // connection points
-        g.setColor(GraphViewSettings.CONNECTION_POINT_COLOR);
+        g.setColor(settings.getConnectionPointColor());
         paintVariableConnectionPoints(g,v);
     }
 
@@ -387,7 +419,8 @@ public class GraphViewPanel extends JPanel {
      */
     public void paintNodeBorder(Graphics g,Node n) {
         Rectangle r = n.getRectangle();
-        g.drawRoundRect(r.x, r.y, r.width, r.height,GraphViewSettings.CORNER_RADIUS,GraphViewSettings.CORNER_RADIUS);
+        var cr = settings.getCornerRadius();
+        g.drawRoundRect(r.x, r.y, r.width, r.height,cr,cr);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.marginallyclever.donatello.graphview;
 
 import com.marginallyclever.nodegraphcore.Dock;
 import com.marginallyclever.nodegraphcore.Node;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,64 +10,67 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class holds the settings for the {@link GraphViewPanel} class.
+ */
 public class GraphViewSettings {
     /**
      * The default {@link Node} background color.
      */
-    public static final Color NODE_COLOR_BACKGROUND = Color.WHITE;
+    private Color nodeColorBackground = Color.WHITE;
     /**
      * The default {@link Node} border color.
      */
-    public static final Color NODE_COLOR_BORDER = Color.BLACK;
+    private Color nodeColorBorder = Color.BLACK;
     /**
      * The default {@link Node} internal border between {@link Dock}s.
      */
-    public static final Color NODE_COLOR_INTERNAL_BORDER = Color.DARK_GRAY;
+    private Color nodeColorInternalBorder = Color.DARK_GRAY;
     /**
      * The default {@link JPanel} background color.
      */
-    public static final Color PANEL_COLOR_BACKGROUND = Color.LIGHT_GRAY;
+    private Color panelColorBackground = Color.LIGHT_GRAY;
     /**
      * The default grid color.
      */
-    public static final Color PANEL_GRID_COLOR = Color.GRAY;
+    private Color panelGridColor = Color.GRAY;
     /**
      * size of the grid squares, in pixels.
      */
-    public static int GRID_SIZE=20;
+    private int gridSize =20;
     /**
      * The default {@link Node} font color.
      */
-    public static final Color NODE_COLOR_FONT_CLEAN = Color.BLACK;
+    private Color nodeColorFontClean = Color.BLACK;
     /**
      * The default {@link Node} font color for variables when <pre>getIsDirty()</pre>. is true.
      */
-    public static final Color NODE_COLOR_FONT_DIRTY = Color.RED;
+    private Color nodeColorFontDirty = Color.RED;
     /**
      * The default {@link Node} tile bar font color
      */
-    public static final Color NODE_COLOR_TITLE_FONT = Color.WHITE;
+    private Color nodeColorTitleFont = Color.WHITE;
     /**
      * The default {@link Node} tile bar background color
      */
-    public static final Color NODE_COLOR_TITLE_BACKGROUND = Color.BLACK;
+    private Color nodeColorTitleBackground = Color.BLACK;
     /**
      * The default {@link Node} female connection point color.
      */
-    public static final Color CONNECTION_POINT_COLOR = Color.LIGHT_GRAY;
+    private Color connectionPointColor = Color.LIGHT_GRAY;
     /**
      * The default {@link Node} male connection point color.
      */
-    public static final Color CONNECTION_COLOR = Color.BLUE;
+    private Color connectionColor = Color.BLUE;
 
     /**
      * The default {@link Node} outer border radius.
      */
-    public static final int CORNER_RADIUS = 5;
+    private int cornerRadius = 5;
 
-    public static int DRAW_BACKGROUND = 0;
-    public static int DRAW_CURSOR = 1;
-    public static int DRAW_ORIGIN = 2;
+    private static int DRAW_BACKGROUND = 0;
+    private static int DRAW_CURSOR = 1;
+    private static int DRAW_ORIGIN = 2;
 
     private final Map<Integer,Boolean> state = new HashMap<>();
 
@@ -88,11 +92,176 @@ public class GraphViewSettings {
         state.put(key,value);
     }
 
-    public void save() {
-        throw new RuntimeException("Not implemented");
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("nodeColorBackground",nodeColorBackground.getRGB());
+        json.put("nodeColorBorder",nodeColorBorder.getRGB());
+        json.put("nodeColorInternalBorder",nodeColorInternalBorder.getRGB());
+        json.put("panelColorBackground",panelColorBackground.getRGB());
+        json.put("panelGridColor",panelGridColor.getRGB());
+        json.put("gridSize",gridSize);
+        json.put("nodeColorFontClean",nodeColorFontClean.getRGB());
+        json.put("nodeColorFontDirty",nodeColorFontDirty.getRGB());
+        json.put("nodeColorTitleFont",nodeColorTitleFont.getRGB());
+        json.put("nodeColorTitleBackground",nodeColorTitleBackground.getRGB());
+        json.put("connectionPointColor",connectionPointColor.getRGB());
+        json.put("connectionColor",connectionColor.getRGB());
+        json.put("cornerRadius",cornerRadius);
+
+        json.put("drawBackground",get(DRAW_BACKGROUND));
+        json.put("drawCursor",get(DRAW_CURSOR));
+        json.put("drawOrigin",get(DRAW_ORIGIN));
+
+        return json;
     }
 
-    public void load() throws IOException {
-        throw new RuntimeException("Not implemented");
+    public void fromJSON(JSONObject json) throws IOException {
+        json.optInt("nodeColorBackground",nodeColorBackground.getRGB());
+        json.optInt("nodeColorBorder",nodeColorBorder.getRGB());
+        json.optInt("nodeColorInternalBorder",nodeColorInternalBorder.getRGB());
+        json.optInt("panelColorBackground",panelColorBackground.getRGB());
+        json.optInt("panelGridColor",panelGridColor.getRGB());
+        json.optInt("gridSize",gridSize);
+        json.optInt("nodeColorFontClean",nodeColorFontClean.getRGB());
+        json.optInt("nodeColorFontDirty",nodeColorFontDirty.getRGB());
+        json.optInt("nodeColorTitleFont",nodeColorTitleFont.getRGB());
+        json.optInt("nodeColorTitleBackground",nodeColorTitleBackground.getRGB());
+        json.optInt("connectionPointColor",connectionPointColor.getRGB());
+        json.optInt("connectionColor",connectionColor.getRGB());
+        json.optInt("cornerRadius",cornerRadius);
+
+        setDrawBackground(json.optBoolean("drawBackground",getDrawBackground()));
+        setDrawCursor(json.optBoolean("drawCursor",getDrawCursor()));
+        setDrawOrigin(json.optBoolean("drawOrigin",getDrawOrigin()));
+    }
+
+
+    public Color getNodeColorBackground() {
+        return nodeColorBackground;
+    }
+
+    public void setNodeColorBackground(Color color) {
+        this.nodeColorBackground = color;
+    }
+
+    public Color getNodeColorBorder() {
+        return nodeColorBorder;
+    }
+
+    public void setNodeColorBorder(Color color) {
+        this.nodeColorBorder = color;
+    }
+
+    public Color getNodeColorInternalBorder() {
+        return nodeColorInternalBorder;
+    }
+
+    public void setNodeColorInternalBorder(Color color) {
+        this.nodeColorInternalBorder = color;
+    }
+
+    public Color getPanelColorBackground() {
+        return panelColorBackground;
+    }
+
+    public void setPanelColorBackground(Color color) {
+        this.panelColorBackground = color;
+    }
+
+    public Color getPanelGridColor() {
+        return panelGridColor;
+    }
+
+    public void setPanelGridColor(Color color) {
+        this.panelGridColor = color;
+    }
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public void setGridSize(int GRID_SIZE) {
+        this.gridSize = GRID_SIZE;
+    }
+
+    public Color getNodeColorFontClean() {
+        return nodeColorFontClean;
+    }
+
+    public void setNodeColorFontClean(Color color) {
+        this.nodeColorFontClean = color;
+    }
+
+    public Color getNodeColorFontDirty() {
+        return nodeColorFontDirty;
+    }
+
+    public void setNodeColorFontDirty(Color color) {
+        this.nodeColorFontDirty = color;
+    }
+
+    public Color getNodeColorTitleFont() {
+        return nodeColorTitleFont;
+    }
+
+    public void setNodeColorTitleFont(Color color) {
+        this.nodeColorTitleFont = color;
+    }
+
+    public Color getNodeColorTitleBackground() {
+        return nodeColorTitleBackground;
+    }
+
+    public void setNodeColorTitleBackground(Color color) {
+        this.nodeColorTitleBackground = color;
+    }
+
+    public Color getConnectionPointColor() {
+        return connectionPointColor;
+    }
+
+    public void setConnectionPointColor(Color color) {
+        this.connectionPointColor = color;
+    }
+
+    public Color getConnectionColor() {
+        return connectionColor;
+    }
+
+    public void setConnectionColor(Color color) {
+        this.connectionColor = color;
+    }
+
+    public int getCornerRadius() {
+        return cornerRadius;
+    }
+
+    public void setCornerRadius(int radius) {
+        if( radius < 0 ) throw new IllegalArgumentException("radius must be >=0");
+        this.cornerRadius = radius;
+    }
+
+    public boolean getDrawBackground() {
+        return get(DRAW_BACKGROUND);
+    }
+
+    public void setDrawBackground(boolean drawBackground) {
+        set(GraphViewSettings.DRAW_BACKGROUND, drawBackground);
+    }
+
+    public boolean getDrawCursor() {
+        return get(DRAW_CURSOR);
+    }
+
+    public void setDrawCursor(boolean drawCursor) {
+        set(GraphViewSettings.DRAW_CURSOR, drawCursor);
+    }
+
+    public boolean getDrawOrigin() {
+        return get(DRAW_ORIGIN);
+    }
+
+    public void setDrawOrigin(boolean drawOrigin) {
+        set(GraphViewSettings.DRAW_ORIGIN, drawOrigin);
     }
 }

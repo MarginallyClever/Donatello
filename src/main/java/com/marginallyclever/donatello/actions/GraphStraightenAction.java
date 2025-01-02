@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Straightens the editor's {@link Node}s by rounding their top-left corner x and y values to the nearest
- * {@link GraphViewSettings#GRID_SIZE}.
+ * {@link GraphViewSettings#getGridSize()}.
  * @author Dan Royer
  * @since 2022-02-21
  */
@@ -34,12 +34,13 @@ public class GraphStraightenAction extends AbstractAction implements EditorActio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Graph g = editor.getGraph();
-
+        var g = editor.getGraph();
+        GraphViewSettings settings = editor.getGraphView().getSettings();
+        var gs = settings.getGridSize();
         for(Node n : g.getNodes()) {
             Rectangle r = n.getRectangle();
-            r.x -= r.x % GraphViewSettings.GRID_SIZE;
-            r.y -= r.y % GraphViewSettings.GRID_SIZE;
+            r.x -= r.x % gs;
+            r.y -= r.y % gs;
         }
         editor.repaint();
     }
