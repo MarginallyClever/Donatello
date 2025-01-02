@@ -1,9 +1,12 @@
 package com.marginallyclever.donatello;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.marginallyclever.donatello.contextsensitivetools.ContextSensitiveTool;
 import com.marginallyclever.donatello.graphview.GraphViewListener;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.graphview.GraphViewSettings;
+import com.marginallyclever.donatello.graphview.GraphViewSettingsPanel;
 import com.marginallyclever.nodegraphcore.*;
 import com.marginallyclever.donatello.actions.*;
 import com.marginallyclever.donatello.actions.undoable.*;
@@ -133,6 +136,7 @@ public class Donatello extends JPanel {
         this.graph = graph;
 
         paintArea = new GraphViewPanel(graph);
+        paintArea.loadSettings();
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(paintArea, BorderLayout.CENTER);
@@ -291,26 +295,20 @@ public class Donatello extends JPanel {
     private JMenu setupViewMenu() {
         JMenu menu = new JMenu("View");
 
-        JMenuItem showGrid = new JCheckBoxMenuItem("Show grid");
-        menu.add(showGrid);
-        showGrid.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-        showGrid.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_BACKGROUND,showGrid.isSelected()));
-
-        JMenuItem showOrigin = new JCheckBoxMenuItem("Show origin");
-        menu.add(showOrigin);
-        showOrigin.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_ORIGIN,showOrigin.isSelected()));
-
-        JMenuItem showCursor = new JCheckBoxMenuItem("Show cursor");
-        menu.add(showCursor);
-        showCursor.addActionListener(e -> changeViewSetting(GraphViewSettings.DRAW_CURSOR,showCursor.isSelected()));
-
-        menu.add(new JSeparator());
-
         JMenuItem zoomToFit = new JMenuItem("Zoom to fit");
         menu.add(zoomToFit);
         zoomToFit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
         zoomToFit.addActionListener(e -> paintArea.moveAndZoomToFit(selectedNodes));
 
+        JMenuItem settingsPanel = new JMenuItem("Preferences");
+        menu.add(settingsPanel);
+        settingsPanel.addActionListener(e -> {
+            GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
+            // TODO put in a dialog
+            // TODO load
+            // TODO save
+            paintArea.repaint();
+        });
         return menu;
     }
 
@@ -693,8 +691,10 @@ public class Donatello extends JPanel {
     }
 
     public static void setSystemLookAndFeel() {
+        FlatLaf.registerCustomDefaultsSource( "com.marginallyclever.ro3" );
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             logger.debug("System look and feel could not be set.");
         }
@@ -738,5 +738,9 @@ public class Donatello extends JPanel {
         frame.add(panel);
         panel.setupMenuBar();
         frame.setVisible(true);
+    }
+
+    public GraphViewPanel getGraphView() {
+        return paintArea;
     }
 }

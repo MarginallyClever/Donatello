@@ -12,6 +12,8 @@ module com.marginallyclever.donatello {
     requires com.marginallyclever.nodegraphcore;
     requires io.github.classgraph;
     requires webcam.capture;
+    requires org.reflections;
+    requires com.formdev.flatlaf;
 
     exports com.marginallyclever.donatello to logback.core;
 
