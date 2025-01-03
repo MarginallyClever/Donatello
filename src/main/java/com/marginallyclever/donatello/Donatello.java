@@ -26,6 +26,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.prefs.Preferences;
 
 /**
  * {@link Donatello} is a Graphic User Interface to edit a {@link Graph}.
@@ -127,6 +128,8 @@ public class Donatello extends JPanel {
      * If true, the graph will update automatically.
      */
     private boolean keepGoing = false;
+
+    private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(LoadGraphAction.class),this);
 
     /**
      * Default constructor
@@ -366,41 +369,28 @@ public class Donatello extends JPanel {
     private JMenu setupGraphMenu() {
         JMenu menu = new JMenu("Graph");
         GraphNewAction graphNewAction = new GraphNewAction("New",this);
-        LoadGraphAction loadGraphAction = new LoadGraphAction("Load",this);
-        GraphSaveAction graphSaveAction = new GraphSaveAction("Save",this);
-        GraphPrintAction graphPrintAction = new GraphPrintAction("Print",this);
-        GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
-        GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
+
+        LoadGraphAction loadGraphAction = new LoadGraphAction(recentFilesMenu,"Load",this);
+        GraphSaveAsAction graphSaveAsAction = new GraphSaveAsAction(recentFilesMenu,"Save",this);
 
         graphNewAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-new-16.png"))));
         loadGraphAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
-        graphSaveAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
-        graphPrintAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-print-16.png"))));
-        graphStraightenAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-square-ruler-16.png"))));
-        graphOrganizeAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-sorting-16.png"))));
+        graphSaveAsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
 
         //TODO toggleKeepUpdatingAction.putValue(Action.SMALL_ICON,new ImageIcon("🔃"));
 
         actions.add(graphNewAction);
-        actions.add(graphSaveAction);
+        actions.add(graphSaveAsAction);
         actions.add(loadGraphAction);
-        actions.add(graphPrintAction);
-        actions.add(graphStraightenAction);
-        actions.add(graphOrganizeAction);
 
         graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-        graphSaveAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         loadGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
-        graphPrintAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
-        graphOrganizeAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 
         menu.add(graphNewAction);
         menu.add(loadGraphAction);
-        menu.add(graphSaveAction);
-        menu.addSeparator();
-        menu.add(graphPrintAction);
-        menu.add(graphStraightenAction);
-        menu.add(graphOrganizeAction);
+        menu.add(recentFilesMenu);
+        menu.add(graphSaveAsAction);
 
         return menu;
     }
@@ -430,6 +420,8 @@ public class Donatello extends JPanel {
         SelectionInvertAction selectionInvertAction = new SelectionInvertAction("Invert selection",this);
         SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
         ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
+        GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
+        GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
 
         undoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-undo-16.png"))));
         redoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-redo-16.png"))));
@@ -443,13 +435,15 @@ public class Donatello extends JPanel {
         forciblyUpdateNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-update-16.png"))));
         graphFoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-fold-16.png"))));
         graphUnfoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-unfold-16.png"))));
-        isolateGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-isolate-16.png"))));
+        isolateGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-separate-16.png"))));
         selectAllAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-select-all-16.png"))));
         selectionGrowAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-expand-16.png"))));
         selectionShrinkAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-collapse-16.png"))));
         selectionInvertAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-invert-16.png"))));
         selectShortestPathAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-path-16.png"))));
         zoomToFitSelectedAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-zoom-to-fit-16.png"))));
+        graphStraightenAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-square-ruler-16.png"))));
+        graphOrganizeAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-sorting-16.png"))));
 
         actions.add(undoAction);
         actions.add(redoAction);
@@ -469,6 +463,8 @@ public class Donatello extends JPanel {
         actions.add(selectionInvertAction);
         actions.add(selectShortestPathAction);
         actions.add(zoomToFitSelectedAction);
+        actions.add(graphStraightenAction);
+        actions.add(graphOrganizeAction);
 
         undoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
         redoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
@@ -486,7 +482,7 @@ public class Donatello extends JPanel {
         selectionGrowAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, KeyEvent.CTRL_DOWN_MASK));
         selectionShrinkAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_DOWN_MASK));
         selectionInvertAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
-
+        graphOrganizeAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 
         menu.add(undoAction);
         menu.add(redoAction);
@@ -509,6 +505,8 @@ public class Donatello extends JPanel {
         menu.add(graphFoldAction);
         menu.add(graphUnfoldAction);
         menu.add(isolateGraphAction);
+        menu.add(graphStraightenAction);
+        menu.add(graphOrganizeAction);
 
         popupBar.add(addNodeAction);
         popupBar.add(editNodesAction);

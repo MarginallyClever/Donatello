@@ -14,6 +14,7 @@ module com.marginallyclever.donatello {
     requires webcam.capture;
     requires org.reflections;
     requires com.formdev.flatlaf;
+    requires java.prefs;
 
     exports com.marginallyclever.donatello to logback.core;
 

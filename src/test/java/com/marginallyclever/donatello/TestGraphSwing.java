@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.donatello.actions.GraphSaveAction;
+import com.marginallyclever.donatello.actions.GraphSaveAsAction;
 import com.marginallyclever.nodegraphcore.*;
 import com.marginallyclever.donatello.nodes.images.LoadImage;
 import com.marginallyclever.donatello.nodes.images.PrintImage;
@@ -68,7 +68,7 @@ public class TestGraphSwing {
 
     @Test
     public void testAddExtension() {
-        GraphSaveAction actionSaveGraph = new GraphSaveAction("Save",null);
+        GraphSaveAsAction actionSaveGraph = new GraphSaveAsAction(null,"Save",null);
         assertEquals("test.graph",actionSaveGraph.addExtensionIfNeeded("test"));
         assertEquals("test.graph",actionSaveGraph.addExtensionIfNeeded("test.graph"));
     }

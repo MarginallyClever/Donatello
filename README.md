@@ -30,6 +30,7 @@ that are not fluent in the archaic syntax of text-only languages.
 
 ## Based on work by
 
+- https://github.com/otto-link/GNode/
 - https://github.com/jpaulm/javafbp/
 - https://nodes.io/story/
 - https://github.com/janbijster/cobble

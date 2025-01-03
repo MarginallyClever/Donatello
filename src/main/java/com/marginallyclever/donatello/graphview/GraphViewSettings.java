@@ -116,19 +116,19 @@ public class GraphViewSettings {
     }
 
     public void fromJSON(JSONObject json) throws IOException {
-        json.optInt("nodeColorBackground",nodeColorBackground.getRGB());
-        json.optInt("nodeColorBorder",nodeColorBorder.getRGB());
-        json.optInt("nodeColorInternalBorder",nodeColorInternalBorder.getRGB());
-        json.optInt("panelColorBackground",panelColorBackground.getRGB());
-        json.optInt("panelGridColor",panelGridColor.getRGB());
-        json.optInt("gridSize",gridSize);
-        json.optInt("nodeColorFontClean",nodeColorFontClean.getRGB());
-        json.optInt("nodeColorFontDirty",nodeColorFontDirty.getRGB());
-        json.optInt("nodeColorTitleFont",nodeColorTitleFont.getRGB());
-        json.optInt("nodeColorTitleBackground",nodeColorTitleBackground.getRGB());
-        json.optInt("connectionPointColor",connectionPointColor.getRGB());
-        json.optInt("connectionColor",connectionColor.getRGB());
-        json.optInt("cornerRadius",cornerRadius);
+        nodeColorBackground = new Color(json.optInt("nodeColorBackground",nodeColorBackground.getRGB()));
+        nodeColorBorder = new Color(json.optInt("nodeColorBorder",nodeColorBorder.getRGB()));
+        nodeColorInternalBorder = new Color(json.optInt("nodeColorInternalBorder",nodeColorInternalBorder.getRGB()));
+        panelColorBackground = new Color(json.optInt("panelColorBackground",panelColorBackground.getRGB()));
+        panelGridColor = new Color(json.optInt("panelGridColor",panelGridColor.getRGB()));
+        gridSize = json.optInt("gridSize",gridSize);
+        nodeColorFontClean = new Color(json.optInt("nodeColorFontClean",nodeColorFontClean.getRGB()));
+        nodeColorFontDirty = new Color(json.optInt("nodeColorFontDirty",nodeColorFontDirty.getRGB()));
+        nodeColorTitleFont = new Color(json.optInt("nodeColorTitleFont",nodeColorTitleFont.getRGB()));
+        nodeColorTitleBackground = new Color(json.optInt("nodeColorTitleBackground",nodeColorTitleBackground.getRGB()));
+        connectionPointColor = new Color(json.optInt("connectionPointColor",connectionPointColor.getRGB()));
+        connectionColor = new Color(json.optInt("connectionColor",connectionColor.getRGB()));
+        cornerRadius = json.optInt("cornerRadius",cornerRadius);
 
         setDrawBackground(json.optBoolean("drawBackground", getDrawBackgroundGrid()));
         setDrawCursor(json.optBoolean("drawCursor",getDrawCursor()));

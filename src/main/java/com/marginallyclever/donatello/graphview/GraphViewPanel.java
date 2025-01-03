@@ -4,6 +4,8 @@ import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.*;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +31,8 @@ import java.util.List;
  * @since 2022-02-11
  */
 public class GraphViewPanel extends JPanel {
+    private final Logger logger = LoggerFactory.getLogger(GraphViewPanel.class);
+    private static final String SETTINGS_FILENAME = "graphViewSettings.json";
     /**
      * Controls horizontal text alignment within a {@link Node} or {@link Dock}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
@@ -87,22 +91,25 @@ public class GraphViewPanel extends JPanel {
     }
 
     public void loadSettings() {
-        File f = new File("graphViewSettings.json");
+        logger.debug("loading settings");
+        File f = new File(SETTINGS_FILENAME);
         if(!f.exists()) return;
+
         try {
-            String content = new String(Files.readAllBytes(Paths.get("graphViewSettings.json")));
+            String content = new String(Files.readAllBytes(f.toPath()));
             getSettings().fromJSON(new JSONObject(content));
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("Error loading settings.", e);
         }
     }
 
     public void saveSettings() {
+        logger.debug("saving settings");
         try {
-            Files.write(Paths.get("graphViewSettings.json"),getSettings().toJSON().toString().getBytes());
+            Files.write(Paths.get(SETTINGS_FILENAME),getSettings().toJSON().toString().getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("Error saving settings.", e);
         }
     }
 

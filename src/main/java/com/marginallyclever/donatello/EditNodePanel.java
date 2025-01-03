@@ -60,11 +60,11 @@ public class EditNodePanel extends JPanel {
     private void addVariableField(Dock<?> variable,GridBagConstraints c) {
         if(variable instanceof DockReceiving) {
             DockReceiving r = (DockReceiving)variable;
-            if (Number.class.isAssignableFrom(variable.getTypeClass())) {
+            if (Number.class.isAssignableFrom(variable.getType())) {
                 addTextField(r, c);
-            } else if (variable.getTypeClass().equals(String.class)) {
+            } else if (variable.getType().equals(String.class)) {
                 addTextField(r, c);
-            } else if (variable.getTypeClass().equals(Boolean.class)) {
+            } else if (variable.getType().equals(Boolean.class)) {
                 addBooleanField(r, c);
             } else {
                 addReadOnlyField(c, variable.getName(), variable.getTypeName());
@@ -164,11 +164,11 @@ public class EditNodePanel extends JPanel {
             Dock<?> variable = subject.getVariable(i);
             if(variable instanceof DockReceiving) {
                 DockReceiving r = (DockReceiving)variable;
-                if (variable.getTypeClass().equals(Number.class)) {
+                if (variable.getType().equals(Number.class)) {
                     panel.readTextField(j++, r);
-                } else if (variable.getTypeClass().equals(String.class)) {
+                } else if (variable.getType().equals(String.class)) {
                     panel.readTextField(j++, r);
-                }  else if (variable.getTypeClass().equals(Boolean.class)) {
+                }  else if (variable.getType().equals(Boolean.class)) {
                     panel.readBooleanField(j++, r);
                 } else {
                     // TODO ???
@@ -194,9 +194,9 @@ public class EditNodePanel extends JPanel {
             return;
         }
 
-        if(variable.getTypeClass().equals(Number.class)) {
+        if(variable.getType().equals(Number.class)) {
             variable.setValue(Double.parseDouble(f.getText()));
-        } else if(variable.getTypeClass().equals(String.class)) {
+        } else if(variable.getType().equals(String.class)) {
             variable.setValue(f.getText());
         } else {
             // TODO ???
