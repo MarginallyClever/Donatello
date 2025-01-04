@@ -129,7 +129,7 @@ public class Donatello extends JPanel {
      */
     private boolean keepGoing = false;
 
-    private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(LoadGraphAction.class),this);
+    private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(GraphLoadAction.class),this);
 
     /**
      * Default constructor
@@ -370,25 +370,25 @@ public class Donatello extends JPanel {
         JMenu menu = new JMenu("Graph");
         GraphNewAction graphNewAction = new GraphNewAction("New",this);
 
-        LoadGraphAction loadGraphAction = new LoadGraphAction(recentFilesMenu,"Load",this);
+        GraphLoadAction graphLoadAction = new GraphLoadAction(recentFilesMenu,"Load",this);
         GraphSaveAsAction graphSaveAsAction = new GraphSaveAsAction(recentFilesMenu,"Save",this);
 
         graphNewAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-new-16.png"))));
-        loadGraphAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
+        graphLoadAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
         graphSaveAsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
 
         //TODO toggleKeepUpdatingAction.putValue(Action.SMALL_ICON,new ImageIcon("🔃"));
 
         actions.add(graphNewAction);
         actions.add(graphSaveAsAction);
-        actions.add(loadGraphAction);
+        actions.add(graphLoadAction);
 
         graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-        loadGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
+        graphLoadAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 
         menu.add(graphNewAction);
-        menu.add(loadGraphAction);
+        menu.add(graphLoadAction);
         menu.add(recentFilesMenu);
         menu.add(graphSaveAsAction);
 
@@ -405,15 +405,15 @@ public class Donatello extends JPanel {
         redoAction.setActionUndo(undoAction);
 
         GraphCopyAction graphCopyAction = new GraphCopyAction("Copy",this);
-        PasteGraphAction pasteGraphAction = new PasteGraphAction("Paste",this);
-        DeleteGraphAction deleteGraphAction = new DeleteGraphAction("Delete",this);
-        CutGraphAction cutGraphAction = new CutGraphAction("Cut", deleteGraphAction, graphCopyAction);
-        AddNodeAction addNodeAction = new AddNodeAction("Add",this);
-        EditNodeAction editNodesAction = new EditNodeAction("Edit",this);
+        NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
+        NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
+        NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, graphCopyAction);
+        NodeAddAction nodeAddAction = new NodeAddAction("Add",this);
+        NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
         ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
-        GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, cutGraphAction);
+        GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, nodeCutAction);
         GraphUnfoldAction graphUnfoldAction = new GraphUnfoldAction("Unfold",this);
-        IsolateGraphAction isolateGraphAction = new IsolateGraphAction("Isolate",this);
+        NodeIsolateAction nodeIsolateAction = new NodeIsolateAction("Isolate",this);
         SelectAllAction selectAllAction = new SelectAllAction("Select all",this);
         SelectionGrowAction selectionGrowAction = new SelectionGrowAction("Grow selection",this);
         SelectionShrinkAction selectionShrinkAction = new SelectionShrinkAction("Shrink selection",this);
@@ -427,15 +427,15 @@ public class Donatello extends JPanel {
         redoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-redo-16.png"))));
 
         graphCopyAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-copy-16.png"))));
-        pasteGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-paste-16.png"))));
-        deleteGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-delete-16.png"))));
-        cutGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cut-16.png"))));
-        addNodeAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-add-16.png"))));
+        nodePasteAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-paste-16.png"))));
+        nodeDeleteAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-delete-16.png"))));
+        nodeCutAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cut-16.png"))));
+        nodeAddAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-add-16.png"))));
         editNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-edit-16.png"))));
         forciblyUpdateNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-update-16.png"))));
         graphFoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-fold-16.png"))));
         graphUnfoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-unfold-16.png"))));
-        isolateGraphAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-separate-16.png"))));
+        nodeIsolateAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-separate-16.png"))));
         selectAllAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-select-all-16.png"))));
         selectionGrowAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-expand-16.png"))));
         selectionShrinkAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-collapse-16.png"))));
@@ -448,15 +448,15 @@ public class Donatello extends JPanel {
         actions.add(undoAction);
         actions.add(redoAction);
         actions.add(graphCopyAction);
-        actions.add(pasteGraphAction);
-        actions.add(deleteGraphAction);
-        actions.add(cutGraphAction);
-        actions.add(addNodeAction);
+        actions.add(nodePasteAction);
+        actions.add(nodeDeleteAction);
+        actions.add(nodeCutAction);
+        actions.add(nodeAddAction);
         actions.add(editNodesAction);
         actions.add(forciblyUpdateNodesAction);
         actions.add(graphFoldAction);
         actions.add(graphUnfoldAction);
-        actions.add(isolateGraphAction);
+        actions.add(nodeIsolateAction);
         actions.add(selectAllAction);
         actions.add(selectionGrowAction);
         actions.add(selectionShrinkAction);
@@ -470,14 +470,14 @@ public class Donatello extends JPanel {
         redoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
 
         graphCopyAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
-        pasteGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
-        deleteGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
-        cutGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
-        addNodeAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, KeyEvent.CTRL_DOWN_MASK));
+        nodePasteAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+        nodeDeleteAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+        nodeCutAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
+        nodeAddAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, KeyEvent.CTRL_DOWN_MASK));
         editNodesAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
         graphFoldAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACELEFT, KeyEvent.CTRL_DOWN_MASK));
         graphUnfoldAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACERIGHT, KeyEvent.CTRL_DOWN_MASK));
-        isolateGraphAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
+        nodeIsolateAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
         selectAllAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
         selectionGrowAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, KeyEvent.CTRL_DOWN_MASK));
         selectionShrinkAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_DOWN_MASK));
@@ -494,33 +494,33 @@ public class Donatello extends JPanel {
         menu.add(selectShortestPathAction);
         menu.add(zoomToFitSelectedAction);
         menu.add(graphCopyAction);
-        menu.add(cutGraphAction);
-        menu.add(pasteGraphAction);
-        menu.add(deleteGraphAction);
+        menu.add(nodeCutAction);
+        menu.add(nodePasteAction);
+        menu.add(nodeDeleteAction);
         menu.addSeparator();
-        menu.add(addNodeAction);
+        menu.add(nodeAddAction);
         menu.add(editNodesAction);
         menu.add(forciblyUpdateNodesAction);
         menu.addSeparator();
         menu.add(graphFoldAction);
         menu.add(graphUnfoldAction);
-        menu.add(isolateGraphAction);
+        menu.add(nodeIsolateAction);
         menu.add(graphStraightenAction);
         menu.add(graphOrganizeAction);
 
-        popupBar.add(addNodeAction);
+        popupBar.add(nodeAddAction);
         popupBar.add(editNodesAction);
         popupBar.add(forciblyUpdateNodesAction);
         popupBar.addSeparator();
         popupBar.add(graphFoldAction);
         popupBar.add(graphUnfoldAction);
-        popupBar.add(isolateGraphAction);
+        popupBar.add(nodeIsolateAction);
         popupBar.addSeparator();
         popupBar.add(graphCopyAction);
-        popupBar.add(cutGraphAction);
-        popupBar.add(pasteGraphAction);
+        popupBar.add(nodeCutAction);
+        popupBar.add(nodePasteAction);
         popupBar.addSeparator();
-        popupBar.add(deleteGraphAction);
+        popupBar.add(nodeDeleteAction);
 
         return menu;
     }

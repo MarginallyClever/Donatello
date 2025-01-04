@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.DockReceiving;
-import com.marginallyclever.nodegraphcore.DockShipping;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.Packet;
 import com.github.sarxos.webcam.Webcam;
@@ -14,10 +14,10 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class CameraFeed extends Node {
-    private final DockReceiving<String> filename = new DockReceiving<>("src",String.class,"");
-    private final DockShipping<BufferedImage> contents = new DockShipping<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockShipping<Number> width = new DockShipping<>("width",Number.class,0);
-    private final DockShipping<Number> height = new DockShipping<>("height",Number.class,0);
+    private final Input<String> filename = new Input<>("src",String.class,"");
+    private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Output<Number> width = new Output<>("width",Number.class,0);
+    private final Output<Number> height = new Output<>("height",Number.class,0);
 
     /**
      * Constructor for subclasses to call.

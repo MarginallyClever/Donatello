@@ -3,7 +3,6 @@ package com.marginallyclever.donatello;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.nodegraphcore.Dock;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,8 @@ package com.marginallyclever.donatello.nodes.color;
 
 import com.marginallyclever.donatello.nodes.images.ColorHelper;
 import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 
 import java.awt.*;
 
@@ -11,11 +13,11 @@ import java.awt.*;
  * @since 2022-03-19
  */
 public class ColorToCMYK extends Node {
-    private final DockReceiving<Color> color = new DockReceiving<>("color", Color.class, new Color(0,0,0,0));
-    private final DockShipping<Number> cyan = new DockShipping<>("cyan", Number.class, 0);
-    private final DockShipping<Number> magenta = new DockShipping<>("magenta", Number.class, 0);
-    private final DockShipping<Number> yellow = new DockShipping<>("yellow", Number.class, 0);
-    private final DockShipping<Number> black = new DockShipping<>("black", Number.class, 0);
+    private final Input<Color> color = new Input<>("color", Color.class, new Color(0,0,0,0));
+    private final Output<Number> cyan = new Output<>("cyan", Number.class, 0);
+    private final Output<Number> magenta = new Output<>("magenta", Number.class, 0);
+    private final Output<Number> yellow = new Output<>("yellow", Number.class, 0);
+    private final Output<Number> black = new Output<>("black", Number.class, 0);
 
     /**
      * Constructor for subclasses to call.

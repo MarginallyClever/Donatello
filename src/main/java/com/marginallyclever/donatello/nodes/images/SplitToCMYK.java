@@ -1,6 +1,8 @@
 package com.marginallyclever.donatello.nodes.images;
 
 import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 
 import java.awt.image.BufferedImage;
 
@@ -10,11 +12,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class SplitToCMYK extends Node {
-    private final DockReceiving<BufferedImage> image   = new DockReceiving<>("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockShipping<BufferedImage> cyan    = new DockShipping<>("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockShipping<BufferedImage> magenta = new DockShipping<>("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockShipping<BufferedImage> yellow  = new DockShipping<>("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockShipping<BufferedImage> black   = new DockShipping<>("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Input<BufferedImage> image   = new Input<>("image",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Output<BufferedImage> cyan    = new Output<>("Cyan",    BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Output<BufferedImage> magenta = new Output<>("Magenta", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Output<BufferedImage> yellow  = new Output<>("Yellow",  BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Output<BufferedImage> black   = new Output<>("Black",   BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
 
     /**
      * Constructor for subclasses to call.

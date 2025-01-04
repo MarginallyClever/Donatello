@@ -1,6 +1,8 @@
 package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,11 +17,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ColorAtPoint extends Node {
-    private final DockReceiving<BufferedImage> image = new DockReceiving<>("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockReceiving<Number> cx = new DockReceiving<>("x", Number.class, 0);
-    private final DockReceiving<Number> cy = new DockReceiving<>("y", Number.class, 0);
-    private final DockReceiving<Number> sampleSize = new DockReceiving<>("sampleSize", Number.class, 0);
-    private final DockShipping<Color> output = new DockShipping<>("output", Color.class, new Color(0,0,0,0));
+    private final Input<BufferedImage> image = new Input<>("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Input<Number> cx = new Input<>("x", Number.class, 0);
+    private final Input<Number> cy = new Input<>("y", Number.class, 0);
+    private final Input<Number> sampleSize = new Input<>("sampleSize", Number.class, 0);
+    private final Output<Color> output = new Output<>("output", Color.class, new Color(0,0,0,0));
 
     /**
      * Constructor for subclasses to call.

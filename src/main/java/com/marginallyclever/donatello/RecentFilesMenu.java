@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.actions.GraphSaveAsAction;
-import com.marginallyclever.donatello.actions.undoable.LoadGraphAction;
+import com.marginallyclever.donatello.actions.undoable.GraphLoadAction;
 
 import javax.swing.*;
 import java.awt.event.InputEvent;
@@ -79,7 +79,7 @@ public class RecentFilesMenu extends JMenu {
         removeAll();
         int index=0;
         for (String filePath : recentFiles) {
-            var load = new LoadGraphAction(this,filePath,editor);
+            var load = new GraphLoadAction(this,filePath,editor);
             load.setSaveScene(saveScene);
             JMenuItem menuItem = new JMenuItem(load);
             add(menuItem);

@@ -3,6 +3,9 @@ package com.marginallyclever.donatello.graphview;
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.nodegraphcore.dock.Dock;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,14 +182,16 @@ public class GraphViewPanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
 
         setBackground(settings.getPanelColorBackground());
-        super.paintComponent(g);
+        super.paintComponent(g2);
 
         g2.transform(getTransform());
 
-        if(settings.getDrawBackgroundGrid()) paintBackgroundGrid(g);
-        paintNodesInBackground(g);
+        if(settings.getDrawBackgroundGrid()) paintBackgroundGrid(g2);
+        paintNodesInBackground(g2);
 
-        for(Node n : model.getNodes()) paintNode(g2,n);
+        for(Node n : model.getNodes()) {
+            paintNode(g2,n);
+        }
 
         g2.setColor(settings.getConnectionColor());
         for(Connection c : model.getConnections()) paintConnection(g2,c);
@@ -322,8 +327,10 @@ public class GraphViewPanel extends JPanel {
         Rectangle r = n.getRectangle();
         var cr = settings.getCornerRadius();
         g.setColor(settings.getNodeColorTitleBackground());
+        g.setClip(r.x,r.y,r.width,Node.TITLE_HEIGHT);
         g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
         g.fillRect(r.x, r.y+cr, r.width+1, Node.TITLE_HEIGHT -cr);
+        g.setClip(null);
 
         Rectangle box = getNodeInternalBounds(n.getRectangle());
         g.setColor(settings.getNodeColorTitleFont());
@@ -434,12 +441,12 @@ public class GraphViewPanel extends JPanel {
      * @param v the {@link Dock} to paint.
      */
     public void paintVariableConnectionPoints(Graphics g, Dock<?> v) {
-        if(v instanceof DockReceiving) {
+        if(v instanceof Input) {
             Point p = v.getInPosition();
             int radius = (int)Connection.DEFAULT_RADIUS+2;
             g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
         }
-        if(v instanceof DockShipping) {
+        if(v instanceof Output) {
             Point p = v.getOutPosition();
             int radius = (int)Connection.DEFAULT_RADIUS+2;
             g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);

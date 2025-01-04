@@ -1,19 +1,19 @@
-package com.marginallyclever.donatello.actions;
+package com.marginallyclever.donatello.actions.undoable;
 
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.EditNodePanel;
+import com.marginallyclever.donatello.actions.EditorAction;
+import com.marginallyclever.donatello.edits.GraphDeleteEdit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 /**
- * Launches the "edit node" dialog.
+ * Deletes the editor's selected {@link Node}s and sundry.
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class EditNodeAction extends AbstractAction implements EditorAction {
+public class NodeDeleteAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -24,18 +24,14 @@ public class EditNodeAction extends AbstractAction implements EditorAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public EditNodeAction(String name, Donatello editor) {
+    public NodeDeleteAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<Node> nodes = editor.getSelectedNodes();
-        if(nodes.isEmpty()) return;
-        Node firstNode = nodes.get(0);
-        EditNodePanel.runAsDialog(firstNode,(JFrame)SwingUtilities.getWindowAncestor(editor));
-        editor.repaint(firstNode.getRectangle());
+        editor.addEdit(new GraphDeleteEdit((String)this.getValue(Action.NAME),editor,editor.getSelectedNodes()));
     }
 
     @Override

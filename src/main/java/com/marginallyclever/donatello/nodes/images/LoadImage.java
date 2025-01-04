@@ -1,11 +1,12 @@
 package com.marginallyclever.donatello.nodes.images;
 
 import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * This {@link Node} can load a Swing {@link BufferedImage}.
@@ -14,10 +15,10 @@ import java.io.IOException;
  */
 public class LoadImage extends Node {
     private String previousFilename = "";
-    private final DockReceiving<String> filename = new DockReceiving<>("filename",String.class,"");
-    private final DockShipping<BufferedImage> contents = new DockShipping<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final DockShipping<Number> width = new DockShipping<>("width",Number.class,0);
-    private final DockShipping<Number> height = new DockShipping<>("height",Number.class,0);
+    private final Input<String> filename = new Input<>("filename",String.class,"");
+    private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final Output<Number> width = new Output<>("width",Number.class,0);
+    private final Output<Number> height = new Output<>("height",Number.class,0);
 
     /**
      * Constructor for subclasses to call.

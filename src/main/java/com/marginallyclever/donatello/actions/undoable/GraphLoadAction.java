@@ -17,11 +17,12 @@ import java.security.InvalidParameterException;
 import java.util.Objects;
 
 /**
- * Launches a "select file to open" dialog and attempts to load the {@link Graph} from disk.
+ * <p>Launches a "select file to open" dialog and attempts to load the {@link Graph} from disk.</p>
+ * <p>Use {@link GraphLoadAction#commitLoad} to load a file without a dialog.</p>
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class LoadGraphAction extends AbstractAction {
+public class GraphLoadAction extends AbstractAction {
     /**
      * The editor being affected.
      */
@@ -42,7 +43,7 @@ public class LoadGraphAction extends AbstractAction {
      * @param filePath the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public LoadGraphAction(RecentFilesMenu menu, String filePath, Donatello editor) {
+    public GraphLoadAction(RecentFilesMenu menu, String filePath, Donatello editor) {
         super();
         this.menu = menu;
         this.editor = editor;
@@ -90,7 +91,7 @@ public class LoadGraphAction extends AbstractAction {
         return null;  // cancelled
     }
 
-    private void commitLoad(File selectedFile) {
+    public void commitLoad(File selectedFile) {
         if(!selectedFile.exists()) {
             menu.removePath(selectedFile.getAbsolutePath());
             throw new InvalidParameterException("File does not exist");

@@ -4,7 +4,7 @@ import com.marginallyclever.donatello.UnicodeIcon;
 import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.ConnectionPointInfo;
 import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.nodegraphcore.Dock;
+import com.marginallyclever.nodegraphcore.dock.Dock;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.edits.ConnectionAddEdit;

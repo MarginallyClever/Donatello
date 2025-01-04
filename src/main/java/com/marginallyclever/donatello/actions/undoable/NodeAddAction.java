@@ -7,6 +7,7 @@ import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.NodeAddEdit;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -15,7 +16,7 @@ import java.awt.event.ActionEvent;
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class AddNodeAction extends AbstractAction {
+public class NodeAddAction extends AbstractAction {
     /**
      * The editor being affected.
      */
@@ -27,7 +28,7 @@ public class AddNodeAction extends AbstractAction {
      * @param icon the small icon of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public AddNodeAction(String name, Donatello editor) {
+    public NodeAddAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
@@ -36,7 +37,9 @@ public class AddNodeAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         Node n = AddNodePanel.runAsDialog((JFrame)SwingUtilities.getWindowAncestor(editor));
         if(n!=null) {
-            n.setPosition(editor.getPaintArea().transformMousePoint(editor.getPopupPoint()));
+            var p = editor.getPopupPoint();
+            if(p==null) p = new Point(0,0);
+            n.setPosition(editor.getPaintArea().transformMousePoint(p));
             editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
         }
     }

@@ -1,9 +1,10 @@
 package com.marginallyclever.donatello.nodes.color;
 
 import com.marginallyclever.nodegraphcore.*;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Loads a {@link Color} into the graph.
@@ -11,11 +12,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-03-19
  */
 public class LoadColor extends Node {
-    private final DockReceiving<Number> r = new DockReceiving<>("r", Number.class, 0);
-    private final DockReceiving<Number> g = new DockReceiving<>("g", Number.class, 0);
-    private final DockReceiving<Number> b = new DockReceiving<>("b", Number.class, 0);
-    private final DockReceiving<Number> a = new DockReceiving<>("a", Number.class, 0);
-    private final DockShipping<Color> output = new DockShipping<>("output", Color.class, new Color(0,0,0,0));
+    private final Input<Number> r = new Input<>("r", Number.class, 0);
+    private final Input<Number> g = new Input<>("g", Number.class, 0);
+    private final Input<Number> b = new Input<>("b", Number.class, 0);
+    private final Input<Number> a = new Input<>("a", Number.class, 0);
+    private final Output<Color> output = new Output<>("output", Color.class, new Color(0,0,0,0));
 
     /**
      * Constructor for subclasses to call.

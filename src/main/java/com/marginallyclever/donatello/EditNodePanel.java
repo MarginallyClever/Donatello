@@ -1,9 +1,9 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.nodes.ColorAtPoint;
-import com.marginallyclever.nodegraphcore.DockReceiving;
+import com.marginallyclever.nodegraphcore.dock.Input;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Dock;
+import com.marginallyclever.nodegraphcore.dock.Dock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,20 +57,19 @@ public class EditNodePanel extends JPanel {
         }
     }
 
-    private void addVariableField(Dock<?> variable,GridBagConstraints c) {
-        if(variable instanceof DockReceiving) {
-            DockReceiving r = (DockReceiving)variable;
-            if (Number.class.isAssignableFrom(variable.getType())) {
-                addTextField(r, c);
-            } else if (variable.getType().equals(String.class)) {
-                addTextField(r, c);
-            } else if (variable.getType().equals(Boolean.class)) {
-                addBooleanField(r, c);
+    private void addVariableField(Dock<?> dock,GridBagConstraints c) {
+        if(dock instanceof Input<?> input) {
+            if (Number.class.isAssignableFrom(dock.getType())) {
+                addTextField(input, c);
+            } else if (dock.getType().equals(String.class)) {
+                addTextField(input, c);
+            } else if (dock.getType().equals(Boolean.class)) {
+                addBooleanField(input, c);
             } else {
-                addReadOnlyField(c, variable.getName(), variable.getTypeName());
+                addReadOnlyField(c, dock.getName(), dock.getTypeName());
             }
         } else {
-            addReadOnlyField(c, variable.getName(), variable.getTypeName());
+            addReadOnlyField(c, dock.getName(), dock.getTypeName());
         }
     }
 
@@ -79,7 +78,7 @@ public class EditNodePanel extends JPanel {
      * @param variable the {@link Dock} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addTextField(DockReceiving<?> variable,GridBagConstraints c) {
+    private void addTextField(Input<?> variable, GridBagConstraints c) {
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx=0;
         this.add(new JLabel(variable.getName()),c);
@@ -98,7 +97,7 @@ public class EditNodePanel extends JPanel {
      * @param variable the {@link Dock} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addBooleanField(DockReceiving<?> variable,GridBagConstraints c) {
+    private void addBooleanField(Input<?> variable, GridBagConstraints c) {
         c.anchor = GridBagConstraints.LINE_START;
         c.gridx=0;
         this.add(new JLabel(variable.getName()),c);
@@ -162,8 +161,8 @@ public class EditNodePanel extends JPanel {
         int j=0;
         for(int i=0;i<subject.getNumVariables();++i) {
             Dock<?> variable = subject.getVariable(i);
-            if(variable instanceof DockReceiving) {
-                DockReceiving r = (DockReceiving)variable;
+            if(variable instanceof Input) {
+                Input r = (Input)variable;
                 if (variable.getType().equals(Number.class)) {
                     panel.readTextField(j++, r);
                 } else if (variable.getType().equals(String.class)) {
@@ -177,7 +176,7 @@ public class EditNodePanel extends JPanel {
         }
     }
 
-    private void readBooleanField(int index,DockReceiving<?> variable) {
+    private void readBooleanField(int index, Input<?> variable) {
         JCheckBox f = (JCheckBox)fields.get(index);
         if(f==null) {
             // TODO ???
@@ -187,7 +186,7 @@ public class EditNodePanel extends JPanel {
         variable.setValue(f.isSelected());
     }
 
-    private void readTextField(int index,DockReceiving<?> variable) {
+    private void readTextField(int index, Input<?> variable) {
         JTextField f = (JTextField)fields.get(index);
         if(f==null) {
             // TODO ???

@@ -1,20 +1,19 @@
-package com.marginallyclever.donatello.actions.undoable;
+package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.actions.EditorAction;
-import com.marginallyclever.donatello.edits.GraphIsolateEdit;
+import com.marginallyclever.donatello.EditNodePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 /**
- * Disconnects the selected {@link Node}s from any non-selected {@link Node}s of a {@link Graph}.
+ * Launches the "edit node" dialog.
  * @author Dan Royer
- * @since 2022-03-10
+ * @since 2022-02-21
  */
-public class IsolateGraphAction extends AbstractAction implements EditorAction {
+public class NodeEditAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -25,14 +24,18 @@ public class IsolateGraphAction extends AbstractAction implements EditorAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public IsolateGraphAction(String name, Donatello editor) {
+    public NodeEditAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        editor.addEdit(new GraphIsolateEdit((String)this.getValue(Action.NAME),editor,editor.getSelectedNodes()));
+        List<Node> nodes = editor.getSelectedNodes();
+        if(nodes.isEmpty()) return;
+        Node firstNode = nodes.get(0);
+        EditNodePanel.runAsDialog(firstNode,(JFrame)SwingUtilities.getWindowAncestor(editor));
+        editor.repaint(firstNode.getRectangle());
     }
 
     @Override

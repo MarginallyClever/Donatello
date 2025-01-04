@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.graphview;
 
-import com.marginallyclever.nodegraphcore.Dock;
+import com.marginallyclever.nodegraphcore.dock.Dock;
 import com.marginallyclever.nodegraphcore.Node;
 import org.json.JSONObject;
 
