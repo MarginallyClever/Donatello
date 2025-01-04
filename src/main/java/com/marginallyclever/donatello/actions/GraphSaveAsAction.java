@@ -3,6 +3,8 @@ package com.marginallyclever.donatello.actions;
 import com.marginallyclever.donatello.RecentFilesMenu;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +17,7 @@ import java.io.FileWriter;
  * @since 2022-02-21
  */
 public class GraphSaveAsAction extends AbstractAction {
+    private static final Logger logger = LoggerFactory.getLogger(GraphSaveAsAction.class.getName());
     private String lastLoadedPath;
 
     /**
@@ -74,7 +77,7 @@ public class GraphSaveAsAction extends AbstractAction {
             if(menu!=null) menu.addPath(absolutePath);
         } catch(Exception e) {
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(editor),e.getLocalizedMessage());
-            e.printStackTrace();
+            logger.error("save failed.",e);
         }
     }
 

@@ -1,13 +1,13 @@
 package com.marginallyclever.donatello.actions.undoable;
 
 import com.marginallyclever.donatello.actions.EditorAction;
-import com.marginallyclever.donatello.actions.GraphCopyAction;
+import com.marginallyclever.donatello.actions.NodeCopyAction;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
- * Performs an {@link GraphCopyAction} and then an {@link NodeDeleteAction}.
+ * Performs an {@link NodeCopyAction} and then an {@link NodeDeleteAction}.
  * @author Dan Royer
  * @since 2022-02-21
  */
@@ -19,7 +19,7 @@ public class NodeCutAction extends AbstractAction implements EditorAction {
     /**
      * The copy action on which this action depends.
      */
-    private final GraphCopyAction actionCopyGraph;
+    private final NodeCopyAction actionCopyGraph;
 
     /**
      * Constructor for subclasses to call.
@@ -27,7 +27,7 @@ public class NodeCutAction extends AbstractAction implements EditorAction {
      * @param actionDeleteGraph the delete action to use
      * @param actionCopyGraph the copy action to use
      */
-    public NodeCutAction(String name, NodeDeleteAction actionDeleteGraph, GraphCopyAction actionCopyGraph) {
+    public NodeCutAction(String name, NodeDeleteAction actionDeleteGraph, NodeCopyAction actionCopyGraph) {
         super(name);
         this.actionDeleteGraph = actionDeleteGraph;
         this.actionCopyGraph = actionCopyGraph;

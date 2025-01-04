@@ -404,10 +404,10 @@ public class Donatello extends JPanel {
         undoAction.setActionRedo(redoAction);
         redoAction.setActionUndo(undoAction);
 
-        GraphCopyAction graphCopyAction = new GraphCopyAction("Copy",this);
+        NodeCopyAction nodeCopyAction = new NodeCopyAction("Copy",this);
         NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
         NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
-        NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, graphCopyAction);
+        NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, nodeCopyAction);
         NodeAddAction nodeAddAction = new NodeAddAction("Add",this);
         NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
         ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
@@ -426,7 +426,7 @@ public class Donatello extends JPanel {
         undoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-undo-16.png"))));
         redoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-redo-16.png"))));
 
-        graphCopyAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-copy-16.png"))));
+        nodeCopyAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-copy-16.png"))));
         nodePasteAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-paste-16.png"))));
         nodeDeleteAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-delete-16.png"))));
         nodeCutAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cut-16.png"))));
@@ -447,7 +447,7 @@ public class Donatello extends JPanel {
 
         actions.add(undoAction);
         actions.add(redoAction);
-        actions.add(graphCopyAction);
+        actions.add(nodeCopyAction);
         actions.add(nodePasteAction);
         actions.add(nodeDeleteAction);
         actions.add(nodeCutAction);
@@ -469,7 +469,7 @@ public class Donatello extends JPanel {
         undoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
         redoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
 
-        graphCopyAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
+        nodeCopyAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
         nodePasteAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
         nodeDeleteAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         nodeCutAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
@@ -493,7 +493,7 @@ public class Donatello extends JPanel {
         menu.add(selectionInvertAction);
         menu.add(selectShortestPathAction);
         menu.add(zoomToFitSelectedAction);
-        menu.add(graphCopyAction);
+        menu.add(nodeCopyAction);
         menu.add(nodeCutAction);
         menu.add(nodePasteAction);
         menu.add(nodeDeleteAction);
@@ -516,7 +516,7 @@ public class Donatello extends JPanel {
         popupBar.add(graphUnfoldAction);
         popupBar.add(nodeIsolateAction);
         popupBar.addSeparator();
-        popupBar.add(graphCopyAction);
+        popupBar.add(nodeCopyAction);
         popupBar.add(nodeCutAction);
         popupBar.add(nodePasteAction);
         popupBar.addSeparator();

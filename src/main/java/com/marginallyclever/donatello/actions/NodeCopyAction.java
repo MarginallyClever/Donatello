@@ -18,7 +18,7 @@ import java.util.List;
  * @author Dan Royer
  * @since 2022-02-21
  */
-public class GraphCopyAction extends AbstractAction implements EditorAction {
+public class NodeCopyAction extends AbstractAction implements EditorAction {
     /**
      * The editor being affected.
      */
@@ -29,7 +29,7 @@ public class GraphCopyAction extends AbstractAction implements EditorAction {
      * @param name the name of this action visible on buttons and menu items.
      * @param editor the editor affected by this Action.
      */
-    public GraphCopyAction(String name, Donatello editor) {
+    public NodeCopyAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
     }
