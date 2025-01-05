@@ -206,8 +206,8 @@ public class Donatello extends JPanel {
             paintArea.paintNodeBorder(g, n);
 
             for( Connection c : graph.getConnections() ) {
-                if(c.getOutNode()==n) in.add(c);
-                if(c.getInNode()==n) out.add(c);
+                if(c.getTo()==n) in.add(c);
+                if(c.getFrom()==n) out.add(c);
             }
         }
         ArrayList<Connection> both = new ArrayList<>(in);

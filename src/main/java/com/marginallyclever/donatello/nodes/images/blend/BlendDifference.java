@@ -28,9 +28,6 @@ public class BlendDifference extends Node {
 
     @Override
     public void update() {
-        if(a.hasPacketWaiting()) a.receive();
-        if(b.hasPacketWaiting()) b.receive();
-
         BufferedImage A = a.getValue();
         BufferedImage B = b.getValue();
 
@@ -55,7 +52,7 @@ public class BlendDifference extends Node {
                 C.setRGB(x,y,cC);
             }
         }
-        output.send(new Packet<>(C));
+        output.send(C);
     }
 
 }

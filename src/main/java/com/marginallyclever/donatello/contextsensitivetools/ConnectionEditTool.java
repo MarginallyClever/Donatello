@@ -9,6 +9,8 @@ import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.edits.ConnectionAddEdit;
 import com.marginallyclever.donatello.edits.ConnectionRemoveEdit;
+import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.dock.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -190,10 +192,10 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         {
             if (lastConnectionPoint.getFlags() == ConnectionPointInfo.IN) {
                 // the output of a connection goes to the input of a node.
-                connectionBeingCreated.setOutput(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
+                connectionBeingCreated.setTo(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
             } else {
                 //the output of a node goes to the input of a connection.
-                connectionBeingCreated.setInput(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
+                connectionBeingCreated.setFrom(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
             }
 
             setActive(true);
@@ -213,8 +215,8 @@ public class ConnectionEditTool extends ContextSensitiveTool {
                 }
             } else {
                 // if any of the tests failed
-                Dock<?> vIn = connectionBeingCreated.getInVariable();
-                Dock<?> vOut = connectionBeingCreated.getOutVariable();
+                Input<?> vIn = connectionBeingCreated.getInput();
+                Output<?> vOut = connectionBeingCreated.getOutput();
                 String nameIn = (vIn==null) ? "null" : vIn.getTypeName();
                 String nameOut = (vOut==null) ? "null" : vOut.getTypeName();
                 logger.warn("Invalid types {}, {}",nameOut,nameIn);

@@ -2,7 +2,6 @@ package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.dock.Output;
-import com.marginallyclever.nodegraphcore.Packet;
 
 /**
  * Publishes the time in seconds continuously.
@@ -19,6 +18,6 @@ public class TimeInSeconds extends Node {
     @Override
     public void update() {
         double t = (System.currentTimeMillis()-startTime)/1000.0;
-        seconds.send(new Packet<>(t));
+        seconds.send(t);
     }
 }

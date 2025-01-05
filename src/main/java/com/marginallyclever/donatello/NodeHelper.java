@@ -12,8 +12,8 @@ public class NodeHelper {
         List<Node> adjacent = new ArrayList<>();
 
         for( Connection c : graph.getConnections() ) {
-            if (c.isConnectedTo(source) && c.getInNode()==source) {
-                adjacent.add(c.getOutNode());
+            if (c.isConnectedTo(source) && c.getFrom()==source) {
+                adjacent.add(c.getTo());
             }
         }
 

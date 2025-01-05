@@ -39,13 +39,13 @@ public class SelectionShrinkAction extends AbstractAction implements EditorActio
         List<Node> edgeNodes = new ArrayList<>();
 
         for( Node n : selectedNodes ) {
-            int inCount=0;
-            int outCount=0;
+            int fromCount=0;
+            int toCount=0;
 
             for( Connection c : connections ) {
                 if (c.isConnectedTo(n)) {
-                    if(c.getInNode()==n) inCount++;
-                    if(c.getOutNode()==n) outCount++;
+                    if(c.getFrom()==n) fromCount++;
+                    if(c.getTo()==n) toCount++;
 
                     // node has a connection to another selected node?
                     if( !selectedNodes.contains(c.getOtherNode(n)) ) {
@@ -54,7 +54,7 @@ public class SelectionShrinkAction extends AbstractAction implements EditorActio
                     }
                 }
             }
-            if(inCount==0 || outCount==0) {
+            if(fromCount==0 || toCount==0) {
                 edgeNodes.add(n);
             }
         }

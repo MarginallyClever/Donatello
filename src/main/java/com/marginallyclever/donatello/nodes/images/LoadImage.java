@@ -33,8 +33,6 @@ public class LoadImage extends Node {
 
     @Override
     public void update() {
-        if(filename.hasPacketWaiting()) filename.receive();
-
         String filenameValue = filename.getValue();
         if(filenameValue!=null && !filenameValue.isEmpty() && !filenameValue.equals(previousFilename)) {
             try {
@@ -42,9 +40,9 @@ public class LoadImage extends Node {
                 System.out.println("loading "+filenameValue);
                 BufferedImage image = ImageIO.read(new File(filenameValue));
                 if(image!=null) {
-                    contents.send(new Packet<>(image));
-                    width.send(new Packet<>(image.getWidth()));
-                    height.send(new Packet<>(image.getHeight()));
+                    contents.send(image);
+                    width.send(image.getWidth());
+                    height.send(image.getHeight());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

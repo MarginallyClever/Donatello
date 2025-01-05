@@ -32,12 +32,10 @@ public class ColorToRGBA extends Node {
 
     @Override
     public void update() {
-        if(color.hasPacketWaiting()) color.receive();
-
         Color c = color.getValue();
-        red  .send(new Packet<>(c.getRed()  /255.0));
-        green.send(new Packet<>(c.getGreen()/255.0));
-        blue .send(new Packet<>(c.getBlue() /255.0));
-        alpha.send(new Packet<>(c.getAlpha()/255.0));
+        red  .send(c.getRed()  /255.0);
+        green.send(c.getGreen()/255.0);
+        blue .send(c.getBlue() /255.0);
+        alpha.send(c.getAlpha()/255.0);
     }
 }

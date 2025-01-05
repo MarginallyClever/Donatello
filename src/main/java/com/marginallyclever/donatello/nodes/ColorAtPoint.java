@@ -37,11 +37,6 @@ public class ColorAtPoint extends Node {
 
     @Override
     public void update() {
-        if(image.hasPacketWaiting()) image.receive();
-        if(cx.hasPacketWaiting()) cx.receive();
-        if(cy.hasPacketWaiting()) cy.receive();
-        if(sampleSize.hasPacketWaiting()) sampleSize.receive();
-
         BufferedImage src = image.getValue();
         int h = src.getHeight();
         int w = src.getWidth();
@@ -67,10 +62,10 @@ public class ColorAtPoint extends Node {
             for (int y = startY; y < endY; ++y) {
                 for (int x = startX; x < endX; ++x) {
                     int pixel = src.getRGB(x,y);
-                    sumA += (double)((pixel >> 24) & 0xff);
-                    sumR += (double)((pixel >> 16) & 0xff);
-                    sumG += (double)((pixel >>  8) & 0xff);
-                    sumB += (double)((pixel      ) & 0xff);
+                    sumA += ((pixel >> 24) & 0xff);
+                    sumR += ((pixel >> 16) & 0xff);
+                    sumG += ((pixel >>  8) & 0xff);
+                    sumB += ((pixel      ) & 0xff);
                     sumCount++;
                 }
             }
@@ -79,7 +74,7 @@ public class ColorAtPoint extends Node {
             sumR /= sumCount;
             sumG /= sumCount;
             sumB /= sumCount;
-            output.send(new Packet<>(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA)));
+            output.send(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
         }
     }
 }

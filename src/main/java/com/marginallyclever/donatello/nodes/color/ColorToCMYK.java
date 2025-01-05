@@ -33,13 +33,11 @@ public class ColorToCMYK extends Node {
 
     @Override
     public void update() {
-        if(color.hasPacketWaiting()) color.receive();
-
         Color c = color.getValue();
         double [] cmyk = ColorHelper.IntToCMYK(ColorHelper.ColorToInt(c));
-        cyan.send(new Packet<>(   cmyk[0]/255.0));
-        magenta.send(new Packet<>(cmyk[1]/255.0));
-        yellow.send(new Packet<>( cmyk[2]/255.0));
-        black.send(new Packet<>(  cmyk[3]/255.0));
+        cyan.send(   cmyk[0]/255.0);
+        magenta.send(cmyk[1]/255.0);
+        yellow.send( cmyk[2]/255.0);
+        black.send(  cmyk[3]/255.0);
     }
 }

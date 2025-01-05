@@ -3,7 +3,6 @@ package com.marginallyclever.donatello.nodes.images;
 import com.marginallyclever.nodegraphcore.dock.Input;
 import com.marginallyclever.nodegraphcore.dock.Output;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Packet;
 import com.github.sarxos.webcam.Webcam;
 
 import java.awt.image.BufferedImage;
@@ -41,15 +40,9 @@ public class CameraFeed extends Node {
                 BufferedImage image = captureFrame();
                 if(image==null) return;
 
-                if(contents.outputHasRoom()) {
-                    contents.send(new Packet<>(image));
-                }
-                if(width.outputHasRoom()) {
-                    width.send(new Packet<>(image.getWidth()));
-                }
-                if(height.outputHasRoom()) {
-                    height.send(new Packet<>(image.getHeight()));
-                }
+                contents.send(image);
+                width.send(image.getWidth());
+                height.send(image.getHeight());
             } catch (Exception e) {
                 e.printStackTrace();
             }

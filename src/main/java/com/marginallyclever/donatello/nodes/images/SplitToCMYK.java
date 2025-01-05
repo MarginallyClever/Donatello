@@ -32,8 +32,6 @@ public class SplitToCMYK extends Node {
 
     @Override
     public void update() {
-        if(image.hasPacketWaiting()) image.receive();
-
         BufferedImage src = image.getValue();
         int h = src.getHeight();
         int w = src.getWidth();
@@ -58,9 +56,9 @@ public class SplitToCMYK extends Node {
             }
         }
 
-        cyan   .send(new Packet<>(channelCyan));
-        magenta.send(new Packet<>(channelMagenta));
-        yellow .send(new Packet<>(channelYellow));
-        black  .send(new Packet<>(channelBlack));
+        cyan   .send(channelCyan);
+        magenta.send(channelMagenta);
+        yellow .send(channelYellow);
+        black  .send(channelBlack);
     }
 }

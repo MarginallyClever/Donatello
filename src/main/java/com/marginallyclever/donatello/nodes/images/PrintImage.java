@@ -28,13 +28,10 @@ public class PrintImage extends Node implements PrintWithGraphics {
 
     @Override
     public void update() {
-        if(image.hasPacketWaiting()) image.receive();
-        if(px.hasPacketWaiting()) px.receive();
-        if(py.hasPacketWaiting()) py.receive();
     }
 
     @Override
     public void print(Graphics g) {
-        g.drawImage((BufferedImage)image.getValue(),px.getValue().intValue(),py.getValue().intValue(),null);
+        g.drawImage(image.getValue(),px.getValue().intValue(),py.getValue().intValue(),null);
     }
 }

@@ -24,7 +24,7 @@ public class ConnectionAddEdit extends SignificantUndoableEdit {
         this.name = name;
         this.editor = editor;
         this.connection = connection;
-        this.connectionsInto = editor.getGraph().getAllConnectionsInto(connection.getOutVariable());
+        this.connectionsInto = editor.getGraph().getAllConnectionsInto(connection.getOutput());
         doIt();
     }
 

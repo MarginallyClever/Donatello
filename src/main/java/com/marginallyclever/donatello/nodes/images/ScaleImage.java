@@ -32,10 +32,6 @@ public class ScaleImage extends Node {
 
     @Override
     public void update() {
-        if(image.hasPacketWaiting()) image.receive();
-        if(width.hasPacketWaiting()) width.receive();
-        if(height.hasPacketWaiting()) height.receive();
-
         int w = Math.max(1,width.getValue().intValue());
         int h = Math.max(1,height.getValue().intValue());
         BufferedImage input = image.getValue();
@@ -45,6 +41,6 @@ public class ScaleImage extends Node {
         at.scale((double)w/(double)input.getWidth(), (double)h/(double)input.getHeight());
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
-        output.send(new Packet<>(result));
+        output.send(result);
     }
 }
