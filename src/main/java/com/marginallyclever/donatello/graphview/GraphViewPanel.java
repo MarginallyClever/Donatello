@@ -361,11 +361,10 @@ public class GraphViewPanel extends JPanel {
         Rectangle box = v.getRectangle();
         Rectangle insideBox = getNodeInternalBounds(box);
 
-        // value
         Object vObj = v.getValue();
         if(vObj != null) {
-            if(vObj instanceof BufferedImage) {
-                paintDockBufferedImage(g,(BufferedImage)vObj,insideBox);
+            if(vObj instanceof BufferedImage img) {
+                paintDockBufferedImage(g,img,box);
             } else {
                 String val;
                 if (vObj instanceof String
@@ -383,6 +382,7 @@ public class GraphViewPanel extends JPanel {
             }
         }
 
+
         // label
         g.setColor(settings.getNodeColorFontClean());
         paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_CENTER);
@@ -399,14 +399,22 @@ public class GraphViewPanel extends JPanel {
     private void paintDockBufferedImage(Graphics g, BufferedImage img, Rectangle insideBox) {
         int w = img.getWidth();
         int h = img.getHeight();
-        int max = Math.max(w, h);
         int maxW = (int) insideBox.getWidth();
         int maxH = (int) insideBox.getHeight();
-        if (maxW > max) maxW = max;
-        if (maxH > max) maxH = max;
+        if (w > maxW) {
+            h = h * maxW / w;
+            w = maxW;
+        }
+        if (h > maxH) {
+            w = w * maxH / h;
+            h = maxH;
+        }
         int x = (int) insideBox.getX();
         int y = (int) insideBox.getY();
-        g.drawImage(img, x, y, maxW, maxH, null);
+        g.drawImage(img, x, y, w, h, null);
+
+        //g.setColor(Color.RED);
+        //g.drawRect(insideBox.x,insideBox.y,insideBox.width,insideBox.height);
     }
 
     /**
@@ -490,12 +498,12 @@ public class GraphViewPanel extends JPanel {
      * @param c the {@link Dock} to paint.
      */
     public void paintConnection(Graphics g, Connection c) {
-        Point p0 = c.getInPosition();
-        Point p3 = c.getOutPosition();
-        paintBezierBetweenTwoPoints(g,p0,p3);
+        Point to = c.getOutPosition();
+        Point from = c.getInPosition();
+        paintBezierBetweenTwoPoints(g,from,to);
 
-        if(c.isOutputValid()) paintConnectionAtPoint(g,c.getOutPosition());
-        if(c.isInputValid()) paintConnectionAtPoint(g,c.getInPosition());
+        if(c.isToValid()) paintConnectionAtPoint(g,to);
+        if(c.isFromValid()) paintConnectionAtPoint(g,from);
     }
 
     /**
