@@ -4,9 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>Donatello</artifactId>
+    <groupId>org.marginallyclever</groupId>
+    <artifactId>donatello</artifactId>
     <version>1.1</version>
+
+    <name>Donatello</name>
+    <description>GUI for nodegraphcore</description>
 
     <repositories>
         <repository>
@@ -240,11 +243,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.marginallyclever</groupId>
-            <artifactId>nodegraphcore</artifactId>
-            <version>1.1.0</version>
-        </dependency>
         <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -255,7 +253,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.10</version>
+            <version>1.4.12</version>
         </dependency>
         <!-- logging -->
         <dependency>

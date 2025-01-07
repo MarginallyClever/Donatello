@@ -8,7 +8,7 @@ module com.marginallyclever.donatello {
     requires java.desktop;
     requires org.json;
     requires org.slf4j;
-    requires logback.core;
+    requires ch.qos.logback.core;
     requires com.marginallyclever.nodegraphcore;
     requires io.github.classgraph;
     requires webcam.capture;
@@ -16,16 +16,16 @@ module com.marginallyclever.donatello {
     requires com.formdev.flatlaf;
     requires java.prefs;
 
-    exports com.marginallyclever.donatello to logback.core;
+    exports com.marginallyclever.donatello;
 
     // must export these packages for nodegraphcore to access the classes within.
     exports com.marginallyclever.donatello.nodes to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.nodes.color to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.nodes.images to com.marginallyclever.nodegraphcore;
     exports com.marginallyclever.donatello.nodes.images.blend to com.marginallyclever.nodegraphcore;
-    exports com.marginallyclever.donatello.search to logback.core;
-    exports com.marginallyclever.donatello.bezier to logback.core;
-    exports com.marginallyclever.donatello.graphview to logback.core;
+    exports com.marginallyclever.donatello.search to ch.qos.logback.core;
+    exports com.marginallyclever.donatello.bezier to ch.qos.logback.core;
+    exports com.marginallyclever.donatello.graphview to ch.qos.logback.core;
 
     // A Java module that wants to implement a service interface from a service interface module must:
     // - Require the service interface module in its own module descriptor.
