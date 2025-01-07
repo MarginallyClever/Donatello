@@ -131,10 +131,10 @@ public class Donatello extends JPanel {
 
     private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(GraphLoadAction.class),this);
 
-    /**
-     * Default constructor
-     * @param graph the {@link Graph} to edit.
-     */
+    public Donatello() {
+        this(new Graph());
+    }
+
     public Donatello(Graph graph) {
         super(new BorderLayout());
         this.graph = graph;
@@ -149,7 +149,8 @@ public class Donatello extends JPanel {
         setupTools();
         setupPaintArea();
         attachMouse();
-        setupMenuBar();
+        setupToolBar();
+        setupToolBar2();
 
         setSelectedNodes(null);
         setupClock();
@@ -238,8 +239,6 @@ public class Donatello extends JPanel {
 
         menuBar.add(setupGraphMenu());
         menuBar.add(setupNodeMenu());
-        menuBar.add(setupToolMenuAndToolBar());
-        menuBar.add(setupViewMenu());
         menuBar.add(setupHelpMenu());
     }
 
@@ -283,46 +282,6 @@ public class Donatello extends JPanel {
         return menu;
     }
 
-    private JMenu setupToolMenuAndToolBar() {
-        JMenu menu = new JMenu("Tools");
-
-        addPlayAndPause();
-
-        JMenuItem showToolBar = new JCheckBoxMenuItem("Show tool bar");
-        menu.add(showToolBar);
-        showToolBar.addActionListener(e -> toolBar.setVisible(showToolBar.isSelected()));
-        showToolBar.setSelected(true);
-
-        return menu;
-    }
-
-    private JMenu setupViewMenu() {
-        JMenu menu = new JMenu("View");
-
-        JMenuItem zoomToFit = new JMenuItem("Zoom to fit");
-        menu.add(zoomToFit);
-        zoomToFit.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-zoom-to-fit-16.png"))));
-        zoomToFit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
-        zoomToFit.addActionListener(e -> paintArea.moveAndZoomToFit(selectedNodes));
-
-        JMenuItem settingsPanel = new JMenuItem("Preferences");
-        settingsPanel.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
-        menu.add(settingsPanel);
-        settingsPanel.addActionListener(e -> {
-            GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
-            // put in a modal dialog
-            int result = JOptionPane.showConfirmDialog(this, gvSettingsPanel, "Preferences", JOptionPane.OK_CANCEL_OPTION);
-            if(result==JOptionPane.OK_OPTION) {
-                paintArea.saveSettings();
-            } else {
-                paintArea.loadSettings();
-            }
-
-            paintArea.repaint();
-        });
-        return menu;
-    }
-
     /**
      * @param key a {@link GraphViewSettings} key
      * @param newValue the new value for that setting
@@ -332,7 +291,21 @@ public class Donatello extends JPanel {
         paintArea.repaint();
     }
 
-    private void addPlayAndPause() {
+    private void setupToolBar() {
+        JButton settingsPanel = new JButton("Preferences");
+        settingsPanel.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
+        settingsPanel.addActionListener(e -> {
+            GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
+            // put in a modal dialog
+            int result = JOptionPane.showConfirmDialog(this, gvSettingsPanel, "Preferences", JOptionPane.OK_CANCEL_OPTION);
+            if(result==JOptionPane.OK_OPTION)
+                 paintArea.saveSettings();
+            else paintArea.loadSettings();
+            paintArea.repaint();
+        });
+        toolBar.add(settingsPanel);
+        toolBar.addSeparator();
+
         ButtonGroup clockGroup = new ButtonGroup();
 
         GraphUpdateAction graphUpdateAction = new GraphUpdateAction("Step",this);
@@ -361,6 +334,78 @@ public class Donatello extends JPanel {
         toolBar.add(stepButton);
         toolBar.add(playButton);
         toolBar.add(resetButton);
+    }
+
+    private void setupToolBar2() {
+        NodeCopyAction nodeCopyAction = new NodeCopyAction("Copy",this);
+        NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
+        NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
+        NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, nodeCopyAction);
+        NodeAddAction nodeAddAction = new NodeAddAction("Add",this);
+        NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
+        ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
+        GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, nodeCutAction);
+        GraphUnfoldAction graphUnfoldAction = new GraphUnfoldAction("Unfold",this);
+        NodeIsolateAction nodeIsolateAction = new NodeIsolateAction("Isolate",this);
+        SelectAllAction selectAllAction = new SelectAllAction("Select all",this);
+        SelectionGrowAction selectionGrowAction = new SelectionGrowAction("Grow selection",this);
+        SelectionShrinkAction selectionShrinkAction = new SelectionShrinkAction("Shrink selection",this);
+        SelectionInvertAction selectionInvertAction = new SelectionInvertAction("Invert selection",this);
+        SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
+        ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
+        GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
+        GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
+
+        addActionItem(graphStraightenAction,"Straighten","/com/marginallyclever/donatello/icons8-square-ruler-16.png","");
+        addActionItem(selectShortestPathAction,"Select shortest path","/com/marginallyclever/donatello/icons8-path-16.png","");
+        addActionItem(forciblyUpdateNodesAction,"Force update","/com/marginallyclever/donatello/icons8-update-16.png","");
+        addActionItem(zoomToFitSelectedAction,"Fit on screen","/com/marginallyclever/donatello/icons8-zoom-to-fit-16.png","control F");
+        addActionItem(nodeCopyAction,"Copy","/com/marginallyclever/donatello/icons8-copy-16.png","control C");
+        addActionItem(nodePasteAction,"Paste","/com/marginallyclever/donatello/icons8-paste-16.png","control V");
+        addActionItem(nodeDeleteAction,"Delete","/com/marginallyclever/donatello/icons8-delete-16.png","delete");
+        addActionItem(nodeCutAction,"Cut","/com/marginallyclever/donatello/icons8-cut-16.png","control X");
+        addActionItem(nodeAddAction,"Add","/com/marginallyclever/donatello/icons8-add-16.png","control +");
+        addActionItem(editNodesAction,"Edit","/com/marginallyclever/donatello/icons8-edit-16.png","control E");
+        addActionItem(graphFoldAction,"Fold","/com/marginallyclever/donatello/icons8-edit-16.png","control {");
+        addActionItem(graphUnfoldAction,"Unfold","/com/marginallyclever/donatello/icons8-edit-16.png","control }");
+        addActionItem(nodeIsolateAction,"Isolate","/com/marginallyclever/donatello/icons8-separate-16.png","control I");
+        addActionItem(selectAllAction,"Select all","/com/marginallyclever/donatello/icons8-select-all-16.png","control A");
+        addActionItem(selectionGrowAction,"Grow selection","/com/marginallyclever/donatello/icons8-expand-16.png","control +");
+        addActionItem(selectionShrinkAction,"Shrink selection","/com/marginallyclever/donatello/icons8-collapse-16.png","control -");
+        addActionItem(selectionInvertAction,"Invert selection","/com/marginallyclever/donatello/icons8-invert-16.png","control shift I");
+        addActionItem(graphOrganizeAction,"Organize","/com/marginallyclever/donatello/icons8-sorting-16.png","control O");
+
+        toolBar.addSeparator();
+        toolBar.add(selectAllAction);
+        toolBar.add(selectionGrowAction);
+        toolBar.add(selectionShrinkAction);
+        toolBar.add(selectionInvertAction);
+        toolBar.add(selectShortestPathAction);
+        toolBar.add(zoomToFitSelectedAction);
+        toolBar.addSeparator();
+        toolBar.add(graphStraightenAction);
+        toolBar.add(graphOrganizeAction);
+
+        popupBar.add(nodeAddAction);
+        popupBar.add(editNodesAction);
+        popupBar.add(forciblyUpdateNodesAction);
+        popupBar.addSeparator();
+        popupBar.add(graphFoldAction);
+        popupBar.add(graphUnfoldAction);
+        popupBar.add(nodeIsolateAction);
+        popupBar.addSeparator();
+        popupBar.add(nodeCopyAction);
+        popupBar.add(nodeCutAction);
+        popupBar.add(nodePasteAction);
+        popupBar.addSeparator();
+        popupBar.add(nodeDeleteAction);
+    }
+
+    private void addActionItem(AbstractAction action,String name,String iconFile,String accelerator) {
+        action.putValue(Action.SHORT_DESCRIPTION,name);
+        action.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource(iconFile))));
+        action.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(accelerator));
+        actions.add(action);
     }
 
     /**
@@ -401,126 +446,20 @@ public class Donatello extends JPanel {
     private JMenu setupNodeMenu() {
         JMenu menu = new JMenu("Node");
 
+        menu.add(undoAction);
+        menu.add(redoAction);
+
         undoAction.setActionRedo(redoAction);
         redoAction.setActionUndo(undoAction);
 
-        NodeCopyAction nodeCopyAction = new NodeCopyAction("Copy",this);
-        NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
-        NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
-        NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, nodeCopyAction);
-        NodeAddAction nodeAddAction = new NodeAddAction("Add",this);
-        NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
-        ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
-        GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, nodeCutAction);
-        GraphUnfoldAction graphUnfoldAction = new GraphUnfoldAction("Unfold",this);
-        NodeIsolateAction nodeIsolateAction = new NodeIsolateAction("Isolate",this);
-        SelectAllAction selectAllAction = new SelectAllAction("Select all",this);
-        SelectionGrowAction selectionGrowAction = new SelectionGrowAction("Grow selection",this);
-        SelectionShrinkAction selectionShrinkAction = new SelectionShrinkAction("Shrink selection",this);
-        SelectionInvertAction selectionInvertAction = new SelectionInvertAction("Invert selection",this);
-        SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
-        ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
-        GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
-        GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
+        undoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
+        redoAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 
         undoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-undo-16.png"))));
         redoAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-redo-16.png"))));
 
-        nodeCopyAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-copy-16.png"))));
-        nodePasteAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-paste-16.png"))));
-        nodeDeleteAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-delete-16.png"))));
-        nodeCutAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cut-16.png"))));
-        nodeAddAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-add-16.png"))));
-        editNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-edit-16.png"))));
-        forciblyUpdateNodesAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-update-16.png"))));
-        graphFoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-fold-16.png"))));
-        graphUnfoldAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-unfold-16.png"))));
-        nodeIsolateAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-separate-16.png"))));
-        selectAllAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-select-all-16.png"))));
-        selectionGrowAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-expand-16.png"))));
-        selectionShrinkAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-collapse-16.png"))));
-        selectionInvertAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-invert-16.png"))));
-        selectShortestPathAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-path-16.png"))));
-        zoomToFitSelectedAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-zoom-to-fit-16.png"))));
-        graphStraightenAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-square-ruler-16.png"))));
-        graphOrganizeAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-sorting-16.png"))));
-
         actions.add(undoAction);
         actions.add(redoAction);
-        actions.add(nodeCopyAction);
-        actions.add(nodePasteAction);
-        actions.add(nodeDeleteAction);
-        actions.add(nodeCutAction);
-        actions.add(nodeAddAction);
-        actions.add(editNodesAction);
-        actions.add(forciblyUpdateNodesAction);
-        actions.add(graphFoldAction);
-        actions.add(graphUnfoldAction);
-        actions.add(nodeIsolateAction);
-        actions.add(selectAllAction);
-        actions.add(selectionGrowAction);
-        actions.add(selectionShrinkAction);
-        actions.add(selectionInvertAction);
-        actions.add(selectShortestPathAction);
-        actions.add(zoomToFitSelectedAction);
-        actions.add(graphStraightenAction);
-        actions.add(graphOrganizeAction);
-
-        undoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
-        redoAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
-
-        nodeCopyAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
-        nodePasteAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
-        nodeDeleteAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
-        nodeCutAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
-        nodeAddAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, KeyEvent.CTRL_DOWN_MASK));
-        editNodesAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
-        graphFoldAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACELEFT, KeyEvent.CTRL_DOWN_MASK));
-        graphUnfoldAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_BRACERIGHT, KeyEvent.CTRL_DOWN_MASK));
-        nodeIsolateAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
-        selectAllAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
-        selectionGrowAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, KeyEvent.CTRL_DOWN_MASK));
-        selectionShrinkAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, KeyEvent.CTRL_DOWN_MASK));
-        selectionInvertAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK|KeyEvent.SHIFT_DOWN_MASK));
-        graphOrganizeAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-
-        menu.add(undoAction);
-        menu.add(redoAction);
-        menu.addSeparator();
-        menu.add(selectAllAction);
-        menu.add(selectionGrowAction);
-        menu.add(selectionShrinkAction);
-        menu.add(selectionInvertAction);
-        menu.add(selectShortestPathAction);
-        menu.add(zoomToFitSelectedAction);
-        menu.add(nodeCopyAction);
-        menu.add(nodeCutAction);
-        menu.add(nodePasteAction);
-        menu.add(nodeDeleteAction);
-        menu.addSeparator();
-        menu.add(nodeAddAction);
-        menu.add(editNodesAction);
-        menu.add(forciblyUpdateNodesAction);
-        menu.addSeparator();
-        menu.add(graphFoldAction);
-        menu.add(graphUnfoldAction);
-        menu.add(nodeIsolateAction);
-        menu.add(graphStraightenAction);
-        menu.add(graphOrganizeAction);
-
-        popupBar.add(nodeAddAction);
-        popupBar.add(editNodesAction);
-        popupBar.add(forciblyUpdateNodesAction);
-        popupBar.addSeparator();
-        popupBar.add(graphFoldAction);
-        popupBar.add(graphUnfoldAction);
-        popupBar.add(nodeIsolateAction);
-        popupBar.addSeparator();
-        popupBar.add(nodeCopyAction);
-        popupBar.add(nodeCutAction);
-        popupBar.add(nodePasteAction);
-        popupBar.addSeparator();
-        popupBar.add(nodeDeleteAction);
 
         return menu;
     }
@@ -697,8 +636,8 @@ public class Donatello extends JPanel {
         return paintArea;
     }
 
-    public static void setSystemLookAndFeel() {
-        FlatLaf.registerCustomDefaultsSource( "com.marginallyclever.ro3" );
+    public static void setLookAndFeel() {
+        FlatLaf.registerCustomDefaultsSource( "com.marginallyclever.donatello" );
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -733,13 +672,13 @@ public class Donatello extends JPanel {
         NodeFactory.loadRegistries();
         DAO4JSONFactory.loadRegistries();
 
-        Donatello.setSystemLookAndFeel();
+        Donatello.setLookAndFeel();
 
         PropertiesHelper.showProperties();
         PropertiesHelper.listAllNodes();
         PropertiesHelper.listAllDAO();
 
-        Donatello panel = new Donatello(new Graph());
+        Donatello panel = new Donatello();
 
         JFrame frame = new JFrame("Donatello");
         frame.setLocationRelativeTo(null);
