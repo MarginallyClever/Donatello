@@ -9,9 +9,9 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 
@@ -52,7 +52,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
 
     @Override
     public Icon getSmallIcon() {
-        return new UnicodeIcon("⛶");
+        return new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-rectangle-16.png")));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
         g2d.setStroke(dashed);
 
         g2d.setColor(keyStateMemory.isShiftKeyDown() ? Color.YELLOW : Color.GREEN);
-        Rectangle2D r = getSelectionArea(mousePreviousPosition);
+        Rectangle r = getSelectionArea(mousePreviousPosition);
         g2d.drawRect((int)r.getMinX(),(int)r.getMinY(),(int)r.getWidth()-STROKE_WIDTH,(int)r.getHeight()-STROKE_WIDTH);
     }
 

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class NodeMoveTool extends ContextSensitiveTool {
     private final Donatello editor;
@@ -47,7 +48,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
 
     @Override
     public Icon getSmallIcon() {
-        return new UnicodeIcon("⬌\r⬍");
+        return new ImageIcon(Objects.requireNonNull(this.getClass().getResource("com/marginallyclever/donatello/icons8-move-16.png")));
     }
 
     @Override

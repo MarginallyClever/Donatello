@@ -1,6 +1,5 @@
 package com.marginallyclever.donatello.contextsensitivetools;
 
-import com.marginallyclever.donatello.UnicodeIcon;
 import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.ConnectionPointInfo;
 import com.marginallyclever.nodegraphcore.Graph;
@@ -18,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class ConnectionEditTool extends ContextSensitiveTool {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionEditTool.class);
@@ -60,7 +60,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
 
     @Override
     public Icon getSmallIcon() {
-        return new UnicodeIcon("🔌");
+        return new ImageIcon(Objects.requireNonNull(this.getClass().getResource("com/marginallyclever/donatello/icons8-plug-16.png")));
     }
 
     @Override
@@ -142,13 +142,13 @@ public class ConnectionEditTool extends ContextSensitiveTool {
      * @param g the {@link Graphics} context
      */
     private void paintConnectionBeingMade(Graphics g) {
-        if(connectionBeingCreated.isInputValid() || connectionBeingCreated.isOutputValid()) {
+        if(connectionBeingCreated.isFromValid() || connectionBeingCreated.isToValid()) {
             g.setColor(CONNECTION_BEING_EDITED);
             GraphViewPanel paintArea = editor.getPaintArea();
             paintArea.setLineWidth(g,3);
 
             Point a,b;
-            if(connectionBeingCreated.isInputValid()) {
+            if(connectionBeingCreated.isFromValid()) {
                 a = connectionBeingCreated.getInPosition();
                 b = mousePreviousPosition;
                 paintArea.paintConnectionAtPoint(g,a);
@@ -204,7 +204,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
             editor.repaint(r);
         }
 
-        if(connectionBeingCreated.isInputValid() && connectionBeingCreated.isOutputValid() ) {
+        if(connectionBeingCreated.isFromValid() && connectionBeingCreated.isToValid() ) {
             if(connectionBeingCreated.isValidDataType()) {
                 Graph graph = editor.getGraph();
                 Connection match = graph.getMatchingConnection(connectionBeingCreated);
