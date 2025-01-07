@@ -3,6 +3,8 @@ package com.marginallyclever.donatello.nodes.images;
 import com.marginallyclever.nodegraphcore.*;
 import com.marginallyclever.nodegraphcore.dock.Input;
 import com.marginallyclever.nodegraphcore.dock.Output;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,7 +16,8 @@ import java.io.File;
  * @since 2022-02-23
  */
 public class LoadImage extends Node {
-    private String previousFilename = "";
+    private static final Logger logger = LoggerFactory.getLogger(LoadImage.class);
+
     private final Input<String> filename = new Input<>("filename",String.class,"");
     private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
     private final Output<Number> width = new Output<>("width",Number.class,0);
@@ -34,19 +37,24 @@ public class LoadImage extends Node {
     @Override
     public void update() {
         String filenameValue = filename.getValue();
-        if(filenameValue!=null && !filenameValue.isEmpty() && !filenameValue.equals(previousFilename)) {
-            try {
-                previousFilename = filenameValue;
-                System.out.println("loading "+filenameValue);
-                BufferedImage image = ImageIO.read(new File(filenameValue));
-                if(image!=null) {
-                    contents.send(image);
-                    width.send(image.getWidth());
-                    height.send(image.getHeight());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(filenameValue==null || filenameValue.isEmpty()) {
+            contents.send(null);
+            width.send(0);
+            height.send(0);
+            return;
+        }
+
+        try {
+            System.out.println("loading "+filenameValue);
+            BufferedImage image = ImageIO.read(new File(filenameValue));
+            if(image!=null) {
+                contents.send(image);
+                width.send(image.getWidth());
+                height.send(image.getHeight());
             }
+        } catch (Exception e) {
+            logger.error("Failed to load image from "+filenameValue,e);
+            e.printStackTrace();
         }
     }
 }
