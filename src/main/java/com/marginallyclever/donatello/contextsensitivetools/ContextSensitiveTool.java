@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 
+/**
+ * A tool that is context-sensitive.  It can be activated by a key press or by clicking on the graph.
+ */
 public abstract class ContextSensitiveTool extends MouseAdapter {
     private boolean isActive=false;
 
@@ -23,13 +26,9 @@ public abstract class ContextSensitiveTool extends MouseAdapter {
      * Returns the {@link KeyStroke} associated with activating this tool
      * @return the {@link KeyStroke} associated with activating this tool
      */
-    public KeyStroke getAcceleratorKey() {
-        return null;
-    }
+    public abstract KeyStroke getAcceleratorKey();
 
-    public Icon getSmallIcon() {
-        return null;
-    }
+    public abstract Icon getSmallIcon();
 
     protected void setActive(boolean isActive) {
         this.isActive = isActive;
