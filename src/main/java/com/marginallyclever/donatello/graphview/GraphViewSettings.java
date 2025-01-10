@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.graphview;
 
-import com.marginallyclever.nodegraphcore.dock.Dock;
+import com.marginallyclever.nodegraphcore.port.Port;
 import com.marginallyclever.nodegraphcore.Node;
 import org.json.JSONObject;
 
@@ -23,7 +23,7 @@ public class GraphViewSettings {
      */
     private Color nodeColorBorder = Color.BLACK;
     /**
-     * The default {@link Node} internal border between {@link Dock}s.
+     * The default {@link Node} internal border between {@link Port}s.
      */
     private Color nodeColorInternalBorder = Color.DARK_GRAY;
     /**

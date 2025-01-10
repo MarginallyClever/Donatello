@@ -1,8 +1,9 @@
 package com.marginallyclever.donatello.nodes.images;
 
+import com.marginallyclever.donatello.Filename;
 import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.dock.Input;
-import com.marginallyclever.nodegraphcore.dock.Output;
+import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.nodegraphcore.port.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ import java.io.File;
 public class LoadImage extends Node {
     private static final Logger logger = LoggerFactory.getLogger(LoadImage.class);
 
-    private final Input<String> filename = new Input<>("filename",String.class,"");
+    private final Input<Filename> filename = new Input<>("filename",Filename.class,new Filename(""));
     private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
     private final Output<Number> width = new Output<>("width",Number.class,0);
     private final Output<Number> height = new Output<>("height",Number.class,0);
@@ -36,7 +37,7 @@ public class LoadImage extends Node {
 
     @Override
     public void update() {
-        String filenameValue = filename.getValue();
+        String filenameValue = filename.getValue().get();
         if(filenameValue==null || filenameValue.isEmpty()) {
             contents.send(null);
             width.send(0);

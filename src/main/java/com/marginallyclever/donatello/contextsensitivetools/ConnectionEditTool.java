@@ -3,13 +3,13 @@ package com.marginallyclever.donatello.contextsensitivetools;
 import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.ConnectionPointInfo;
 import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.nodegraphcore.dock.Dock;
+import com.marginallyclever.nodegraphcore.port.Port;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.edits.ConnectionAddEdit;
 import com.marginallyclever.donatello.edits.ConnectionRemoveEdit;
-import com.marginallyclever.nodegraphcore.dock.Input;
-import com.marginallyclever.nodegraphcore.dock.Output;
+import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.nodegraphcore.port.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     private final Point mousePreviousPosition = new Point();
 
     /**
-     * To create a {@link Connection} the user has to select two {@link Dock} connection points.
+     * To create a {@link Connection} the user has to select two {@link Port} connection points.
      * This is where the first is stored until the user completes the connection or cancels the action.
      */
     private final Connection connectionBeingCreated = new Connection();
@@ -101,7 +101,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     }
 
     /**
-     * Searches for a nearby {@link Dock} connection point and, if found, remembers it.
+     * Searches for a nearby {@link Port} connection point and, if found, remembers it.
      * @param p the center of the search area.
      */
     private void selectOneNearbyConnectionPoint(Point p) {

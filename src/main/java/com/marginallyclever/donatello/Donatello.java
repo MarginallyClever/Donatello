@@ -71,7 +71,7 @@ public class Donatello extends JPanel {
     /**
      * Manages undo/redo in the editor.
      */
-    private final UndoManager undoManager = new UndoManager();
+    private final UndoManager undoManager = UnifiedUndoManager.getInstance();
 
     /**
      * declared here so that it can be referenced by the RedoAction.
@@ -414,27 +414,23 @@ public class Donatello extends JPanel {
     private JMenu setupGraphMenu() {
         JMenu menu = new JMenu("Graph");
         GraphNewAction graphNewAction = new GraphNewAction("New",this);
+        graphNewAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-new-16.png"))));
+        actions.add(graphNewAction);
+        menu.add(graphNewAction);
+        graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 
         GraphLoadAction graphLoadAction = new GraphLoadAction(recentFilesMenu,"Load",this);
-        GraphSaveAsAction graphSaveAsAction = new GraphSaveAsAction(recentFilesMenu,"Save",this);
-
-        graphNewAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-new-16.png"))));
         graphLoadAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
-        graphSaveAsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
-
-        //TODO toggleKeepUpdatingAction.putValue(Action.SMALL_ICON,new ImageIcon("🔃"));
-
-        actions.add(graphNewAction);
-        actions.add(graphSaveAsAction);
         actions.add(graphLoadAction);
-
-        graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-        graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        menu.add(graphLoadAction);
         graphLoadAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 
-        menu.add(graphNewAction);
-        menu.add(graphLoadAction);
         menu.add(recentFilesMenu);
+
+        GraphSaveAsAction graphSaveAsAction = new GraphSaveAsAction(recentFilesMenu,"Save",this);
+        graphSaveAsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
+        actions.add(graphSaveAsAction);
+        graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         menu.add(graphSaveAsAction);
 
         return menu;

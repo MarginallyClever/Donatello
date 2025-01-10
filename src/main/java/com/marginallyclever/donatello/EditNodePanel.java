@@ -1,9 +1,9 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.nodes.ColorAtPoint;
-import com.marginallyclever.nodegraphcore.dock.Input;
+import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.dock.Dock;
+import com.marginallyclever.nodegraphcore.port.Port;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +27,11 @@ public class EditNodePanel extends JPanel {
      * The fields being edited.
      */
     private final ArrayList<JComponent> fields = new ArrayList<>();
+
+    /**
+     * static so that the file chooser dialog remembers the last directory used.
+     */
+    private static final JFileChooser chooser = new JFileChooser();
 
     /**
      * The Constructor for subclasses to call.
@@ -57,25 +62,84 @@ public class EditNodePanel extends JPanel {
         }
     }
 
-    private void addVariableField(Dock<?> dock,GridBagConstraints c) {
-        if(dock instanceof Input<?> input) {
-            if (Number.class.isAssignableFrom(dock.getType())) {
+    private void addVariableField(Port<?> port, GridBagConstraints c) {
+        if(port instanceof Input<?> input) {
+            if (Number.class.isAssignableFrom(port.getType())) {
                 addTextField(input, c);
-            } else if (dock.getType().equals(String.class)) {
+            } else if(port.getType().equals(Filename.class)) {
+                addFilenameField(input, c);
+            } else if (port.getType().equals(String.class)) {
                 addTextField(input, c);
-            } else if (dock.getType().equals(Boolean.class)) {
+            } else if (port.getType().equals(Boolean.class)) {
                 addBooleanField(input, c);
+            } else if (port.getType().equals(Color.class)) {
+                addColorField(input, c);
             } else {
-                addReadOnlyField(c, dock.getName(), dock.getTypeName());
+                addReadOnlyField(c, port.getName(), port.getTypeName());
             }
         } else {
-            addReadOnlyField(c, dock.getName(), dock.getTypeName());
+            addReadOnlyField(c, port.getName(), port.getTypeName());
         }
     }
 
     /**
+     * Show a file chooser dialog to select a file.
+     * @param variable
+     * @param c
+     */
+    private void addFilenameField(Input<?> variable, GridBagConstraints c) {
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridx=0;
+        this.add(new JLabel(variable.getName()),c);
+
+        String v = ((Filename)variable.getValue()).get();
+        JTextField textField = new JTextField(v);
+        textField.setColumns(20);
+        fields.add(textField);
+        JButton button = new JButton("...");
+        button.addActionListener(e -> {
+            chooser.setDialogTitle("Select a file");
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(true);
+            if(chooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION) {
+                textField.setText(chooser.getSelectedFile().getAbsolutePath());
+                variable.setValue(new Filename(chooser.getSelectedFile().getAbsolutePath()));
+            }
+        });
+        textField.setEditable(false);
+        JPanel container = new JPanel(new BorderLayout());
+        container.add(textField,BorderLayout.CENTER);
+        container.add(button,BorderLayout.EAST);
+
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridx=1;
+        this.add(container,c);
+    }
+
+    private void addColorField(Input<?> variable, GridBagConstraints c) {
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridx=0;
+        this.add(new JLabel(variable.getName()),c);
+
+        Color v = (Color)variable.getValue();
+        JButton button = new JButton("Color");
+        button.setBackground(v);
+        button.addActionListener(e -> {
+            Color newColor = JColorChooser.showDialog(null,"Choose a color",v);
+            if(newColor!=null) {
+                button.setBackground(newColor);
+                variable.setValue(newColor);
+            }
+        });
+        fields.add(button);
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridx=1;
+        this.add(button,c);
+    }
+
+    /**
      * Adds one variable to the panel as a label/text field pair.
-     * @param variable the {@link Dock} to add.
+     * @param variable the {@link Port} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
     private void addTextField(Input<?> variable, GridBagConstraints c) {
@@ -94,7 +158,7 @@ public class EditNodePanel extends JPanel {
 
     /**
      * Adds one variable to the panel as a label/text field pair.
-     * @param variable the {@link Dock} to add.
+     * @param variable the {@link Port} to add.
      * @param c {@link GridBagConstraints} for placement.
      */
     private void addBooleanField(Input<?> variable, GridBagConstraints c) {
@@ -160,7 +224,7 @@ public class EditNodePanel extends JPanel {
     private static void readAllFields(Node subject, EditNodePanel panel) {
         int j=0;
         for(int i=0;i<subject.getNumVariables();++i) {
-            Dock<?> variable = subject.getVariable(i);
+            Port<?> variable = subject.getVariable(i);
             if(variable instanceof Input) {
                 Input r = (Input)variable;
                 if (variable.getType().equals(Number.class)) {

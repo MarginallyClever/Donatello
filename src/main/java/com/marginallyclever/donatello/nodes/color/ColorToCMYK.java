@@ -2,8 +2,8 @@ package com.marginallyclever.donatello.nodes.color;
 
 import com.marginallyclever.donatello.nodes.images.ColorHelper;
 import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.dock.Input;
-import com.marginallyclever.nodegraphcore.dock.Output;
+import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.nodegraphcore.port.Output;
 
 import java.awt.*;
 

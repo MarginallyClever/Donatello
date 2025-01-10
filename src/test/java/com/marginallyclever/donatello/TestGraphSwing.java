@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2022-02-21
  */
 public class TestGraphSwing {
-    private static Graph model = new Graph();
+    private static final Graph model = new Graph();
 
     @BeforeAll
     public static void beforeAll() {
@@ -55,11 +55,11 @@ public class TestGraphSwing {
     @Test
     public void testImages() {
         LoadImage img2 = new LoadImage();
-        img2.getVariable(0).setValue("doesNotExist.png");
+        img2.getVariable(0).setValue(new Filename("doesNotExist.png"));
         img2.update();
 
         LoadImage img = new LoadImage();
-        img.getVariable(0).setValue("src/test/resources/test.png");
+        img.getVariable(0).setValue(new Filename("src/test/resources/test.png"));
         img.update();
 
         PrintImage printer = new PrintImage();

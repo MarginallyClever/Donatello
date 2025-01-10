@@ -3,9 +3,9 @@ package com.marginallyclever.donatello.graphview;
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.dock.Dock;
-import com.marginallyclever.nodegraphcore.dock.Input;
-import com.marginallyclever.nodegraphcore.dock.Output;
+import com.marginallyclever.nodegraphcore.port.Port;
+import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.nodegraphcore.port.Output;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,28 +37,28 @@ public class GraphViewPanel extends JPanel {
     private final Logger logger = LoggerFactory.getLogger(GraphViewPanel.class);
     private static final String SETTINGS_FILENAME = "graphViewSettings.json";
     /**
-     * Controls horizontal text alignment within a {@link Node} or {@link Dock}.
+     * Controls horizontal text alignment within a {@link Node} or {@link Port}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_LEFT=0;
     /**
-     * Controls horizontal text alignment within a {@link Node} or {@link Dock}.
+     * Controls horizontal text alignment within a {@link Node} or {@link Port}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_RIGHT=1;
     /**
-     * Controls horizontal or vertical text alignment within a {@link Node} or {@link Dock}.
+     * Controls horizontal or vertical text alignment within a {@link Node} or {@link Port}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_CENTER=2;
 
     /**
-     * Controls vertical text alignment within a {@link Node} or {@link Dock}.
+     * Controls vertical text alignment within a {@link Node} or {@link Port}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_TOP=0;
     /**
-     * Controls vertical text alignment within a {@link Node} or {@link Dock}.
+     * Controls vertical text alignment within a {@link Node} or {@link Port}.
      * See {@link #paintText(Graphics, String, Rectangle, int, int)} for more information.
      */
     public static final int ALIGN_BOTTOM=1;
@@ -177,9 +177,7 @@ public class GraphViewPanel extends JPanel {
         updatePaintAreaBounds();
 
         Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+        setHints(g2);
 
         setBackground(settings.getPanelColorBackground());
         super.paintComponent(g2);
@@ -200,6 +198,14 @@ public class GraphViewPanel extends JPanel {
         if(settings.getDrawOrigin()) paintOrigin(g2);
 
         firePaintEvent(g2);
+    }
+
+    public static void setHints(Graphics2D g2) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_PURE);
+        g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
     }
 
     private void paintBackgroundGrid(Graphics g) {
@@ -340,7 +346,7 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint all the {@link Dock}s in one {@link Node}.
+     * Paint all the {@link Port}s in one {@link Node}.
      * @param g the {@link Graphics} context
      * @param n the {@link Node} to paint.
      */
@@ -351,11 +357,11 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint one {@link Dock}.
+     * Paint one {@link Port}.
      * @param g the {@link Graphics} context
-     * @param v the {@link Dock} to paint.
+     * @param v the {@link Port} to paint.
      */
-    public void paintOneDock(Graphics g, Dock<?> v) {
+    public void paintOneDock(Graphics g, Port<?> v) {
         final int MAX_CHARS = 10;
 
         Rectangle box = v.getRectangle();
@@ -399,18 +405,14 @@ public class GraphViewPanel extends JPanel {
     private void paintDockBufferedImage(Graphics g, BufferedImage img, Rectangle insideBox) {
         int w = img.getWidth();
         int h = img.getHeight();
-        int maxW = (int) insideBox.getWidth();
-        int maxH = (int) insideBox.getHeight();
+        int maxW = (int)insideBox.getWidth();
+        int maxH = (int)insideBox.getHeight();
         if (w > maxW) {
             h = h * maxW / w;
             w = maxW;
         }
-        if (h > maxH) {
-            w = w * maxH / h;
-            h = maxH;
-        }
-        int x = (int) insideBox.getX();
-        int y = (int) insideBox.getY();
+        int x = (int)insideBox.getX();
+        int y = (int)insideBox.getY();
         g.drawImage(img, x, y, w, h, null);
 
         //g.setColor(Color.RED);
@@ -420,7 +422,7 @@ public class GraphViewPanel extends JPanel {
     /**
      * Returns the adjusted inner bounds of a {@link Node}.
      * Nodes have a left and right margin useful for printing labels and values without overlapping the {@link Connection} points.
-     * these edges form an inner bound.  Given a {@link Dock#getRectangle()}, this
+     * these edges form an inner bound.  Given a {@link Port#getRectangle()}, this
      * @param r the outer bounsd of the node.
      * @return the adjusted inner bounds of a {@link Node}.
      */
@@ -444,11 +446,11 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint the female end of connection points of one {@link Dock}.
+     * Paint the female end of connection points of one {@link Port}.
      * @param g the {@link Graphics} context
-     * @param v the {@link Dock} to paint.
+     * @param v the {@link Port} to paint.
      */
-    public void paintVariableConnectionPoints(Graphics g, Dock<?> v) {
+    public void paintVariableConnectionPoints(Graphics g, Port<?> v) {
         if(v instanceof Input) {
             Point p = v.getInPosition();
             int radius = (int)Connection.DEFAULT_RADIUS+2;
@@ -493,9 +495,9 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint the male end of connection points at this {@link Dock}.
+     * Paint the male end of connection points at this {@link Port}.
      * @param g the {@link Graphics} context
-     * @param c the {@link Dock} to paint.
+     * @param c the {@link Port} to paint.
      */
     public void paintConnection(Graphics g, Connection c) {
         Point to = c.getOutPosition();

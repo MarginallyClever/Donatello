@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.dock.Output;
+import com.marginallyclever.nodegraphcore.port.Output;
 
 /**
  * Publishes the time in seconds continuously.

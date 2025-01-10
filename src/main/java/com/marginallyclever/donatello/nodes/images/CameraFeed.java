@@ -1,7 +1,8 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.dock.Input;
-import com.marginallyclever.nodegraphcore.dock.Output;
+import com.marginallyclever.donatello.Filename;
+import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.nodegraphcore.port.Output;
 import com.marginallyclever.nodegraphcore.Node;
 import com.github.sarxos.webcam.Webcam;
 
@@ -13,7 +14,7 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class CameraFeed extends Node {
-    private final Input<String> filename = new Input<>("src",String.class,"");
+    private final Input<Filename> filename = new Input<>("src",Filename.class,new Filename(""));
     private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
     private final Output<Number> width = new Output<>("width",Number.class,0);
     private final Output<Number> height = new Output<>("height",Number.class,0);
@@ -31,22 +32,16 @@ public class CameraFeed extends Node {
 
     @Override
     public void update() {
-        //if(filename.hasPacketWaiting()) filename.receive();
+        try {
+            BufferedImage image = captureFrame();
+            if(image==null) return;
 
-        //String filenameValue = filename.getValue();
-        //if(filenameValue!=null && !filenameValue.isEmpty()) {
-            try {
-                //System.out.println("loading "+filenameValue);
-                BufferedImage image = captureFrame();
-                if(image==null) return;
-
-                contents.send(image);
-                width.send(image.getWidth());
-                height.send(image.getHeight());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        //}
+            contents.send(image);
+            width.send(image.getWidth());
+            height.send(image.getHeight());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private BufferedImage captureFrame() {
