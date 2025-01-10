@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.marginallyclever</groupId>
@@ -9,7 +7,41 @@
     <version>1.1</version>
 
     <name>Donatello</name>
-    <description>GUI for nodegraphcore</description>
+    <description>GUI for nodegraphcore flow-based programming</description>
+    <url>https://github.com/MarginallyClever/Donatello</url>
+
+    <issueManagement>
+        <url>https://github.com/MarginallyClever/Donatello/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>GPLv3</name>
+            <url>https://opensource.org/licenses/GPL-3.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/MarginallyClever/Donatello</url>
+        <connection>scm:git:https://github.com/MarginallyClever/Donatello.git</connection>
+        <developerConnection>scm:git:https://github.com/MarginallyClever/Donatello.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Dan Royer</name>
+            <organization>Marginally Clever Robots, Ltd.</organization>
+            <email>dan@marginallyclever.com</email>
+            <organizationUrl>https://marginallyclever.com</organizationUrl>
+            <timezone>GMT-8</timezone>
+            <roles>
+                <role>owner</role>
+            </roles>
+        </developer>
+    </developers>
 
     <repositories>
         <repository>
@@ -288,7 +320,7 @@
         <dependency>
             <groupId>com.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.0.21</version>
+            <version>1.0.22</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -309,11 +341,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minimum.maven.version>3.8.1</minimum.maven.version>
         <minimum.java.version>21</minimum.java.version>
-        <jogl.version>2.4.0-rc-20200307</jogl.version>
         <maven-dependency-plugin.ignoreNonCompile>true</maven-dependency-plugin.ignoreNonCompile>
         <maven.compiler.source>${minimum.java.version}</maven.compiler.source>
         <maven.compiler.target>${minimum.java.version}</maven.compiler.target>
         <maven.compiler.release>${minimum.java.version}</maven.compiler.release>
     </properties>
-
 </project>
