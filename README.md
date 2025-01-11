@@ -21,11 +21,21 @@ that are not fluent in the archaic syntax of text-only languages.
 - Convenient built-in nodes for basic math and reporting.
 - Unit tests for everything!  If it can be tested, we shall!
 
+### Getting started
+
+1. Download NodeGraphCore (https://github.com/MarginallyClever/NodeGraphCore/)
+2. Use your favorite IDE to import the Maven project.
+3. Use Maven to "install" the project.  It will now be available as a local dependency in your other projects.
+4. Repeat these steps for Donatello (https://github.com/MarginallyClever/Donatello/)
+5. Donatello can be built to run on its own, or as a plugin in your project.
+
+./src/test/java/com/marginallyclever/donatello has unit tests, which are also examples of how to use the API.
+
 ## Use it, Discuss it, Love it.
 
-- Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/NodeGraphCore/javadoc).
-- Please see guide for [how to Contribute](https://github.com/MarginallyClever/NodeGraphCore/blob/main/CONTRIBUTING.md)
-- The [Official webpage](https://marginallyclever.github.io/NodeGraphCore/)!
+- Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/Donatello/javadoc).
+- Please see guide for [how to Contribute](https://github.com/MarginallyClever/Donatello/blob/main/CONTRIBUTING.md)
+- The [Official webpage](https://marginallyclever.github.io/Donatello/)!
 - Join [the Discord channel](https://discord.gg/Q5TZFmB) and make new friends.
 
 ## Based on work by
