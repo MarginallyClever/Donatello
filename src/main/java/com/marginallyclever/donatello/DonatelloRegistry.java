@@ -41,5 +41,6 @@ public class DonatelloRegistry implements NodeRegistry, DAORegistry {
         logger.info("Registering donatello DAOs");
         DAO4JSONFactory.registerDAO(BufferedImage.class,new BufferedImageDAO4JSON());
         DAO4JSONFactory.registerDAO(Color.class,new ColorDAO4JSON());
+        DAO4JSONFactory.registerDAO(Filename.class,new FilenameDAO4JSON());
     }
 }
