@@ -105,12 +105,12 @@ public class Donatello extends JPanel {
      * The list of actions registered in the editor.  This list is used for calls to
      * {@link #updateActionEnableStatus()}.
      */
-    private final ArrayList<AbstractAction> actions = new ArrayList<>();
+    private final List<AbstractAction> actions = new ArrayList<>();
 
     /**
      * The list of context-sensitive tools, only one of which can be active at any time.
      */
-    private final ArrayList<ContextSensitiveTool> tools = new ArrayList<>();
+    private final List<ContextSensitiveTool> tools = new ArrayList<>();
 
     /**
      * The active tool from the list of tools.
@@ -249,7 +249,7 @@ public class Donatello extends JPanel {
         tools.add(moveTool);
         tools.add(rectangleSelectTool);
 
-        swapTool(tools.getFirst());
+        swapTool(tools.get(0));
     }
 
     private JMenu setupHelpMenu() {
