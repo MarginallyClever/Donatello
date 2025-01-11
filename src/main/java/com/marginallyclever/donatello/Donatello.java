@@ -237,7 +237,6 @@ public class Donatello extends JPanel {
         JMenuBar menuBar = new JMenuBar();
         topFrame.setJMenuBar(menuBar);
 
-        menuBar.add(setupGraphMenu());
         menuBar.add(setupNodeMenu());
         menuBar.add(setupHelpMenu());
     }
@@ -292,18 +291,10 @@ public class Donatello extends JPanel {
     }
 
     private void setupToolBar() {
-        JButton settingsPanel = new JButton("Preferences");
-        settingsPanel.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
-        settingsPanel.addActionListener(e -> {
-            GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
-            // put in a modal dialog
-            int result = JOptionPane.showConfirmDialog(this, gvSettingsPanel, "Preferences", JOptionPane.OK_CANCEL_OPTION);
-            if(result==JOptionPane.OK_OPTION)
-                 paintArea.saveSettings();
-            else paintArea.loadSettings();
-            paintArea.repaint();
-        });
-        toolBar.add(settingsPanel);
+        addPreferencesButton(toolBar);
+        toolBar.addSeparator();
+
+        setupGraphMenu(toolBar);
         toolBar.addSeparator();
 
         ButtonGroup clockGroup = new ButtonGroup();
@@ -334,6 +325,25 @@ public class Donatello extends JPanel {
         toolBar.add(stepButton);
         toolBar.add(playButton);
         toolBar.add(resetButton);
+    }
+
+    private void addPreferencesButton(JToolBar toolBar) {
+        var settingsPanel = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
+                // put in a modal dialog
+                var root = SwingUtilities.getWindowAncestor((Component)e.getSource());
+                int result = JOptionPane.showConfirmDialog(root, gvSettingsPanel, "Preferences", JOptionPane.OK_CANCEL_OPTION);
+                if(result==JOptionPane.OK_OPTION)
+                    paintArea.saveSettings();
+                else paintArea.loadSettings();
+                paintArea.repaint();
+            }
+        };
+        settingsPanel.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
+        settingsPanel.putValue(Action.SHORT_DESCRIPTION,"Preferences");
+        toolBar.add(new JButton(settingsPanel));
     }
 
     private void setupToolBar2() {
@@ -411,29 +421,26 @@ public class Donatello extends JPanel {
     /**
      * Populates the toolBar with actions and assigns accelerator keys.
      */
-    private JMenu setupGraphMenu() {
-        JMenu menu = new JMenu("Graph");
+    private void setupGraphMenu(JToolBar toolBar) {
         GraphNewAction graphNewAction = new GraphNewAction("New",this);
         graphNewAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-new-16.png"))));
         actions.add(graphNewAction);
-        menu.add(graphNewAction);
+        toolBar.add(graphNewAction);
         graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 
-        GraphLoadAction graphLoadAction = new GraphLoadAction(recentFilesMenu,"Load",this);
+        GraphLoadAction graphLoadAction = new GraphLoadAction(recentFilesMenu,null,this);
         graphLoadAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
         actions.add(graphLoadAction);
-        menu.add(graphLoadAction);
+        toolBar.add(graphLoadAction);
         graphLoadAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 
-        menu.add(recentFilesMenu);
+        //toolBar.add(recentFilesMenu);
 
         GraphSaveAsAction graphSaveAsAction = new GraphSaveAsAction(recentFilesMenu,"Save",this);
         graphSaveAsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
         actions.add(graphSaveAsAction);
         graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-        menu.add(graphSaveAsAction);
-
-        return menu;
+        toolBar.add(graphSaveAsAction);
     }
 
     /**
