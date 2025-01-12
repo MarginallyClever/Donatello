@@ -31,14 +31,13 @@ module com.marginallyclever.donatello {
     // - Require the service interface module in its own module descriptor.
     // - Implement the service interface with a Java class.
     // - Declare the service interface implementation in its module descriptor.
-    provides com.marginallyclever.nodegraphcore.NodeRegistry with
-            com.marginallyclever.donatello.DonatelloRegistry;
-
-    provides com.marginallyclever.nodegraphcore.DAORegistry with
-            com.marginallyclever.donatello.DonatelloRegistry;
-
     // In order to use the service, the client module must declare in its module descriptor that it uses the service.
     // http://tutorials.jenkov.com/java/modules.html
     uses com.marginallyclever.nodegraphcore.NodeRegistry;
+    provides com.marginallyclever.nodegraphcore.NodeRegistry with
+            com.marginallyclever.donatello.DonatelloRegistry;
+
     uses com.marginallyclever.nodegraphcore.DAORegistry;
+    provides com.marginallyclever.nodegraphcore.DAORegistry with
+            com.marginallyclever.donatello.DonatelloRegistry;
 }
