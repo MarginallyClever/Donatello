@@ -1,9 +1,3 @@
-import com.marginallyclever.donatello.DonatelloRegistry;
-
-/**
- * donatello contains Swing-based {@link com.marginallyclever.nodegraphcore.Node}s and all Swing-based tools for
- * editing {@link com.marginallyclever.nodegraphcore.Graph}s.
- */
 module com.marginallyclever.donatello {
     requires java.desktop;
     requires org.json;
