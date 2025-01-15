@@ -32,7 +32,8 @@ public class ForciblyUpdateNodesAction extends AbstractAction implements EditorA
     public void actionPerformed(ActionEvent e) {
         for(Node n : editor.getSelectedNodes()) {
             try {
-                n.update();
+                //n.update();
+                editor.submit(n);
             } catch(Exception e1) {
                 // TODO report?
             }

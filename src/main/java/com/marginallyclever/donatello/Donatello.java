@@ -130,6 +130,7 @@ public class Donatello extends JPanel {
     private boolean keepGoing = false;
 
     private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(GraphLoadAction.class),this);
+    private final ThreadPoolScheduler threadPoolScheduler = new ThreadPoolScheduler();
 
     public Donatello() {
         this(new Graph());
@@ -159,7 +160,8 @@ public class Donatello extends JPanel {
     private void setupClock() {
         updateClock.addListener(()->{
             if(keepGoing) {
-                graph.update();
+                threadPoolScheduler.update();
+                //graph.update();
                 paintArea.repaint();
             }
         });
@@ -691,5 +693,9 @@ public class Donatello extends JPanel {
         frame.add(panel);
         panel.setupMenuBar();
         frame.setVisible(true);
+    }
+
+    public void submit(Node node) {
+        threadPoolScheduler.submit(node);
     }
 }

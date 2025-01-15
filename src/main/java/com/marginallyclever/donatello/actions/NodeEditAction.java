@@ -36,6 +36,7 @@ public class NodeEditAction extends AbstractAction implements EditorAction {
         Node firstNode = nodes.get(0);
         EditNodePanel.runAsDialog(firstNode,(JFrame)SwingUtilities.getWindowAncestor(editor));
         editor.repaint(firstNode.getRectangle());
+        editor.submit(firstNode);
     }
 
     @Override
