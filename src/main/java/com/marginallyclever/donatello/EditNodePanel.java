@@ -64,9 +64,7 @@ public class EditNodePanel extends JPanel {
 
     private void addVariableField(Port<?> port, GridBagConstraints c) {
         if(port instanceof Input<?> input) {
-            if (Number.class.isAssignableFrom(port.getType())) {
-                addTextField(input, c);
-            } else if(port.getType().equals(Filename.class)) {
+            if(port.getType().equals(Filename.class)) {
                 addFilenameField(input, c);
             } else if (port.getType().equals(String.class)) {
                 addTextField(input, c);
@@ -74,6 +72,8 @@ public class EditNodePanel extends JPanel {
                 addBooleanField(input, c);
             } else if (port.getType().equals(Color.class)) {
                 addColorField(input, c);
+            } else if (Number.class.isAssignableFrom(port.getType())) {
+                addTextField(input, c);
             } else {
                 addReadOnlyField(c, port.getName(), port.getTypeName());
             }
