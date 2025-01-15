@@ -13,18 +13,12 @@ public class GraphPasteEdit extends SignificantUndoableEdit {
     private final Graph copiedGraph;
     private final Point m;
 
-    public GraphPasteEdit(String name, Donatello editor, Graph graph) {
+    public GraphPasteEdit(String name, Donatello editor, Graph graph, Point position) {
         super();
         this.name = name;
         this.editor = editor;
         this.copiedGraph = graph.deepCopy();
-
-        var mp = editor.getMousePosition();
-        if(mp!=null) {
-            this.m = editor.getPaintArea().transformMousePoint(mp);
-        } else {
-            this.m = new Point(0,0);
-        }
+        this.m = position;
         doIt();
     }
 

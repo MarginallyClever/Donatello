@@ -6,6 +6,7 @@ import com.marginallyclever.donatello.actions.EditorAction;
 import com.marginallyclever.donatello.edits.GraphPasteEdit;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -32,7 +33,10 @@ public class NodePasteAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,editor.getCopiedGraph()));
+        var mp = editor.getMousePosition();
+        if(mp!=null) editor.getPaintArea().transformMousePoint(mp);
+        else mp = new Point();
+        editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,editor.getCopiedGraph(),mp));
     }
 
     @Override

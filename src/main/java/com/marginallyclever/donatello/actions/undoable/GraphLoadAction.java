@@ -112,7 +112,7 @@ public class GraphLoadAction extends AbstractAction {
 
         Graph newModel = new Graph();
         newModel.parseJSON(new JSONObject(jsonString.toString()));
-        editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,newModel));
+        editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,newModel,new Point()));
 
         if(saveScene!=null) {
             saveScene.setPath(selectedFile.getAbsolutePath());
