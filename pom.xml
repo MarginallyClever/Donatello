@@ -300,11 +300,6 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.sarxos</groupId>
-            <artifactId>webcam-capture</artifactId>
-            <version>0.3.12</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
         <dependency>
@@ -315,7 +310,7 @@
         <dependency>
             <groupId>com.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.0.23</version>
+            <version>1.0.24</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

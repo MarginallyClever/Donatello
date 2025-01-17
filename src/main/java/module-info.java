@@ -5,7 +5,6 @@ module com.marginallyclever.donatello {
     requires ch.qos.logback.core;
     requires com.marginallyclever.nodegraphcore;
     requires io.github.classgraph;
-    requires webcam.capture;
     requires org.reflections;
     requires com.formdev.flatlaf;
     requires java.prefs;

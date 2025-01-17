@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -46,10 +48,14 @@ public class TestGraphSwing {
     @Test
     public void testFactoryCreatesAllSwingTypes() {
         assertNotEquals(0,NodeFactory.getNames().length);
+        System.out.print("Create all Swing types: ");
+        String add = "";
         for(String s : NodeFactory.getNames()) {
-            System.out.println(s);
+            System.out.print(add+s);
+            add=", ";
             assertNotNull(NodeFactory.createNode(s));
         }
+        System.out.println();
     }
 
     @Test
