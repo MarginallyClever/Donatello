@@ -238,7 +238,7 @@ public class EditNodePanel extends JPanel {
             else if(type.equals(String.class )) panel.readTextField(j, input);
             else if(type.equals(Boolean.class)) panel.readBooleanField(j, input);
             else if(type.equals(Color.class  )) panel.readColorField(j, input);
-            else logger.warn("readAllFields "+port.getName()+" unknown type "+port.getTypeName());
+            else logger.warn("readAllFields {} unknown type {}", port.getName(), port.getTypeName());
             j++;
         }
     }
