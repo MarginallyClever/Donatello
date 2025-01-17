@@ -288,12 +288,6 @@
             <artifactId>logback-classic</artifactId>
             <version>1.4.12</version>
         </dependency>
-        <!-- logging -->
-        <dependency>
-            <groupId>org.codehaus.janino</groupId>
-            <artifactId>janino</artifactId>
-            <version>3.1.6</version>
-        </dependency>
 
         <dependency>
             <groupId>javax.vecmath</groupId>

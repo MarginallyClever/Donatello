@@ -14,7 +14,6 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class CameraFeed extends Node {
-    private final Input<Filename> filename = new Input<>("src",Filename.class,new Filename(""));
     private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
     private final Output<Number> width = new Output<>("width",Number.class,0);
     private final Output<Number> height = new Output<>("height",Number.class,0);
@@ -24,7 +23,6 @@ public class CameraFeed extends Node {
      */
     public CameraFeed() {
         super("CameraFeed");
-        addVariable(filename);
         addVariable(contents);
         addVariable(width);
         addVariable(height);
