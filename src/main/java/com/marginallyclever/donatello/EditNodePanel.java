@@ -4,6 +4,8 @@ import com.marginallyclever.donatello.nodes.ColorAtPoint;
 import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.port.Port;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
  * @since 2022-02-23
  */
 public class EditNodePanel extends JPanel {
+    private static final Logger logger = LoggerFactory.getLogger(EditNodePanel.class);
     /**
      * The {@link Node} being edited.
      */
@@ -224,24 +227,33 @@ public class EditNodePanel extends JPanel {
     private static void readAllFields(Node subject, EditNodePanel panel) {
         int j=0;
         for(int i=0;i<subject.getNumVariables();++i) {
-            Port<?> variable = subject.getVariable(i);
-            if(variable instanceof Input) {
-                Input r = (Input)variable;
-                if (variable.getType().equals(Number.class)) {
-                    panel.readTextField(j++, r);
-                } else if (variable.getType().equals(String.class)) {
-                    panel.readTextField(j++, r);
-                }  else if (variable.getType().equals(Boolean.class)) {
-                    panel.readBooleanField(j++, r);
-                } else {
-                    // TODO ???
-                }
-            }
+            Port<?> port = subject.getVariable(i);
+            // only care about Input ports
+            if(!(port instanceof Input<?> input)) continue;
+            // in case the panel has more fields than the node (somehow?)
+            if(j >= panel.fields.size()) continue;
+
+            var type = input.getType();
+                 if(type.equals(Number.class )) panel.readTextField(j, input);
+            else if(type.equals(String.class )) panel.readTextField(j, input);
+            else if(type.equals(Boolean.class)) panel.readBooleanField(j, input);
+            else if(type.equals(Color.class  )) panel.readColorField(j, input);
+            else logger.warn("readAllFields "+port.getName()+" unknown type "+port.getTypeName());
+            j++;
         }
     }
 
+    private void readColorField(int index, Input<?> variable) {
+        var f = (JButton)fields.get(index);
+        if(f==null) {
+            // TODO ???
+            return;
+        }
+        variable.setValue(f.getBackground());
+    }
+
     private void readBooleanField(int index, Input<?> variable) {
-        JCheckBox f = (JCheckBox)fields.get(index);
+        var f = (JCheckBox)fields.get(index);
         if(f==null) {
             // TODO ???
             return;
