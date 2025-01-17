@@ -22,7 +22,7 @@ public class ClassLoadingTest {
     @Test
     public void listAllNodes() throws Exception {
         NodeFactory.loadRegistries();
-        System.out.println("List all nodes: "+Arrays.stream(NodeFactory.getNames()).toArray().toString());
+        System.out.println("List all nodes: "+ Arrays.toString(NodeFactory.getNames()));
         NodeFactory.clear();
     }
 
@@ -34,7 +34,7 @@ public class ClassLoadingTest {
         for (DAORegistry registry : loader) {
             registry.registerDAO();
         }
-        System.out.println("List all DAOs: "+Arrays.stream(DAO4JSONFactory.getNames()).toArray().toString());
+        System.out.println("List all Donatello DAOs: "+Arrays.toString(DAO4JSONFactory.getNames()));
         DAO4JSONFactory.clear();
     }
 
@@ -61,9 +61,7 @@ public class ClassLoadingTest {
         ServiceLoaderHelper.addAllPathFiles(FileHelper.getExtensionPath());
 
         NodeFactory.loadRegistries();
-        for(String name : NodeFactory.getNames()) {
-            System.out.println(name);
-        }
+        System.out.println("All Donatello nodes: "+Arrays.toString(NodeFactory.getNames()));
         NodeFactory.clear();
     }
 }
