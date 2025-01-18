@@ -4,7 +4,7 @@
 
     <groupId>com.marginallyclever</groupId>
     <artifactId>donatello</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 
     <name>Donatello</name>
     <description>GUI for nodegraphcore flow-based programming</description>
@@ -310,7 +310,7 @@
         <dependency>
             <groupId>com.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.0.24</version>
+            <version>1.0.28</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
