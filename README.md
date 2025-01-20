@@ -1,7 +1,6 @@
 # Donatello: Flow-based Programming IDE
 
-[![Release](https://jitpack.io/v/MarginallyClever/NodeGraphCore.svg)](https://jitpack.io/#MarginallyClever/NodeGraphCore)
-![ workflow](https://github.com/MarginallyClever/NodeGraphCore/actions/workflows/main.yml/badge.svg)
+[![Release](https://jitpack.io/v/MarginallyClever/Donatello.svg)](https://jitpack.io/#MarginallyClever/Donatello)
 
 A pure Java implementation of [Flow-based Programming](https://en.wikipedia.org/wiki/Dataflow_programming) (FBP) and a GUI editor.
 
