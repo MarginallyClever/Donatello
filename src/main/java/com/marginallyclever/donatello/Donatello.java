@@ -317,6 +317,7 @@ public class Donatello extends JPanel {
             }
         };
         JToggleButton resetButton = new JToggleButton(resetAction);
+        resetAction.putValue(Action.SHORT_DESCRIPTION,"Reset the graph to its initial state.");
         resetAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_R,KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
         resetAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-rewind-16.png"))));
 

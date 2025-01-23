@@ -22,6 +22,7 @@ public class GraphUpdateAction extends AbstractAction {
     public GraphUpdateAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
+        putValue(SHORT_DESCRIPTION, "Update the graph once.");
     }
 
     /**

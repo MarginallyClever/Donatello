@@ -41,6 +41,7 @@ public class GraphSaveAsAction extends AbstractAction {
         super(name);
         this.menu = menu;
         this.editor = editor;
+        putValue(SHORT_DESCRIPTION, "Save the current graph.");
     }
 
     @Override

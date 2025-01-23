@@ -14,8 +14,10 @@ public class PlayAction extends AbstractAction implements EditorAction {
         super(name);
         this.editor = editor;
         this.graphUpdateAction = graphUpdateAction;
+        putValue(SHORT_DESCRIPTION, "Update the graph automatically.");
         updateButtonState();
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         boolean keepGoing = !editor.getKeepGoing();

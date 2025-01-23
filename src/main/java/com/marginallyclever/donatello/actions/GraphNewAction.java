@@ -24,6 +24,7 @@ public class GraphNewAction extends AbstractAction {
     public GraphNewAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
+        this.putValue(SHORT_DESCRIPTION, "Clear the current graph.");
     }
 
     @Override
