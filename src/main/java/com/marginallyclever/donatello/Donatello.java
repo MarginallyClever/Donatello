@@ -337,7 +337,7 @@ public class Donatello extends JPanel {
                 GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
                 // put in a modal dialog
                 var root = SwingUtilities.getWindowAncestor((Component)e.getSource());
-                int result = JOptionPane.showConfirmDialog(root, gvSettingsPanel, "Preferences", JOptionPane.OK_CANCEL_OPTION);
+                int result = JOptionPane.showConfirmDialog(root, gvSettingsPanel, "Preferences", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if(result==JOptionPane.OK_OPTION)
                     paintArea.saveSettings();
                 else paintArea.loadSettings();
