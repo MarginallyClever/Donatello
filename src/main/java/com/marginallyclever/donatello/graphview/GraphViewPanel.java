@@ -331,17 +331,28 @@ public class GraphViewPanel extends JPanel {
     public void paintNodeTitleBar(Graphics g, Node n) {
         Rectangle r = n.getRectangle();
         var cr = settings.getCornerRadius();
-        g.setColor(settings.getNodeColorTitleBackground());
         g.setClip(r.x,r.y,r.width,Node.TITLE_HEIGHT);
+        g.setColor(settings.getNodeColorTitleBackground());
         g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
         g.fillRect(r.x, r.y+cr, r.width+1, Node.TITLE_HEIGHT -cr);
         g.setClip(null);
+
+        paintProgressBar(g,n,r);
 
         Rectangle box = getNodeInternalBounds(n.getRectangle());
         g.setColor(settings.getNodeColorTitleFont());
         box.height = Node.TITLE_HEIGHT;
         paintText(g,n.getLabel(),box,ALIGN_LEFT,ALIGN_CENTER);
         paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
+    }
+
+    private void paintProgressBar(Graphics g, Node n,Rectangle r) {
+        float complete = n.getComplete() * 0.01f;
+        var cr = settings.getCornerRadius();
+        g.setClip(r.x,r.y,(int)(r.width * complete),Node.TITLE_HEIGHT);
+        g.setColor(settings.getNodeColorProgressBar());
+        g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
+        g.setClip(null);
     }
 
     /**
