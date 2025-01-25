@@ -63,6 +63,8 @@ public class GraphViewSettings {
      */
     private Color connectionColor = Color.BLUE;
 
+    private Color nodeColorProgressBar = new Color(0,128,0);  // dark green
+
     /**
      * The default {@link Node} outer border radius.
      */
@@ -104,6 +106,7 @@ public class GraphViewSettings {
         json.put("nodeColorFontDirty",nodeColorFontDirty.getRGB());
         json.put("nodeColorTitleFont",nodeColorTitleFont.getRGB());
         json.put("nodeColorTitleBackground",nodeColorTitleBackground.getRGB());
+        json.put("nodeColorProgressBar",nodeColorProgressBar.getRGB());
         json.put("connectionPointColor",connectionPointColor.getRGB());
         json.put("connectionColor",connectionColor.getRGB());
         json.put("cornerRadius",cornerRadius);
@@ -126,6 +129,7 @@ public class GraphViewSettings {
         nodeColorFontDirty = new Color(json.optInt("nodeColorFontDirty",nodeColorFontDirty.getRGB()));
         nodeColorTitleFont = new Color(json.optInt("nodeColorTitleFont",nodeColorTitleFont.getRGB()));
         nodeColorTitleBackground = new Color(json.optInt("nodeColorTitleBackground",nodeColorTitleBackground.getRGB()));
+        nodeColorProgressBar = new Color(json.optInt("nodeColorProgressBar",nodeColorProgressBar.getRGB()));
         connectionPointColor = new Color(json.optInt("connectionPointColor",connectionPointColor.getRGB()));
         connectionColor = new Color(json.optInt("connectionColor",connectionColor.getRGB()));
         cornerRadius = json.optInt("cornerRadius",cornerRadius);
@@ -212,8 +216,16 @@ public class GraphViewSettings {
         return nodeColorTitleBackground;
     }
 
+    public Color getNodeColorProgressBar() {
+        return nodeColorProgressBar;
+    }
+
     public void setNodeColorTitleBackground(Color color) {
         this.nodeColorTitleBackground = color;
+    }
+
+    public void setNodeColorProgressBar(Color color) {
+        this.nodeColorProgressBar = color;
     }
 
     public Color getConnectionPointColor() {
@@ -264,4 +276,5 @@ public class GraphViewSettings {
     public void setDrawOrigin(boolean drawOrigin) {
         set(GraphViewSettings.DRAW_ORIGIN, drawOrigin);
     }
+
 }

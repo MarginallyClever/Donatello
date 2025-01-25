@@ -51,8 +51,10 @@ public class GraphViewSettingsPanel extends JPanel {
 
         PanelHelper.addColorChooser(this,"Node title background",settings::getNodeColorTitleBackground,settings::setNodeColorTitleBackground,gbc);
         gbc.gridy++;
+        PanelHelper.addColorChooser(this,"Node progress bar",settings::getNodeColorProgressBar,settings::setNodeColorProgressBar,gbc);
+        gbc.gridy++;
         PanelHelper.addColorChooser(this,"Node title font",settings::getNodeColorTitleFont,settings::setNodeColorTitleFont,gbc);
-
+        gbc.gridy++;
         PanelHelper.addSeparator(this,gbc);
         gbc.gridy++;
 
