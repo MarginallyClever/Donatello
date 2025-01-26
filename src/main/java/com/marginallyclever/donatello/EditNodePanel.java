@@ -3,6 +3,7 @@ package com.marginallyclever.donatello;
 import com.marginallyclever.donatello.nodes.ColorAtPoint;
 import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.nodegraphcore.port.Output;
 import com.marginallyclever.nodegraphcore.port.Port;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class EditNodePanel extends JPanel {
      */
     public EditNodePanel(Node node) {
         super();
-        this.node=node;
+        this.node = node;
         this.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
@@ -66,22 +67,16 @@ public class EditNodePanel extends JPanel {
     }
 
     private void addVariableField(Port<?> port, GridBagConstraints c) {
-        if(port instanceof Input<?> input) {
-            if(port.getType().equals(Filename.class)) {
-                addFilenameField(input, c);
-            } else if (port.getType().equals(String.class)) {
-                addTextField(input, c);
-            } else if (port.getType().equals(Boolean.class)) {
-                addBooleanField(input, c);
-            } else if (port.getType().equals(Color.class)) {
-                addColorField(input, c);
-            } else if (Number.class.isAssignableFrom(port.getType())) {
-                addTextField(input, c);
-            } else {
-                addReadOnlyField(c, port.getName(), port.getTypeName());
-            }
-        } else {
-            addReadOnlyField(c, port.getName(), port.getTypeName());
+        if(port instanceof Output<?> output) {
+            addReadOnlyField(c, output.getName(), output.getTypeName());
+        } else if(port instanceof Input<?> input) {
+            var type = input.getType();
+                 if(Filename.class.isAssignableFrom(type)) addFilenameField(input, c);
+            else if(Number.class.isAssignableFrom(type  )) addTextField(input, c);
+            else if(String.class.isAssignableFrom(type  )) addTextField(input, c);
+            else if(Boolean.class.isAssignableFrom(type )) addBooleanField(input, c);
+            else if(Color.class.isAssignableFrom(type   )) addColorField(input, c);
+            else addReadOnlyField(c, input.getName(), input.getTypeName());
         }
     }
 
@@ -220,26 +215,32 @@ public class EditNodePanel extends JPanel {
         EditNodePanel panel = new EditNodePanel(subject);
         if(JOptionPane.showConfirmDialog(frame,panel,"Edit "+subject.getName(),JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
             subject.setLabel(panel.getLabel());
-            readAllFields(subject,panel);
+            panel.readAllFields();
         }
     }
 
-    private static void readAllFields(Node subject, EditNodePanel panel) {
+    /**
+     * Transfer the values from the edit panel to the node.
+     */
+    private void readAllFields() {
         int j=0;
-        for(int i=0;i<subject.getNumVariables();++i) {
-            Port<?> port = subject.getVariable(i);
-            // only care about Input ports
-            if(!(port instanceof Input<?> input)) continue;
+        var size = fields.size();
+
+        for(int i=0;i<node.getNumVariables();++i) {
             // in case the panel has more fields than the node (somehow?)
-            if(j >= panel.fields.size()) continue;
+            if(j >= size) continue;
+
+            // only care about Input ports
+            Port<?> port = node.getVariable(i);
+            if(!(port instanceof Input<?> input)) continue;
 
             var type = input.getType();
-                 if(type.equals(Number.class )) panel.readTextField(j, input);
-            else if(type.equals(String.class )) panel.readTextField(j, input);
-            else if(type.equals(Boolean.class)) panel.readBooleanField(j, input);
-            else if(type.equals(Color.class  )) panel.readColorField(j, input);
+                 if(type.equals(Number.class )) readTextField(j++, input);
+            else if(type.equals(String.class )) readTextField(j++, input);
+            else if(type.equals(Filename.class)) readTextField(j++, input);
+            else if(type.equals(Boolean.class)) readBooleanField(j++, input);
+            else if(type.equals(Color.class  )) readColorField(j++, input);
             else logger.warn("readAllFields {} unknown type {}", port.getName(), port.getTypeName());
-            j++;
         }
     }
 
