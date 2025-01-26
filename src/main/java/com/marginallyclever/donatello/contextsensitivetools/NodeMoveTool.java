@@ -2,7 +2,6 @@ package com.marginallyclever.donatello.contextsensitivetools;
 
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
-import com.marginallyclever.donatello.UnicodeIcon;
 import com.marginallyclever.donatello.edits.MoveNodesEdit;
 import com.marginallyclever.nodegraphcore.Node;
 
@@ -84,18 +83,18 @@ public class NodeMoveTool extends ContextSensitiveTool {
     @Override
     public void mouseDragged(MouseEvent e) {
         if(dragOn) {
-            Point p = editor.getPaintArea().transformMousePoint(e.getPoint());
+            Point p = editor.getPaintArea().transformScreenToWorldPoint(e.getPoint());
             int dx = p.x - mousePreviousPosition.x;
             int dy = p.y - mousePreviousPosition.y;
             editor.moveSelectedNodes(dx, dy);
             editor.repaint();
         }
-        mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
+        mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
+        mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
     }
 
     @Override
@@ -103,7 +102,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
         if(!dragOn) {
             dragOn=true;
             setActive(true);
-            mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
+            mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
             mouseStartPosition.setLocation(mousePreviousPosition);
         }
     }
@@ -113,7 +112,7 @@ public class NodeMoveTool extends ContextSensitiveTool {
         if(dragOn) {
             dragOn=false;
             setActive(false);
-            Point p = editor.getPaintArea().transformMousePoint(e.getPoint());
+            Point p = editor.getPaintArea().transformScreenToWorldPoint(e.getPoint());
             int dx = p.x - mouseStartPosition.x;
             int dy = p.y - mouseStartPosition.y;
             editor.addEdit(new MoveNodesEdit(getName(),editor,dx,dy));

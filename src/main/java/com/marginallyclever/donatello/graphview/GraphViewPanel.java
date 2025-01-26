@@ -161,9 +161,9 @@ public class GraphViewPanel extends JPanel {
 
         this.addMouseWheelListener(e -> {
             // adjust the camera position based on the mouse position (zoom to cursor)
-            Point before = transformMousePoint(e.getPoint());
+            Point before = transformScreenToWorldPoint(e.getPoint());
             setZoom(getZoom() - e.getWheelRotation() * 0.1);
-            Point after = transformMousePoint(e.getPoint());
+            Point after = transformScreenToWorldPoint(e.getPoint());
 
             camera.x -= after.x - before.x;
             camera.y -= after.y - before.y;
@@ -230,7 +230,7 @@ public class GraphViewPanel extends JPanel {
     private void paintCursor(Graphics2D g2) {
         g2.setColor(Color.WHITE);
         int z = (int)(zoom*10);
-        Point transformed = transformMousePoint(previousMouse);
+        Point transformed = transformScreenToWorldPoint(previousMouse);
         g2.translate(transformed.x,transformed.y);
         g2.drawOval(-z,-z,z*2,z*2);
         g2.translate(-transformed.x,-transformed.y);
@@ -255,7 +255,7 @@ public class GraphViewPanel extends JPanel {
         return tx;
     }
 
-    public Point transformMousePoint(Point point) {
+    public Point transformScreenToWorldPoint(Point point) {
         AffineTransform tf = getTransform();
         java.awt.geom.Point2D from = new java.awt.geom.Point2D.Double(point.x,point.y);
         java.awt.geom.Point2D to = new java.awt.geom.Point2D.Double();

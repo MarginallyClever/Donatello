@@ -88,8 +88,8 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     public void mouseMoved(MouseEvent e) {
         repaintConnectionInProgress(e.getPoint());
 
-        mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
-        selectOneNearbyConnectionPoint(editor.getPaintArea().transformMousePoint(e.getPoint()));
+        mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
+        selectOneNearbyConnectionPoint(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
 
         showConnectionPointToolTip();
     }

@@ -33,8 +33,8 @@ public class NodePasteAction extends AbstractAction implements EditorAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var mp = editor.getMousePosition();
-        if(mp!=null) editor.getPaintArea().transformMousePoint(mp);
+        var mp = editor.getPaintArea().getMousePosition();
+        if(mp!=null) editor.getPaintArea().transformScreenToWorldPoint(mp);
         else mp = new Point();
         editor.addEdit(new GraphPasteEdit((String)this.getValue(Action.NAME),editor,editor.getCopiedGraph(),mp));
     }

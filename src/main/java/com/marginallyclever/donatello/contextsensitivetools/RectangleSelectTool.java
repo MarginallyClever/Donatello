@@ -123,14 +123,14 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     @Override
     public void mouseDragged(MouseEvent e) {
         //Rectangle r = getRepaintArea(e.getPoint());
-        mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
+        mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
         if(selectionOn) editor.repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         //Rectangle r = getRepaintArea(e.getPoint());
-        mousePreviousPosition.setLocation(editor.getPaintArea().transformMousePoint(e.getPoint()));
+        mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
         if(selectionOn) editor.repaint();
     }
 
@@ -145,7 +145,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
             // nothing under point, start new selection.
             selectionOn=true;
             setActive(true);
-            beginSelectionArea(editor.getPaintArea().transformMousePoint(e.getPoint()));
+            beginSelectionArea(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
         }
     }
 
@@ -154,7 +154,7 @@ public class RectangleSelectTool extends ContextSensitiveTool {
         if(selectionOn) {
             selectionOn=false;
             setActive(false);
-            endSelectionArea(editor.getPaintArea().transformMousePoint(e.getPoint()));
+            endSelectionArea(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
         }
     }
 

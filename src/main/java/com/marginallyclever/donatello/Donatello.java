@@ -497,13 +497,13 @@ public class Donatello extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
-                setStatusBar(paintArea.transformMousePoint(e.getPoint()));
+                setStatusBar(paintArea.transformScreenToWorldPoint(e.getPoint()));
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
-                Point p = paintArea.transformMousePoint(e.getPoint());
+                Point p = paintArea.transformScreenToWorldPoint(e.getPoint());
                 checkToolContext(p);
                 setStatusBar(p);
             }

@@ -39,7 +39,7 @@ public class NodeAddAction extends AbstractAction {
         if(n!=null) {
             var p = editor.getPopupPoint();
             if(p==null) p = new Point(0,0);
-            n.setPosition(editor.getPaintArea().transformMousePoint(p));
+            n.setPosition(editor.getPaintArea().transformScreenToWorldPoint(p));
             editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
         }
     }
