@@ -207,11 +207,21 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         if(connectionBeingCreated.isFromValid() && connectionBeingCreated.isToValid() ) {
             if(connectionBeingCreated.isValidDataType()) {
                 Graph graph = editor.getGraph();
+                // does this connection already exist?
                 Connection match = graph.getMatchingConnection(connectionBeingCreated);
                 if(match!=null) {
+                    // yes, delete it.
                     editor.addEdit(new ConnectionRemoveEdit(removeName,editor,match));
                 } else {
+                    // if the input is already connected, disconnect it.
+                    var c = connectionBeingCreated.getInput();
+                    if(c!=null && c.hasConnection()) {
+                        editor.addEdit(new ConnectionRemoveEdit(removeName,editor,c.getFrom()));
+                    }
+
+                    // no, add it.
                     editor.addEdit(new ConnectionAddEdit(addName,editor,new Connection(connectionBeingCreated)));
+
                 }
             } else {
                 // if any of the tests failed
