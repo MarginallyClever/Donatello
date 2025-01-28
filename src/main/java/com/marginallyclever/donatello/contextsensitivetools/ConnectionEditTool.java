@@ -23,7 +23,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionEditTool.class);
     private static final Color CONNECTION_POINT_COLOR_SELECTED = Color.RED;
     private static final Color CONNECTION_BEING_EDITED = Color.RED;
-    private static final double NEARBY_CONNECTION_DISTANCE_MAX = 10;
+    private static final double NEARBY_CONNECTION_DISTANCE_MAX = 15;
 
     private final Donatello editor;
 
@@ -191,6 +191,12 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         //if(!connectionBeingCreated.isConnectedTo(lastConnectionPoint.node))
         {
             if (lastConnectionPoint.getFlags() == ConnectionPointInfo.IN) {
+                // if the input is already connected, disconnect it.
+                var c = lastConnectionPoint.getNode().getVariable(lastConnectionPoint.getDockIndex());
+                if(c instanceof Input<?> input && input.hasConnection()) {
+                    editor.addEdit(new ConnectionRemoveEdit(removeName,editor,input.getFrom()));
+                }
+
                 // the output of a connection goes to the input of a node.
                 connectionBeingCreated.setTo(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
             } else {
@@ -213,12 +219,6 @@ public class ConnectionEditTool extends ContextSensitiveTool {
                     // yes, delete it.
                     editor.addEdit(new ConnectionRemoveEdit(removeName,editor,match));
                 } else {
-                    // if the input is already connected, disconnect it.
-                    var c = connectionBeingCreated.getInput();
-                    if(c!=null && c.hasConnection()) {
-                        editor.addEdit(new ConnectionRemoveEdit(removeName,editor,c.getFrom()));
-                    }
-
                     // no, add it.
                     editor.addEdit(new ConnectionAddEdit(addName,editor,new Connection(connectionBeingCreated)));
 
