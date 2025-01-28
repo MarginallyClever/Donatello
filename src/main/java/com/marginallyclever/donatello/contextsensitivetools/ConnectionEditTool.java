@@ -86,11 +86,10 @@ public class ConnectionEditTool extends ContextSensitiveTool {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        repaintConnectionInProgress(e.getPoint());
-
         mousePreviousPosition.setLocation(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
         selectOneNearbyConnectionPoint(editor.getPaintArea().transformScreenToWorldPoint(e.getPoint()));
 
+        repaintConnectionInProgress(e.getPoint());
         showConnectionPointToolTip();
     }
 
@@ -188,27 +187,26 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         }
 
         // check that the end node is not the same as the start node.
-        //if(!connectionBeingCreated.isConnectedTo(lastConnectionPoint.node))
-        {
-            if (lastConnectionPoint.getFlags() == ConnectionPointInfo.IN) {
-                // if the input is already connected, disconnect it.
-                var c = lastConnectionPoint.getNode().getVariable(lastConnectionPoint.getDockIndex());
-                if(c instanceof Input<?> input && input.hasConnection()) {
-                    editor.addEdit(new ConnectionRemoveEdit(removeName,editor,input.getFrom()));
-                }
-
-                // the output of a connection goes to the input of a node.
-                connectionBeingCreated.setTo(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
-            } else {
-                //the output of a node goes to the input of a connection.
-                connectionBeingCreated.setFrom(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
-            }
-
-            setActive(true);
-            Rectangle r = connectionBeingCreated.getBounds();
-            r.grow((int)NEARBY_CONNECTION_DISTANCE_MAX,(int)NEARBY_CONNECTION_DISTANCE_MAX);
-            editor.repaint(r);
+        if(connectionBeingCreated.isConnectedTo(lastConnectionPoint.getNode())) {
+            // stop the connection attempt.
+            connectionBeingCreated.disconnectAll();
+            setActive(false);
+            return;
         }
+
+        if (lastConnectionPoint.getFlags() == ConnectionPointInfo.IN) {
+            // the output of a connection goes to the input of a node.
+            connectionBeingCreated.setTo(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
+        } else {
+            //the output of a node goes to the input of a connection.
+            connectionBeingCreated.setFrom(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
+        }
+
+        setActive(true);
+
+        Rectangle r = connectionBeingCreated.getBounds();
+        r.grow((int)NEARBY_CONNECTION_DISTANCE_MAX,(int)NEARBY_CONNECTION_DISTANCE_MAX);
+        editor.repaint(r);
 
         if(connectionBeingCreated.isFromValid() && connectionBeingCreated.isToValid() ) {
             if(connectionBeingCreated.isValidDataType()) {
@@ -232,10 +230,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
                 logger.warn("Invalid types {}, {}",nameOut,nameIn);
             }
 
-            Rectangle r = connectionBeingCreated.getBounds();
-            r.grow((int)NEARBY_CONNECTION_DISTANCE_MAX,(int)NEARBY_CONNECTION_DISTANCE_MAX);
-            editor.repaint(r);
-            // either way, restart.
+            // stop the connection attempt.
             connectionBeingCreated.disconnectAll();
             setActive(false);
         }
