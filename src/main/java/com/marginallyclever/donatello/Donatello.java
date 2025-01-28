@@ -251,7 +251,7 @@ public class Donatello extends JPanel {
         tools.add(moveTool);
         tools.add(rectangleSelectTool);
 
-        swapTool(tools.get(0));
+        swapTool(tools.getFirst());
     }
 
     private JMenu setupHelpMenu() {
