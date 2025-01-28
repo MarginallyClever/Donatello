@@ -394,14 +394,14 @@ public class GraphViewPanel extends JPanel {
                 }
                 if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
                 g.setColor(settings.getNodeColorFontClean());
-                paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_CENTER);
+                paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_TOP);
             }
         }
 
 
         // label
         g.setColor(settings.getNodeColorFontClean());
-        paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_CENTER);
+        paintText(g,v.getName(),insideBox,ALIGN_LEFT,ALIGN_TOP);
 
         // internal border
         g.setColor(settings.getNodeColorInternalBorder());
@@ -489,6 +489,7 @@ public class GraphViewPanel extends JPanel {
         FontMetrics metrics = g.getFontMetrics();
         int h = metrics.getHeight();
         int w = metrics.stringWidth(str);
+        int md = metrics.getMaxDescent();
 
         int x,y;
         x = switch (alignH) {
@@ -497,9 +498,9 @@ public class GraphViewPanel extends JPanel {
             case ALIGN_CENTER -> (int) (box.getMinX() + (box.getWidth() - w) / 2);
         };
         y = switch (alignV) {
-            default -> (int) (box.getMinY() + h);
+            default -> (int) (box.getMinY() + h-md);
             case ALIGN_BOTTOM -> (int) (box.getMaxY());
-            case ALIGN_CENTER -> (int) (box.getMinY() + (box.getHeight() + h) / 2);
+            case ALIGN_CENTER -> (int) (box.getMinY()-md + (box.getHeight() + h) / 2);
         };
         layout.draw((Graphics2D)g,x,y);
     }
