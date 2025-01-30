@@ -174,7 +174,7 @@ public class GraphViewPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        updatePaintAreaBounds();
+        updateNodeBounds();  // TODO update nodes as needed instead of every frame.
 
         Graphics2D g2 = (Graphics2D)g;
         setHints(g2);
@@ -245,11 +245,11 @@ public class GraphViewPanel extends JPanel {
 
     AffineTransform getTransform() {
         Rectangle r = getBounds();
-        int w2 = (int)(r.getWidth()/2.0);
-        int h2 = (int)(r.getHeight()/2.0);
+        var w2 = r.getWidth()/2.0;
+        var h2 = r.getHeight()/2.0;
         AffineTransform tx = new AffineTransform();
-        double dx=camera.x-w2*zoom;
-        double dy=camera.y-h2*zoom;
+        double dx = camera.x - w2 * zoom;
+        double dy = camera.y - h2 * zoom;
         tx.scale(1.0/zoom, 1.0/zoom);
         tx.translate(-dx,-dy);
         return tx;
@@ -281,21 +281,13 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Update the bounds of every node in the model {@link Graph}.
+     * Update the bounds of every node in the model.
      */
-    public void updatePaintAreaBounds() {
-        Rectangle r = this.getBounds();
+    public void updateNodeBounds() {
         for(Node n : model.getNodes()) {
             n.updateBounds();
-            Rectangle other = new Rectangle(n.getRectangle());
-            //other.grow(100,100);
-            r.add(other.getMinX(),other.getMinY());
-            r.add(other.getMaxX(),other.getMaxY());
+            Rectangle other = n.getRectangle();
         }
-        Dimension d = new Dimension(r.width,r.height);
-        this.setMinimumSize(d);
-        this.setMaximumSize(d);
-        this.setPreferredSize(d);
     }
 
     /**
@@ -655,5 +647,12 @@ public class GraphViewPanel extends JPanel {
             }
         }
         moveAndZoomToFit(r);
+    }
+
+    /**
+     * @return a copy of the current camera position.  it is in absolute world coordinates.
+     */
+    public Point getCameraPosition() {
+        return new Point(camera);
     }
 }
