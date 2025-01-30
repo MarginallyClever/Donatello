@@ -1,14 +1,15 @@
 package com.marginallyclever.donatello.actions.undoable;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.AddNodePanel;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.NodeAddEdit;
+import com.marginallyclever.nodegraphcore.Graph;
+import com.marginallyclever.nodegraphcore.Node;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.security.InvalidParameterException;
 
 /**
  * Launches the "Add Node" dialog.  If the user clicks "Ok" then the selected {@link Node} type is added to the
@@ -33,14 +34,29 @@ public class NodeAddAction extends AbstractAction {
         this.editor = editor;
     }
 
+    /**
+     * Launches the "Add Node" dialog.
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        Node n = AddNodePanel.runAsDialog((JFrame)SwingUtilities.getWindowAncestor(editor));
-        if(n!=null) {
-            var p = editor.getPopupPoint();
-            if(p==null) p = new Point(0,0);
-            n.setPosition(editor.getPaintArea().transformScreenToWorldPoint(p));
-            editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
-        }
+        Node n = AddNodePanel.runAsDialog((JFrame) SwingUtilities.getWindowAncestor(editor));
+        if(n==null) return;
+        var p = editor.getPopupPoint();
+        if(p!=null) p = editor.getPaintArea().transformScreenToWorldPoint(p);
+        else p = editor.getPaintArea().getCameraPosition();
+        commitAdd(n,p);
+    }
+
+    /**
+     * Adds the given node to the editor's graph and creates an undoable edit.
+     * @param n the node to add.
+     */
+    public void commitAdd(Node n, Point p) {
+        if(n==null) throw new InvalidParameterException("NodeAddAction.commitAdd(null)");
+
+        n.setPosition(p);
+        n.updateBounds();
+        editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
     }
 }
