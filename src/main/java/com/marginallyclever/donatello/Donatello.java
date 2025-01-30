@@ -2,17 +2,17 @@ package com.marginallyclever.donatello;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.marginallyclever.donatello.actions.*;
+import com.marginallyclever.donatello.actions.undoable.*;
+import com.marginallyclever.donatello.contextsensitivetools.ConnectionEditTool;
 import com.marginallyclever.donatello.contextsensitivetools.ContextSensitiveTool;
+import com.marginallyclever.donatello.contextsensitivetools.NodeMoveTool;
+import com.marginallyclever.donatello.contextsensitivetools.RectangleSelectTool;
 import com.marginallyclever.donatello.graphview.GraphViewListener;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.graphview.GraphViewSettings;
 import com.marginallyclever.donatello.graphview.GraphViewSettingsPanel;
 import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.donatello.actions.*;
-import com.marginallyclever.donatello.actions.undoable.*;
-import com.marginallyclever.donatello.contextsensitivetools.ConnectionEditTool;
-import com.marginallyclever.donatello.contextsensitivetools.NodeMoveTool;
-import com.marginallyclever.donatello.contextsensitivetools.RectangleSelectTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -184,7 +187,7 @@ public class Donatello extends JPanel {
             highlightSelectedNodes(g);
             activeTool.paint(g);
         });
-        paintArea.updatePaintAreaBounds();
+        paintArea.updateNodeBounds();
         paintArea.repaint();
     }
 
@@ -529,7 +532,8 @@ public class Donatello extends JPanel {
     }
 
     private void setStatusBar(Point transformMousePoint) {
-        statusBar.setText(activeTool.getName()+" ("+transformMousePoint.x+","+transformMousePoint.y+")");
+        statusBar.setText(activeTool.getName()+" ("+transformMousePoint.x+","+transformMousePoint.y+")"
+                +" ["+getPaintArea().getCameraPosition().x+","+getPaintArea().getCameraPosition().y+"]");
     }
 
     private void checkToolContext(Point point) {
@@ -643,12 +647,12 @@ public class Donatello extends JPanel {
     }
 
     public static void setLookAndFeel() {
-        FlatLaf.registerCustomDefaultsSource( "com.marginallyclever.donatello" );
+        FlatLaf.registerCustomDefaultsSource( Donatello.class.getPackageName() );
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            logger.debug("System look and feel could not be set.");
+            logger.debug("System look and feel could not be set.",e);
         }
     }
 
@@ -664,9 +668,6 @@ public class Donatello extends JPanel {
         updateClock.unlock();
     }
 
-    public GraphViewPanel getGraphView() {
-        return paintArea;
-    }
 
     /**
      * Main entry point.  Good for independent test.
