@@ -51,11 +51,9 @@ public class EditNodePanel extends JPanel {
         c.gridy=0;
         c.weightx=1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(1,1,1,1);
+        //c.insets = new Insets(1,1,1,1);
 
-        addReadOnlyField(c,"Type",node.getName());
-        c.gridy++;
-        addReadOnlyField(c,"ID",node.getUniqueID());
+        //addReadOnlyField(c,"ID",node.getUniqueID());
         c.gridy++;
         addLabelField(c);
         c.gridy++;
@@ -69,15 +67,30 @@ public class EditNodePanel extends JPanel {
     private void addVariableField(Port<?> port, GridBagConstraints c) {
         if(port instanceof Output<?> output) {
             addReadOnlyField(c, output.getName(), output.getTypeName());
-        } else if(port instanceof Input<?> input) {
-            var type = input.getType();
-                 if(Filename.class.isAssignableFrom(type)) addFilenameField(input, c);
-            else if(Number.class.isAssignableFrom(type  )) addTextField(input, c);
-            else if(String.class.isAssignableFrom(type  )) addTextField(input, c);
-            else if(Boolean.class.isAssignableFrom(type )) addBooleanField(input, c);
-            else if(Color.class.isAssignableFrom(type   )) addColorField(input, c);
-            else addReadOnlyField(c, input.getName(), input.getTypeName());
+            return;
         }
+
+        if(!(port instanceof Input<?> input)) return;
+
+        if(input instanceof SwingProvider swingProvider) {
+            var component = swingProvider.getSwingComponent(this);
+            if(component == null) return;
+
+            c.anchor = GridBagConstraints.LINE_START;
+            c.gridx=0;
+            c.gridwidth=2;
+            this.add(component,c);
+            c.gridwidth=1;
+            return;
+        }
+        // no SwingProvider, do it the old way.
+        var type = input.getType();
+             if(Filename.class.isAssignableFrom(type)) addFilenameField(input, c);
+        else if(Number.class.isAssignableFrom(type  )) addTextField(input, c);
+        else if(String.class.isAssignableFrom(type  )) addTextField(input, c);
+        else if(Boolean.class.isAssignableFrom(type )) addBooleanField(input, c);
+        else if(Color.class.isAssignableFrom(type   )) addColorField(input, c);
+        else addReadOnlyField(c, input.getName(), input.getTypeName());
     }
 
     /**
