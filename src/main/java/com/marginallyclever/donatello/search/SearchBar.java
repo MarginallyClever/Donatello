@@ -10,11 +10,10 @@ public class SearchBar extends JPanel {
     /**
      * The search field
      */
-    private static final JTextField search = new JTextField();
-
+    private final JTextField search = new JTextField();
     private final JToggleButton caseSensitive = new JToggleButton("Aa");
     private final JToggleButton regularExpression = new JToggleButton(".*");
-
+    private static String searchValue = "";
     private final ArrayList<SearchListener> listeners = new ArrayList<>();
 
     public SearchBar() {
@@ -46,9 +45,11 @@ public class SearchBar extends JPanel {
         });
 
         caseSensitive.addActionListener((e)->searchFor(search.getText()));
+        search.setText(searchValue);
     }
 
     protected void searchFor(String text) {
+        searchValue = text;
         listeners.forEach(l -> l.searchFor(text,caseSensitive.isSelected(),regularExpression.isSelected()) );
     }
 
