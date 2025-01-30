@@ -43,7 +43,6 @@ public class NodeAddEdit extends SignificantUndoableEdit {
         editor.lockClock();
         try {
             editor.getGraph().remove(node);
-
             List<Node> nodes = new ArrayList<>(editor.getSelectedNodes());
             nodes.remove(node);
             editor.setSelectedNodes(nodes);

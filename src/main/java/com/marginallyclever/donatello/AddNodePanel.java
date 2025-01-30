@@ -4,8 +4,11 @@ import com.marginallyclever.donatello.search.SearchBar;
 import com.marginallyclever.donatello.search.SearchListener;
 import com.marginallyclever.nodegraphcore.NodeFactory;
 import com.marginallyclever.nodegraphcore.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,11 +20,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * @since 2022-02-11
  */
 public class AddNodePanel extends JPanel implements SearchListener {
+    private static final Logger logger = LoggerFactory.getLogger(AddNodePanel.class);
 
     /**
      * The database of names in the list model.
      */
-    private List<String> names = List.of(NodeFactory.getNames());
+    private final List<String> names = List.of(NodeFactory.getNames());
 
     /**
      * list model controls the contents of the list.  This is needed to add/remove as the search field is changed.
@@ -40,6 +44,8 @@ public class AddNodePanel extends JPanel implements SearchListener {
 
     private final SearchBar searchBar = new SearchBar();
 
+    private final EventListenerList listeners = new EventListenerList();
+
     /**
      * Constructor for subclasses to call.
      */
@@ -56,6 +62,17 @@ public class AddNodePanel extends JPanel implements SearchListener {
 
         searchBar.addSearchListener(this);
         searchFor("",false,false);
+
+        confirmButton.addActionListener((e)->{
+            try {
+                if(myList.getSelectedIndex()!=-1) {
+                    Node n = NodeFactory.createNode(myList.getSelectedValue());
+                    fireAddNode(n);
+                }
+            } catch(IllegalArgumentException e1) {
+                logger.error("could not create node.",e1);
+            }
+        });
     }
 
     /**
@@ -89,14 +106,8 @@ public class AddNodePanel extends JPanel implements SearchListener {
         final AtomicReference<Node> result = new AtomicReference<>();
 
         final AddNodePanel panel = new AddNodePanel();
-        panel.confirmButton.addActionListener((e)->{
-            try {
-                if(panel.myList.getSelectedIndex()!=-1) {
-                    result.set(NodeFactory.createNode(panel.myList.getSelectedValue()));
-                }
-            } catch(IllegalArgumentException e1) {
-                e1.printStackTrace();
-            }
+        panel.addAddNodeListener((node)->{
+            result.set(node);
             dialog.dispose();
         });
 
@@ -106,6 +117,20 @@ public class AddNodePanel extends JPanel implements SearchListener {
         dialog.setVisible(true);
 
         return result.get();
+    }
+
+    public void addAddNodeListener(AddNodeListener listener) {
+        listeners.add(AddNodeListener.class, listener);
+    }
+
+    public void removeAddNodeListener(AddNodeListener listener) {
+        listeners.remove(AddNodeListener.class, listener);
+    }
+
+    public void fireAddNode(Node node) {
+        for(AddNodeListener listener : listeners.getListeners(AddNodeListener.class)) {
+            listener.addNode(node);
+        }
     }
 
     /**
