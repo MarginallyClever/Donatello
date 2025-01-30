@@ -19,6 +19,7 @@ module com.marginallyclever.donatello {
     exports com.marginallyclever.donatello.nodes.images.blend;
     exports com.marginallyclever.donatello.search;
     exports com.marginallyclever.donatello.bezier;
+    exports com.marginallyclever.donatello.actions.undoable;
 
     // A Java module that wants to implement a service interface from a service interface module must:
     // - Require the service interface module in its own module descriptor.
