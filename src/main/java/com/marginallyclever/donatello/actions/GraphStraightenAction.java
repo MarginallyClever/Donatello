@@ -35,7 +35,7 @@ public class GraphStraightenAction extends AbstractAction implements EditorActio
     @Override
     public void actionPerformed(ActionEvent e) {
         var g = editor.getGraph();
-        GraphViewSettings settings = editor.getGraphView().getSettings();
+        GraphViewSettings settings = editor.getPaintArea().getSettings();
         var gs = settings.getGridSize();
         for(Node n : g.getNodes()) {
             Rectangle r = n.getRectangle();
