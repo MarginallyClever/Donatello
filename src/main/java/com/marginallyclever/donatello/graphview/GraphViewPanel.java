@@ -174,8 +174,6 @@ public class GraphViewPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        updateNodeBounds();  // TODO update nodes as needed instead of every frame.
-
         Graphics2D g2 = (Graphics2D)g;
         setHints(g2);
 
@@ -201,9 +199,9 @@ public class GraphViewPanel extends JPanel {
     }
 
     public static void setHints(Graphics2D g2) {
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-        //g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_PURE);
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_PURE);
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY);
     }
 
@@ -277,16 +275,6 @@ public class GraphViewPanel extends JPanel {
             if(n instanceof PrintWithGraphics) {
                 ((PrintWithGraphics) n).print(g);
             }
-        }
-    }
-
-    /**
-     * Update the bounds of every node in the model.
-     */
-    public void updateNodeBounds() {
-        for(Node n : model.getNodes()) {
-            n.updateBounds();
-            Rectangle other = n.getRectangle();
         }
     }
 

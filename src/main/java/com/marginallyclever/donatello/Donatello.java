@@ -187,7 +187,6 @@ public class Donatello extends JPanel {
             highlightSelectedNodes(g);
             activeTool.paint(g);
         });
-        paintArea.updateNodeBounds();
         paintArea.repaint();
     }
 
