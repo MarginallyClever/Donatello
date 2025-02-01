@@ -53,7 +53,7 @@ public class EditNodePanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         //c.insets = new Insets(1,1,1,1);
 
-        //addReadOnlyField(c,"ID",node.getUniqueID());
+        addReadOnlyField(c,"ID",node.getUniqueID());
         c.gridy++;
         addLabelField(c);
         c.gridy++;
@@ -214,9 +214,10 @@ public class EditNodePanel extends JPanel {
 
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx=1;
-        JLabel v = new JLabel(value);
-        v.setEnabled(false);
-        this.add(v,c);
+        JTextField readOnly = new JTextField(value);
+        readOnly.setEnabled(false);
+        readOnly.setColumns(10);
+        this.add(readOnly,c);
     }
 
     /**
