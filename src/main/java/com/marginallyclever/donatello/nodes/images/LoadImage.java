@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
- * This {@link Node} can load a Swing {@link BufferedImage}.
+ * This {@link Node} can load an AWT {@link BufferedImage}.
  * @author Dan Royer
  * @since 2022-02-23
  */
