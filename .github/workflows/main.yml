@@ -1,0 +1,53 @@
+name: Java CI with Maven
+
+env:
+  # find out this value by opening https://api.github.com/repos/<owner>/<repo>/releases
+  # in your browser and copy the full "upload_url" value including the {?name,label} part
+  UPLOAD_URL: https://uploads.github.com/repos/MarginallyClever/Donatello/releases/197988121/assets{?name,label}
+  RELEASE_ID: 197988121 # same as above (id can just be taken out the upload_url, it's used to find old releases)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+        cache: 'maven'
+
+    # from https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+    - name: Build and Test with Maven
+      timeout-minutes: 15
+      run: mvn --batch-mode --update-snapshots package
+
+    - name: Prepare nightly package
+      shell: bash
+      run: |
+        mkdir -p target/universal-package &&
+        cp CONTRIBUTING.md LICENSE README.md target/universal-package/ &&
+        cp target/nodegraphcore-*.jar target/universal-package/ &&
+        cd target/universal-package/ &&
+        7z a -tzip NodeGraphCore.zip . &&
+        mv NodeGraphCore.zip ../..
+
+    - name: Deploy nightly release
+      if: github.repository == 'MarginallyClever/Donatello' && github.ref == 'refs/heads/main'
+      uses: WebFreak001/deploy-nightly@v1.1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatically provided by github actions
+      with:
+        upload_url: ${{ env.UPLOAD_URL }}
+        release_id: ${{ env.RELEASE_ID }}{
+        asset_path: Donatello.zip # path to archive to upload
+        asset_name: Donatello-nightly-$$.zip # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
+        asset_content_type: application/zip # required by GitHub API
+        max_releases: 1 # optional, if there are more releases than this matching the asset_name, the oldest ones are going to be deleted
