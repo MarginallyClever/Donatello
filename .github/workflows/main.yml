@@ -34,10 +34,10 @@ jobs:
       run: |
         mkdir -p target/universal-package &&
         cp CONTRIBUTING.md LICENSE README.md target/universal-package/ &&
-        cp target/nodegraphcore-*.jar target/universal-package/ &&
+        cp target/donatello-*.jar target/universal-package/ &&
         cd target/universal-package/ &&
-        7z a -tzip NodeGraphCore.zip . &&
-        mv NodeGraphCore.zip ../..
+        7z a -tzip Donatello.zip . &&
+        mv Donatello.zip ../..
 
     - name: Deploy nightly release
       if: github.repository == 'MarginallyClever/Donatello' && github.ref == 'refs/heads/main'
