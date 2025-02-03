@@ -1,8 +1,9 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.port.Input;
-import com.marginallyclever.nodegraphcore.port.Output;
+import com.marginallyclever.donatello.ports.InputImage;
+import com.marginallyclever.donatello.ports.InputInt;
+import com.marginallyclever.donatello.ports.OutputImage;
+import com.marginallyclever.nodegraphcore.Node;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -14,10 +15,10 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ScaleImage extends Node {
-    private final Input<BufferedImage> image = new Input<>("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final Input<Number> width = new Input<>("width",Number.class,1);
-    private final Input<Number> height = new Input<>("height",Number.class,1);
-    private final Output<BufferedImage> output = new Output<>("output", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
+    private final InputImage image = new InputImage("image");
+    private final InputInt width = new InputInt("width",1);
+    private final InputInt height = new InputInt("height",1);
+    private final OutputImage output = new OutputImage("output");
 
     /**
      * Constructor for subclasses to call.
@@ -42,5 +43,6 @@ public class ScaleImage extends Node {
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
         output.send(result);
+        this.updateBounds();
     }
 }

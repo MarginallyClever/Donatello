@@ -1,8 +1,9 @@
 package com.marginallyclever.donatello.nodes;
 
-import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.port.Input;
-import com.marginallyclever.nodegraphcore.port.Output;
+import com.marginallyclever.donatello.ports.InputImage;
+import com.marginallyclever.donatello.ports.InputInt;
+import com.marginallyclever.donatello.ports.OutputColor;
+import com.marginallyclever.nodegraphcore.Node;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,11 +18,11 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class ColorAtPoint extends Node {
-    private final Input<BufferedImage> image = new Input<>("image", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final Input<Number> cx = new Input<>("x", Number.class, 0);
-    private final Input<Number> cy = new Input<>("y", Number.class, 0);
-    private final Input<Number> sampleSize = new Input<>("sampleSize", Number.class, 0);
-    private final Output<Color> output = new Output<>("output", Color.class, new Color(0,0,0,0));
+    private final InputImage image = new InputImage("image");
+    private final InputInt cx = new InputInt("x", 0);
+    private final InputInt cy = new InputInt("y", 0);
+    private final InputInt sampleSize = new InputInt("sampleSize", 0);
+    private final OutputColor output = new OutputColor("output", Color.BLACK);
 
     /**
      * Constructor for subclasses to call.
@@ -75,6 +76,7 @@ public class ColorAtPoint extends Node {
             sumG /= sumCount;
             sumB /= sumCount;
             output.send(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
+            this.updateBounds();
         }
     }
 }

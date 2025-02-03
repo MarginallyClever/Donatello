@@ -10,13 +10,14 @@ module com.marginallyclever.donatello {
     requires java.prefs;
 
     exports com.marginallyclever.donatello;
+    exports com.marginallyclever.donatello.select;
     exports com.marginallyclever.donatello.graphview;
+    exports com.marginallyclever.donatello.ports;
 
     // must export these packages for nodegraphcore to access the classes within.
     exports com.marginallyclever.donatello.nodes;
     exports com.marginallyclever.donatello.nodes.color;
     exports com.marginallyclever.donatello.nodes.images;
-    exports com.marginallyclever.donatello.nodes.images.blend;
     exports com.marginallyclever.donatello.search;
     exports com.marginallyclever.donatello.bezier;
     exports com.marginallyclever.donatello.actions.undoable;

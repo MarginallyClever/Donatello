@@ -1,8 +1,8 @@
 package com.marginallyclever.donatello.nodes.color;
 
-import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.port.Input;
-import com.marginallyclever.nodegraphcore.port.Output;
+import com.marginallyclever.donatello.ports.InputInt;
+import com.marginallyclever.donatello.ports.OutputColor;
+import com.marginallyclever.nodegraphcore.Node;
 
 import java.awt.*;
 
@@ -12,11 +12,11 @@ import java.awt.*;
  * @since 2022-03-19
  */
 public class LoadColor extends Node {
-    private final Input<Number> r = new Input<>("r", Number.class, 0);
-    private final Input<Number> g = new Input<>("g", Number.class, 0);
-    private final Input<Number> b = new Input<>("b", Number.class, 0);
-    private final Input<Number> a = new Input<>("a", Number.class, 0);
-    private final Output<Color> output = new Output<>("output", Color.class, new Color(0,0,0,0));
+    private final InputInt r = new InputInt("r", 0);
+    private final InputInt g = new InputInt("g", 0);
+    private final InputInt b = new InputInt("b", 0);
+    private final InputInt a = new InputInt("a", 0);
+    private final OutputColor output = new OutputColor("output", Color.BLACK);
 
     /**
      * Constructor for subclasses to call.

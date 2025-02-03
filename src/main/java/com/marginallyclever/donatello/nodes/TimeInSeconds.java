@@ -1,13 +1,13 @@
 package com.marginallyclever.donatello.nodes;
 
+import com.marginallyclever.donatello.ports.OutputInt;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.port.Output;
 
 /**
  * Publishes the time in seconds continuously.
  */
 public class TimeInSeconds extends Node {
-    private final Output<Number> seconds = new Output<>("seconds", Number.class, 0);
+    private final OutputInt seconds = new OutputInt("seconds", 0);
     private final double startTime = System.currentTimeMillis();
 
     public TimeInSeconds() {
@@ -18,6 +18,6 @@ public class TimeInSeconds extends Node {
     @Override
     public void update() {
         double t = (System.currentTimeMillis()-startTime)/1000.0;
-        seconds.send(t);
+        seconds.send((int)t);
     }
 }

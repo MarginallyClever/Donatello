@@ -1,7 +1,9 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.donatello.ports.InputImage;
+import com.marginallyclever.donatello.ports.InputInt;
+import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.nodegraphcore.PrintWithGraphics;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,9 +14,9 @@ import java.awt.image.BufferedImage;
  * @since 2022-02-23
  */
 public class PrintImage extends Node implements PrintWithGraphics {
-    private final Input<BufferedImage> image = new Input<>("image", BufferedImage.class,new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final Input<Number> px = new Input<>("X",Number.class,0);
-    private final Input<Number> py = new Input<>("Y",Number.class,0);
+    private final InputImage image = new InputImage("image");
+    private final InputInt px = new InputInt("X",0);
+    private final InputInt py = new InputInt("Y",0);
 
     /**
      * Constructor for subclasses to call.
@@ -24,6 +26,7 @@ public class PrintImage extends Node implements PrintWithGraphics {
         addVariable(image);
         addVariable(px);
         addVariable(py);
+        this.updateBounds();
     }
 
     @Override

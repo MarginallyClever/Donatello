@@ -1,9 +1,9 @@
 package com.marginallyclever.donatello.nodes.images;
 
-import com.marginallyclever.donatello.Filename;
-import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.port.Input;
-import com.marginallyclever.nodegraphcore.port.Output;
+import com.marginallyclever.donatello.ports.InputFilename;
+import com.marginallyclever.donatello.ports.OutputImage;
+import com.marginallyclever.donatello.ports.OutputInt;
+import com.marginallyclever.nodegraphcore.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +19,10 @@ import java.io.File;
 public class LoadImage extends Node {
     private static final Logger logger = LoggerFactory.getLogger(LoadImage.class);
 
-    private final Input<Filename> filename = new Input<>("filename",Filename.class,new Filename(""));
-    private final Output<BufferedImage> contents = new Output<>("contents", BufferedImage.class, new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
-    private final Output<Number> width = new Output<>("width",Number.class,0);
-    private final Output<Number> height = new Output<>("height",Number.class,0);
+    private final InputFilename filename = new InputFilename("filename","");
+    private final OutputImage contents = new OutputImage("contents");
+    private final OutputInt width = new OutputInt("width",0);
+    private final OutputInt height = new OutputInt("height",0);
 
     /**
      * Constructor for subclasses to call.
@@ -42,6 +42,7 @@ public class LoadImage extends Node {
             contents.send(null);
             width.send(0);
             height.send(0);
+            this.updateBounds();
             return;
         }
 
@@ -52,6 +53,7 @@ public class LoadImage extends Node {
                 contents.send(image);
                 width.send(image.getWidth());
                 height.send(image.getHeight());
+                this.updateBounds();
             }
         } catch (Exception e) {
             logger.error("Failed to load image from "+filenameValue,e);
