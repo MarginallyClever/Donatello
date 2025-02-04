@@ -17,7 +17,7 @@ public class InputOneOfMany extends InputInt implements SwingProvider {
     public Component getSwingComponent(Component parent) {
         if(selectOneOfMany == null) {
             selectOneOfMany = new SelectOneOfMany(name,name);
-            if(options!=null) selectOneOfMany.setNewList(options);
+            if(options!=null) setOptions(options);
             selectOneOfMany.addSelectListener(evt-> setValue(evt.getNewValue()) );
         }
         return selectOneOfMany;
@@ -27,6 +27,15 @@ public class InputOneOfMany extends InputInt implements SwingProvider {
         this.options = options;
         if(selectOneOfMany!=null) {
             selectOneOfMany.setNewList(options);
+            selectOneOfMany.setSelectedIndex(getValue());
+        }
+    }
+
+    @Override
+    public void setValue(Object arg0) {
+        super.setValue(arg0);
+        if(selectOneOfMany!=null) {
+            selectOneOfMany.setSelectedIndex(getValue());
         }
     }
 }
