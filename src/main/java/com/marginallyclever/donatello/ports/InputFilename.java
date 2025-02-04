@@ -40,4 +40,11 @@ public class InputFilename extends Input<Filename> implements SwingProvider {
     public void setFileChooser(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
     }
+
+    /**
+     * @param isSave true for save dialog, false for load dialog.  Default is false.
+     */
+    public void setDialogType(boolean isSave) {
+        selectFile.setDialogType(isSave);
+    }
 }

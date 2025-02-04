@@ -17,7 +17,7 @@ public class SelectFile extends Select {
 	private FileFilter filter = null;
 	private JFileChooser choose = new JFileChooser();
 	private final Component parentComponent;
-	
+
 	public SelectFile(String internalName,String labelValue,String defaultValue,Component parentComponent) {
 		super(internalName);
 		this.parentComponent = parentComponent;
@@ -65,7 +65,7 @@ public class SelectFile extends Select {
 	private String selectFile(String cancelValue) {
 		choose.setFileFilter(filter);
 		choose.setCurrentDirectory(new File(cancelValue));
-		int returnVal = choose.showOpenDialog(parentComponent);
+		int returnVal = choose.showDialog(parentComponent,cancelValue);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = choose.getSelectedFile();
 			return file.getAbsolutePath();
@@ -97,5 +97,12 @@ public class SelectFile extends Select {
 	public void setFileChooser(JFileChooser fileChooser) {
 		if(fileChooser==null) throw new NullPointerException("fileChooser cannot be null");
 		choose = fileChooser;
+	}
+
+	/**
+	 * @param isSave true for save dialog, false for load dialog.  Default is false.
+	 */
+	public void setDialogType(boolean isSave) {
+		choose.setDialogType(isSave? JFileChooser.SAVE_DIALOG : JFileChooser.OPEN_DIALOG);
 	}
 }
