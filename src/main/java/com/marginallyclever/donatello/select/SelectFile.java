@@ -65,7 +65,7 @@ public class SelectFile extends Select {
 	private String selectFile(String cancelValue) {
 		choose.setFileFilter(filter);
 		choose.setCurrentDirectory(new File(cancelValue));
-		int returnVal = choose.showDialog(parentComponent,cancelValue);
+		int returnVal = choose.showDialog(parentComponent,null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = choose.getSelectedFile();
 			return file.getAbsolutePath();
@@ -103,6 +103,6 @@ public class SelectFile extends Select {
 	 * @param isSave true for save dialog, false for load dialog.  Default is false.
 	 */
 	public void setDialogType(boolean isSave) {
-		choose.setDialogType(isSave? JFileChooser.SAVE_DIALOG : JFileChooser.OPEN_DIALOG);
+		choose.setDialogType(isSave ? JFileChooser.SAVE_DIALOG : JFileChooser.OPEN_DIALOG);
 	}
 }

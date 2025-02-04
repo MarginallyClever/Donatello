@@ -14,6 +14,7 @@ import java.awt.*;
 public class InputFilename extends Input<Filename> implements SwingProvider {
     private SelectFile selectFile;
     private JFileChooser fileChooser;
+    private boolean isSave=false;
 
     public InputFilename(String name, String startingValue) throws IllegalArgumentException {
         super(name, Filename.class, new Filename(startingValue));
@@ -23,13 +24,14 @@ public class InputFilename extends Input<Filename> implements SwingProvider {
     public Component getSwingComponent(Component parent) {
         if(selectFile==null) {
             selectFile = new SelectFile(name,name,getValue().get(),parent);
-            if(fileChooser!=null) {
-                selectFile.setFileChooser(fileChooser);
-            }
             selectFile.addSelectListener( evt -> {
                 setValue(evt.getNewValue());
             });
         }
+        if(fileChooser!=null) {
+            selectFile.setFileChooser(fileChooser);
+        }
+        selectFile.setDialogType(isSave);
         return selectFile;
     }
 
@@ -39,12 +41,18 @@ public class InputFilename extends Input<Filename> implements SwingProvider {
      */
     public void setFileChooser(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
+        if(selectFile!=null) {
+            selectFile.setFileChooser(fileChooser);
+        }
     }
 
     /**
      * @param isSave true for save dialog, false for load dialog.  Default is false.
      */
     public void setDialogType(boolean isSave) {
-        selectFile.setDialogType(isSave);
+        this.isSave = isSave;
+        if(selectFile!=null) {
+            selectFile.setDialogType(isSave);
+        }
     }
 }
