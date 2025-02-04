@@ -25,17 +25,11 @@ public class DonatelloRegistry implements NodeRegistry, DAORegistry {
         return "Donatello";
     }
 
-    /**
-     * Perform the registration.
-     */
     public void registerNodes() {
         logger.info("Registering donatello nodes");
         NodeFactory.registerAllNodesInPackage("com.marginallyclever.donatello.nodes");
     }
 
-    /**
-     * Perform the registration.
-     */
     @Override
     public void registerDAO() {
         logger.info("Registering donatello DAOs");
