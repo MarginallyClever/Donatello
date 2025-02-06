@@ -1,16 +1,13 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.nodes.color.ColorDAO4JSON;
+import com.marginallyclever.donatello.nodes.images.BufferedImageDAO4JSON;
+import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
 import com.marginallyclever.nodegraphcore.DAORegistry;
 import com.marginallyclever.nodegraphcore.NodeFactory;
-import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
 import com.marginallyclever.nodegraphcore.NodeRegistry;
-import com.marginallyclever.donatello.nodes.images.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Registers Swing {@link com.marginallyclever.nodegraphcore.Node}s to the {@link NodeFactory}.
@@ -33,8 +30,8 @@ public class DonatelloRegistry implements NodeRegistry, DAORegistry {
     @Override
     public void registerDAO() {
         logger.info("Registering donatello DAOs");
-        DAO4JSONFactory.registerDAO(BufferedImage.class,new BufferedImageDAO4JSON());
-        DAO4JSONFactory.registerDAO(Color.class,new ColorDAO4JSON());
-        DAO4JSONFactory.registerDAO(Filename.class,new FilenameDAO4JSON());
+        DAO4JSONFactory.registerDAO(new BufferedImageDAO4JSON());
+        DAO4JSONFactory.registerDAO(new ColorDAO4JSON());
+        DAO4JSONFactory.registerDAO(new FilenameDAO4JSON());
     }
 }

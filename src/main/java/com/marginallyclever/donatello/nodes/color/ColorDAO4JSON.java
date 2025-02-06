@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello.nodes.color;
 
-import com.marginallyclever.nodegraphcore.DAO4JSON;
+import com.marginallyclever.nodegraphcore.AbstractDAO4JSON;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,7 +11,11 @@ import java.awt.*;
  * @author Dan Royer
  * @since 2022-03-19
  */
-public class ColorDAO4JSON implements DAO4JSON<Color> {
+public class ColorDAO4JSON extends AbstractDAO4JSON<Color> {
+    public ColorDAO4JSON() {
+        super(Color.class);
+    }
+
     @Override
     public Object toJSON(Object value) throws JSONException {
         Color image = (Color)value;
