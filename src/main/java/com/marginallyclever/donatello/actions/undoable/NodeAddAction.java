@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.actions.undoable;
 
-import com.marginallyclever.donatello.AddNodePanel;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.donatello.NodeFactoryPanel;
 import com.marginallyclever.donatello.edits.NodeAddEdit;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;
@@ -22,16 +22,24 @@ public class NodeAddAction extends AbstractAction {
      * The editor being affected.
      */
     private final Donatello editor;
+    private final NodeFactoryPanel nodeFactoryPanel;
 
     /**
      * Constructor for subclasses to call.
      * @param name the name of this action visible on buttons and menu items.
-     * @param icon the small icon of this action visible on buttons and menu items.
-     * @param editor the editor affected by this Action.
      */
-    public NodeAddAction(String name, Donatello editor) {
+    public NodeAddAction(String name, Donatello editor, NodeFactoryPanel nodeFactoryPanel) {
         super(name);
         this.editor = editor;
+        this.nodeFactoryPanel = nodeFactoryPanel;
+
+        nodeFactoryPanel.addListener(e->{
+            var p = editor.getPopupPoint();
+            if(p!=null) p = editor.getPaintArea().transformScreenToWorldPoint(p);
+            else p = editor.getPaintArea().getCameraPosition();
+
+            commitAdd(e,p);
+        });
     }
 
     /**
@@ -40,12 +48,12 @@ public class NodeAddAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        Node n = AddNodePanel.runAsDialog((JFrame) SwingUtilities.getWindowAncestor(editor));
-        if(n==null) return;
-        var p = editor.getPopupPoint();
-        if(p!=null) p = editor.getPaintArea().transformScreenToWorldPoint(p);
-        else p = editor.getPaintArea().getCameraPosition();
-        commitAdd(n,p);
+        JFrame parentFrame = (JFrame)SwingUtilities.getWindowAncestor((Component)e.getSource());
+        JDialog dialog = new JDialog(parentFrame, "Add Node", true);
+        dialog.add(nodeFactoryPanel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(parentFrame);
+        dialog.setVisible(true);
     }
 
     /**
@@ -58,5 +66,9 @@ public class NodeAddAction extends AbstractAction {
         n.setPosition(p);
         n.updateBounds();
         editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
+    }
+
+    public NodeFactoryPanel getNodeFactoryPanel() {
+        return nodeFactoryPanel;
     }
 }
