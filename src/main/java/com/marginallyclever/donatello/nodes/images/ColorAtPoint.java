@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello.nodes;
+package com.marginallyclever.donatello.nodes.images;
 
 import com.marginallyclever.donatello.ports.InputImage;
 import com.marginallyclever.donatello.ports.InputInt;

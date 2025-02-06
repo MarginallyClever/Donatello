@@ -135,6 +135,8 @@ public class Donatello extends JPanel {
     private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(GraphLoadAction.class),this);
     private final ThreadPoolScheduler threadPoolScheduler = new ThreadPoolScheduler();
 
+    private final NodeFactoryPanel nodeFactoryPanel = new NodeFactoryPanel();
+
     public Donatello() {
         this(new Graph());
     }
@@ -356,7 +358,7 @@ public class Donatello extends JPanel {
         NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
         NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
         NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, nodeCopyAction);
-        NodeAddAction nodeAddAction = new NodeAddAction("Add",this);
+        NodeAddAction nodeAddAction = new NodeAddAction("Add",this,nodeFactoryPanel);
         NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
         ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
         GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, nodeCutAction);
@@ -699,5 +701,9 @@ public class Donatello extends JPanel {
 
     public void submit(Node node) {
         threadPoolScheduler.submit(node);
+    }
+
+    public NodeFactoryPanel getNodeFactoryPanel() {
+        return nodeFactoryPanel;
     }
 }

@@ -1,75 +1,137 @@
 package com.marginallyclever.donatello.search;
 
 import javax.swing.*;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class SearchBar extends JPanel {
-    /**
-     * The search field
-     */
-    private final JTextField search = new JTextField();
-    private final JToggleButton caseSensitive = new JToggleButton("Aa");
-    private final JToggleButton regularExpression = new JToggleButton(".*");
-    private static String searchValue = "";
-    private final ArrayList<SearchListener> listeners = new ArrayList<>();
+public class SearchBar extends JPanel implements DocumentListener {
+    private final JTextField match = new JTextField();
+    private final JToggleButton isCaseSensitive = new JToggleButton("Aa");
+    private final JToggleButton isRegex = new JToggleButton(".*");
 
     public SearchBar() {
+        this("");
+    }
+
+    public SearchBar(String text) {
         super(new BorderLayout());
+        setName("SearchBar");
+        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        this.add(new JLabel(" \uD83D\uDD0D "), BorderLayout.WEST);
-        this.add(search, BorderLayout.CENTER);
+        match.setToolTipText("Search for this pattern");
+        isCaseSensitive.setToolTipText("Case sensitive search");
+        isRegex.setToolTipText("Regular expression search");
 
-        JPanel buttons = new JPanel(new BorderLayout());
-        buttons.add(caseSensitive, BorderLayout.WEST);
-        buttons.add(regularExpression, BorderLayout.EAST);
-        this.add(buttons, BorderLayout.EAST);
+        var label = new JLabel(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-search-16.png"))));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
-        search.getDocument().addDocumentListener(new DocumentListener() {
+        JPanel inner = new JPanel(new BorderLayout());
+        inner.add(label, BorderLayout.LINE_START);
+        inner.add(match, BorderLayout.CENTER);
+        inner.add(isCaseSensitive, BorderLayout.LINE_END);
+        add(inner, BorderLayout.CENTER);
+        add(isRegex, BorderLayout.LINE_END);
+
+        match.setText(text);
+        match.getDocument().addDocumentListener(this);
+
+        isCaseSensitive.addActionListener(e -> fireMatchChange());
+        isRegex.addActionListener(e -> fireMatchChange());
+
+        addAncestorListener(new AncestorListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                searchFor(search.getText());
+            public void ancestorAdded(javax.swing.event.AncestorEvent event) {
+                match.requestFocusInWindow();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
-                searchFor(search.getText());
-            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent event) {}
 
             @Override
-            public void changedUpdate(DocumentEvent e) {
-                searchFor(search.getText());
-            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent event) {}
         });
-
-        caseSensitive.addActionListener((e)->searchFor(search.getText()));
-        search.setText(searchValue);
     }
 
-    protected void searchFor(String text) {
-        searchValue = text;
-        listeners.forEach(l -> l.searchFor(text,caseSensitive.isSelected(),regularExpression.isSelected()) );
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        fireMatchChange();
     }
 
-    public String getText() {
-        return search.getText();
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        fireMatchChange();
     }
 
-    public void setText(String text) {
-        search.setText(text);
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        fireMatchChange();
+    }
+
+    protected void fireMatchChange() {
+        String newValue = match.getText();
+        super.firePropertyChange("match", null, newValue);
+    }
+
+    public boolean getRegex() {
+        return isRegex.isSelected();
+    }
+
+    public void setRegex(boolean regex) {
+        isRegex.setSelected(regex);
+        fireMatchChange();
     }
 
     public boolean getCaseSensitive() {
-        return caseSensitive.isSelected();
+        return isCaseSensitive.isSelected();
     }
 
-    public void addSearchListener(SearchListener listener) {
-        listeners.add(listener);
+    public void setCaseSensitive(boolean caseSensitive) {
+        isCaseSensitive.setSelected(caseSensitive);
+        fireMatchChange();
     }
 
-    public void removeSearchListener(SearchListener listener) {
-        listeners.remove(listener);
+    /**
+     * Does the given text match the search criteria?
+     * @param text the text to match
+     * @return true if the text matches the search criteria
+     */
+    public boolean matches(String text) {
+        String searchCriteria = match.getText();
+        if(searchCriteria==null || searchCriteria.isBlank()) return true;
+        if(text==null) return false;
+        if(this.getRegex()) {
+            Pattern pattern = this.getCaseSensitive() ?
+                    Pattern.compile(searchCriteria) :
+                    Pattern.compile(searchCriteria,Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(text);
+            return matcher.find();
+        } else {
+            if(!this.getCaseSensitive()) {
+                text = text.toLowerCase();
+                searchCriteria = searchCriteria.toLowerCase();
+            }
+            return text.contains(searchCriteria);
+        }
+    }
+
+    /**
+     * Set the text in the search bar.
+     * @param text the text to search for.  Can be a regular expression.
+     */
+    public void setSearchText(String text) {
+        match.setText(text);
+    }
+
+    /**
+     * Get the text in the search bar.
+     * @return the text to search for.  Can be a regular expression.
+     */
+    public String getSearchText() {
+        return match.getText();
     }
 }

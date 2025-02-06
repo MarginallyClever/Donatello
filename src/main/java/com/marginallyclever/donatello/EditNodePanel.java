@@ -1,6 +1,6 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.donatello.nodes.ColorAtPoint;
+import com.marginallyclever.donatello.nodes.images.ColorAtPoint;
 import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.port.Output;
