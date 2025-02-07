@@ -9,6 +9,10 @@ public class InputOneOfMany extends InputInt implements SwingProvider {
     private SelectOneOfMany selectOneOfMany;
     private String [] options;
 
+    public InputOneOfMany(String name) {
+        this(name,0);
+    }
+
     public InputOneOfMany(String name, Integer startingValue) throws IllegalArgumentException {
         super(name, startingValue);
     }

@@ -32,10 +32,10 @@ public class LoadColor extends Node {
 
     @Override
     public void update() {
-        int rr = r.getValue().intValue();
-        int gg = g.getValue().intValue();
-        int bb = b.getValue().intValue();
-        int aa = a.getValue().intValue();
+        int rr = r.getValue();
+        int gg = g.getValue();
+        int bb = b.getValue();
+        int aa = a.getValue();
         output.send(new Color(rr,gg,bb,aa));
     }
 }
