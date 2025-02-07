@@ -6,6 +6,8 @@ import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.edits.GraphPasteEdit;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,11 +25,9 @@ import java.util.Objects;
  * @since 2022-02-21
  */
 public class GraphLoadAction extends AbstractAction {
-    /**
-     * The editor being affected.
-     */
-    private final Donatello editor;
+    private static final Logger logger = LoggerFactory.getLogger(GraphLoadAction.class);
 
+    private final Donatello editor;
     private final RecentFilesMenu menu;
 
     /**
@@ -73,6 +73,7 @@ public class GraphLoadAction extends AbstractAction {
             commitLoad(src);
         }
         catch(Exception ex) {
+            logger.error("Failed to load graph. ",ex);
             JOptionPane.showMessageDialog((Component) e.getSource(),
                     "Error loading file.  " + ex.getMessage(),
                     "Error",
