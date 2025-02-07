@@ -160,6 +160,18 @@ public class Donatello extends JPanel {
 
         setSelectedNodes(null);
         setupClock();
+        connectNodeFactory(nodeFactoryPanel);
+    }
+
+    public void connectNodeFactory(NodeFactoryPanel nfp) {
+        nfp.addListener(e->{
+            var p = this.getPopupPoint();
+            if(p!=null) p = this.getPaintArea().transformScreenToWorldPoint(p);
+            else p = this.getPaintArea().getCameraPosition();
+
+            var add = new NodeAddAction("Add",this,nfp);
+            add.commitAdd(e,p);
+        });
     }
 
     private void setupClock() {

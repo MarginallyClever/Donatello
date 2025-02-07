@@ -5,6 +5,8 @@ import com.marginallyclever.donatello.NodeFactoryPanel;
 import com.marginallyclever.donatello.edits.NodeAddEdit;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,9 +20,8 @@ import java.security.InvalidParameterException;
  * @since 2022-02-21
  */
 public class NodeAddAction extends AbstractAction {
-    /**
-     * The editor being affected.
-     */
+    private static final Logger logger = LoggerFactory.getLogger(NodeAddAction.class);
+
     private final Donatello editor;
     private final NodeFactoryPanel nodeFactoryPanel;
 
@@ -32,14 +33,6 @@ public class NodeAddAction extends AbstractAction {
         super(name);
         this.editor = editor;
         this.nodeFactoryPanel = nodeFactoryPanel;
-
-        nodeFactoryPanel.addListener(e->{
-            var p = editor.getPopupPoint();
-            if(p!=null) p = editor.getPaintArea().transformScreenToWorldPoint(p);
-            else p = editor.getPaintArea().getCameraPosition();
-
-            commitAdd(e,p);
-        });
     }
 
     /**
@@ -63,6 +56,7 @@ public class NodeAddAction extends AbstractAction {
     public void commitAdd(Node n, Point p) {
         if(n==null) throw new InvalidParameterException("NodeAddAction.commitAdd(null)");
 
+        System.out.println("Adding "+n.getName() + " ("+n.getUniqueID()+")");
         n.setPosition(p);
         n.updateBounds();
         editor.addEdit(new NodeAddEdit((String)this.getValue(Action.NAME),editor,n));
