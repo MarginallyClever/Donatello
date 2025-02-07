@@ -291,6 +291,13 @@
             <version>3.5</version>
         </dependency>
         <dependency>
+            <!--
+            When I run locally, I use groupID com.marginallyclever so that it grabs
+            the local copy and I can iterate quickly.
+            When I publish to github/jitpack I have to use groupID com.github.marginallyclever so that
+            Github/Jitpack/etc can find the copy published by Jitpack.
+            I have to do this dance every time.
+            -->
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
             <version>1.1.0</version>
