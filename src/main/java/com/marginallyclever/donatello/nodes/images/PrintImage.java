@@ -26,12 +26,10 @@ public class PrintImage extends Node implements PrintWithGraphics {
         addVariable(image);
         addVariable(px);
         addVariable(py);
-        this.updateBounds();
     }
 
     @Override
-    public void update() {
-    }
+    public void update() {}
 
     @Override
     public void print(Graphics g) {

@@ -42,7 +42,6 @@ public class LoadImage extends Node {
             contents.send(null);
             width.send(0);
             height.send(0);
-            this.updateBounds();
             return;
         }
 
@@ -53,7 +52,6 @@ public class LoadImage extends Node {
                 contents.send(image);
                 width.send(image.getWidth());
                 height.send(image.getHeight());
-                this.updateBounds();
             }
         } catch (Exception e) {
             logger.error("Failed to load image from "+filenameValue,e);

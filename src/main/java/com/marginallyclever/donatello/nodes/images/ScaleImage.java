@@ -43,6 +43,5 @@ public class ScaleImage extends Node {
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
         output.send(result);
-        this.updateBounds();
     }
 }

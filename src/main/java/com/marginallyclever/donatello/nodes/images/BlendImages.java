@@ -89,6 +89,5 @@ public class BlendImages extends Node {
             }
         }
         output.send(C);
-        updateBounds();
     }
 }

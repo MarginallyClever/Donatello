@@ -63,7 +63,6 @@ public class SplitToCMYK extends Node {
         magenta.send(channelMagenta);
         yellow .send(channelYellow);
         black  .send(channelBlack);
-        this.updateBounds();
     }
 
     public static double[] pixelToCMYK(int [] pixel) {

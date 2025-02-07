@@ -76,7 +76,6 @@ public class ColorAtPoint extends Node {
             sumG /= sumCount;
             sumB /= sumCount;
             output.send(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
-            this.updateBounds();
         }
     }
 }

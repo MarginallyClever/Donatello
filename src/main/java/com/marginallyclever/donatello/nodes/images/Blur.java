@@ -27,7 +27,6 @@ public class Blur extends Node {
         var radius = radiusAmount.getValue();
         BufferedImage result = filter(iSrc,radius);
         dst.send(result);
-        this.updateBounds();
     }
 
     public BufferedImage filter(BufferedImage src, int radius) {
