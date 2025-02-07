@@ -409,7 +409,6 @@ public class GraphViewPanel extends JPanel {
         int w = img.getWidth();
         int h = img.getHeight();
         int maxW = (int)insideBox.getWidth();
-        int maxH = (int)insideBox.getHeight();
         if (w > maxW) {
             h = h * maxW / w;
             w = maxW;
