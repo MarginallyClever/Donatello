@@ -360,7 +360,9 @@ public class GraphViewPanel extends JPanel {
         Object vObj = v.getValue();
         if(vObj != null) {
             if(vObj instanceof BufferedImage img) {
-                paintDockBufferedImage(g,img,box);
+                paintDockBufferedImage(g, img, box);
+            } else if(vObj instanceof Color color) {
+                paintDockColor(g,color,box);
             } else {
                 String val;
                 if (vObj instanceof String
@@ -390,6 +392,17 @@ public class GraphViewPanel extends JPanel {
         // connection points
         g.setColor(settings.getConnectionPointColor());
         paintVariableConnectionPoints(g,v);
+    }
+
+    private void paintDockColor(Graphics g, Color c, Rectangle insideBox) {
+        int w = (int)insideBox.getWidth();
+        int h = (int)insideBox.getHeight();
+        int x = (int)insideBox.getX();
+        int y = (int)insideBox.getY();
+        Color prev = g.getColor();
+        g.setColor(c);
+        g.fillRect(x, y, w, h);
+        g.setColor(prev);
     }
 
     private void paintDockBufferedImage(Graphics g, BufferedImage img, Rectangle insideBox) {
