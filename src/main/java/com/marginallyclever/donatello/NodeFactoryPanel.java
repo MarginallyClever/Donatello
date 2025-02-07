@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
@@ -29,38 +28,18 @@ public class NodeFactoryPanel extends JPanel {
     private final JTree tree = new JTree();
     private final SearchBar searchBar = new SearchBar();
     private final EventListenerList listeners = new EventListenerList();
-
-    private static class FactoryCategoryCellRenderer extends DefaultTreeCellRenderer {
-        @Override
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-            var branch = (DefaultMutableTreeNode) value;
-            if(branch.getUserObject() instanceof NodeCategory category) {
-                if (category.getSupplier() == null) {
-                    setForeground(Color.LIGHT_GRAY);
-                } else {
-                    setForeground(Color.BLACK);
-                }
-                setText(category.getName());
-                /*
-                Supplier<Node> supplier = category.getSupplier();
-                if (supplier != null) {
-                    Node node = category.getSupplier().get();
-                    setIcon(node.getIcon());
-                }*/
-            }
-            return this;
-        }
-    }
+    private final JButton addButton = new JButton("Add");
 
     public NodeFactoryPanel() {
         super(new BorderLayout());
 
         setupTree();
         setupSearch();
+        setupAddButton();
 
         add(searchBar, BorderLayout.NORTH);
         add(new JScrollPane(tree), BorderLayout.CENTER);
+        add(addButton,BorderLayout.SOUTH);
 
         populateTree();
     }
@@ -174,19 +153,30 @@ public class NodeFactoryPanel extends JPanel {
                 if (e.getClickCount() == 2) { // Double-click detected
                     TreePath path = tree.getPathForLocation(e.getX(), e.getY());
                     if (path != null) {
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                        NodeCategory category = getCategory(node);
-                        if (category.getSupplier() != null) {
-                            // Trigger the action
-                            Supplier<Node> factory = category.getSupplier();
-                            if (factory != null) {
-                                fireAddNode(factory.get());
-                            }
-                        }
+                        addNow(path);
                     }
                 }
             }
         });
+    }
+
+    private void setupAddButton() {
+        addButton.addActionListener(e -> {
+            TreePath path = tree.getSelectionPath();
+            if(path != null) addNow(path);
+        });
+    }
+
+    private void addNow(TreePath path) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+        NodeCategory category = getCategory(node);
+        if (category.getSupplier() != null) {
+            // Trigger the action
+            Supplier<Node> factory = category.getSupplier();
+            if (factory != null) {
+                fireAddNode(factory.get());
+            }
+        }
     }
 
     public String getSelectedNode() {
