@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -33,6 +35,14 @@ public class LoadImage extends Node {
         addVariable(contents);
         addVariable(width);
         addVariable(height);
+
+        var ff = new FileNameExtensionFilter("Images",ImageIO.getReaderFileSuffixes());
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileFilter(ff);
+        filename.setFileChooser(fileChooser);
     }
 
     @Override
