@@ -31,10 +31,10 @@ public class LoadImage extends Node {
      */
     public LoadImage() {
         super("LoadImage");
-        addVariable(filename);
-        addVariable(contents);
-        addVariable(width);
-        addVariable(height);
+        addPort(filename);
+        addPort(contents);
+        addPort(width);
+        addPort(height);
 
         var ff = new FileNameExtensionFilter("Images",ImageIO.getReaderFileSuffixes());
 

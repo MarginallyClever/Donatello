@@ -12,7 +12,7 @@ public class TimeInSeconds extends Node {
 
     public TimeInSeconds() {
         super("TimeInSeconds");
-        addVariable(seconds);
+        addPort(seconds);
     }
 
     @Override

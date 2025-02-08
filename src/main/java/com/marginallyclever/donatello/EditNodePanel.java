@@ -58,7 +58,7 @@ public class EditNodePanel extends JPanel {
         addLabelField(c);
         c.gridy++;
 
-        for(int i=0;i<node.getNumVariables();++i) {
+        for(int i = 0; i<node.getNumPorts(); ++i) {
             addVariableField(node.getPort(i),c);
             c.gridy++;
         }
@@ -240,7 +240,7 @@ public class EditNodePanel extends JPanel {
         int j=0;
         var size = fields.size();
 
-        for(int i=0;i<node.getNumVariables();++i) {
+        for(int i = 0; i<node.getNumPorts(); ++i) {
             // in case the panel has more fields than the node (somehow?)
             if(j >= size) continue;
 

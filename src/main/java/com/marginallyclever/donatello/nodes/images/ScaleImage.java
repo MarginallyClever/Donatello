@@ -25,10 +25,10 @@ public class ScaleImage extends Node {
      */
     public ScaleImage() {
         super("ScaleImage");
-        addVariable(image);
-        addVariable(width);
-        addVariable(height);
-        addVariable(output);
+        addPort(image);
+        addPort(width);
+        addPort(height);
+        addPort(output);
     }
 
     @Override

@@ -341,7 +341,7 @@ public class GraphViewPanel extends JPanel {
      * @param n the {@link Node} to paint.
      */
     private void paintAllDocks(Graphics g, Node n) {
-        for(int i=0;i<n.getNumVariables();++i) {
+        for(int i = 0; i<n.getNumPorts(); ++i) {
             paintOneDock(g,n.getPort(i));
         }
     }

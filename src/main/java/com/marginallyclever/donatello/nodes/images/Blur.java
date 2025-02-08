@@ -16,9 +16,9 @@ public class Blur extends Node {
     
     public Blur() {
         super("Blur");
-        addVariable(src);
-        addVariable(radiusAmount);
-        addVariable(dst);
+        addPort(src);
+        addPort(radiusAmount);
+        addPort(dst);
     }
     
     @Override

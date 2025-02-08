@@ -23,11 +23,11 @@ public class LoadColor extends Node {
      */
     public LoadColor() {
         super("LoadColor");
-        addVariable(r);
-        addVariable(g);
-        addVariable(b);
-        addVariable(a);
-        addVariable(output);
+        addPort(r);
+        addPort(g);
+        addPort(b);
+        addPort(a);
+        addPort(output);
     }
 
     @Override

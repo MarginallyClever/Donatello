@@ -24,9 +24,9 @@ public class PrintImage extends Node implements PrintWithGraphics {
      */
     public PrintImage() {
         super("PrintImage");
-        addVariable(image);
-        addVariable(px);
-        addVariable(py);
+        addPort(image);
+        addPort(px);
+        addPort(py);
     }
 
     @Override

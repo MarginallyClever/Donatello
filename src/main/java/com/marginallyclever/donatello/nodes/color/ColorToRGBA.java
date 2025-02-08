@@ -23,11 +23,11 @@ public class ColorToRGBA extends Node {
      */
     public ColorToRGBA() {
         super("ColorToRGBA");
-        addVariable(color);
-        addVariable(red  );
-        addVariable(green);
-        addVariable(blue );
-        addVariable(alpha);
+        addPort(color);
+        addPort(red  );
+        addPort(green);
+        addPort(blue );
+        addPort(alpha);
     }
 
     @Override

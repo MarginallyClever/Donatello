@@ -29,11 +29,11 @@ public class ColorAtPoint extends Node {
      */
     public ColorAtPoint() {
         super("ColorAtPoint");
-        addVariable(image);
-        addVariable(cx);
-        addVariable(cy);
-        addVariable(sampleSize);
-        addVariable(output);
+        addPort(image);
+        addPort(cx);
+        addPort(cy);
+        addPort(sampleSize);
+        addPort(output);
     }
 
     @Override

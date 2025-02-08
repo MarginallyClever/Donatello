@@ -23,11 +23,11 @@ public class SplitToCMYK extends Node {
      */
     public SplitToCMYK() {
         super("SplitToCMYK");
-        addVariable(image);
-        addVariable(cyan);
-        addVariable(magenta);
-        addVariable(yellow);
-        addVariable(black);
+        addPort(image);
+        addPort(cyan);
+        addPort(magenta);
+        addPort(yellow);
+        addPort(black);
     }
 
     @Override

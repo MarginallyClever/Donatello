@@ -24,11 +24,11 @@ public class ColorToCMYK extends Node {
      */
     public ColorToCMYK() {
         super("ColorToCMYK");
-        addVariable(color);
-        addVariable(cyan);
-        addVariable(magenta);
-        addVariable(yellow);
-        addVariable(black);
+        addPort(color);
+        addPort(cyan);
+        addPort(magenta);
+        addPort(yellow);
+        addPort(black);
     }
 
     @Override

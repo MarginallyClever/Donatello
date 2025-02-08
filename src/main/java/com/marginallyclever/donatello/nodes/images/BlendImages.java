@@ -24,10 +24,10 @@ public class BlendImages extends Node {
     public BlendImages() {
         super("BlendImages");
         style.setOptions(new String[]{"Difference","Multiply","Screen"});
-        addVariable(a);
-        addVariable(b);
-        addVariable(style);
-        addVariable(output);
+        addPort(a);
+        addPort(b);
+        addPort(style);
+        addPort(output);
     }
 
     @Override

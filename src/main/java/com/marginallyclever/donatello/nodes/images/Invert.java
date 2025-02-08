@@ -16,8 +16,8 @@ public class Invert extends Node {
     
     public Invert() {
         super("Invert");
-        addVariable(before);
-        addVariable(after);
+        addPort(before);
+        addPort(after);
     }
     
     @Override
