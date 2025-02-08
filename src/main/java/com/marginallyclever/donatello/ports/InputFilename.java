@@ -16,6 +16,10 @@ public class InputFilename extends Input<Filename> implements SwingProvider {
     private JFileChooser fileChooser;
     private boolean isSave=false;
 
+    public InputFilename(String name) {
+        this(name,"");
+    }
+
     public InputFilename(String name, String startingValue) throws IllegalArgumentException {
         super(name, Filename.class, new Filename(startingValue));
     }
@@ -54,5 +58,15 @@ public class InputFilename extends Input<Filename> implements SwingProvider {
         if(selectFile!=null) {
             selectFile.setDialogType(isSave);
         }
+    }
+
+    @Override
+    public void setValue(Object arg0) {
+        if(arg0 instanceof String str) {
+            setDirtyOnValueChange(arg0);
+            value.set(str);
+            return;
+        }
+        super.setValue(arg0);
     }
 }
