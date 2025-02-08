@@ -9,8 +9,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -61,11 +59,11 @@ public class TestGraphSwing {
     @Test
     public void testImages() {
         LoadImage img2 = new LoadImage();
-        img2.getVariable(0).setValue(new Filename("doesNotExist.png"));
+        img2.getPort(0).setValue(new Filename("doesNotExist.png"));
         img2.update();
 
         LoadImage img = new LoadImage();
-        img.getVariable(0).setValue(new Filename("src/test/resources/test.png"));
+        img.getPort(0).setValue(new Filename("src/test/resources/test.png"));
         img.update();
 
         PrintImage printer = new PrintImage();

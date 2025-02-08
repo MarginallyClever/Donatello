@@ -342,7 +342,7 @@ public class GraphViewPanel extends JPanel {
      */
     private void paintAllDocks(Graphics g, Node n) {
         for(int i=0;i<n.getNumVariables();++i) {
-            paintOneDock(g,n.getVariable(i));
+            paintOneDock(g,n.getPort(i));
         }
     }
 

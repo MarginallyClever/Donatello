@@ -10,17 +10,15 @@ module com.marginallyclever.donatello {
     requires java.prefs;
 
     exports com.marginallyclever.donatello;
-    exports com.marginallyclever.donatello.select;
+    exports com.marginallyclever.donatello.actions.undoable;
+    exports com.marginallyclever.donatello.bezier;
     exports com.marginallyclever.donatello.graphview;
-    exports com.marginallyclever.donatello.ports;
-
-    // must export these packages for nodegraphcore to access the classes within.
     exports com.marginallyclever.donatello.nodes;
     exports com.marginallyclever.donatello.nodes.color;
     exports com.marginallyclever.donatello.nodes.images;
+    exports com.marginallyclever.donatello.ports;
     exports com.marginallyclever.donatello.search;
-    exports com.marginallyclever.donatello.bezier;
-    exports com.marginallyclever.donatello.actions.undoable;
+    exports com.marginallyclever.donatello.select;
 
     // A Java module that wants to implement a service interface from a service interface module must:
     // - Require the service interface module in its own module descriptor.

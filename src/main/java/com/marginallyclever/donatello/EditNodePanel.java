@@ -59,7 +59,7 @@ public class EditNodePanel extends JPanel {
         c.gridy++;
 
         for(int i=0;i<node.getNumVariables();++i) {
-            addVariableField(node.getVariable(i),c);
+            addVariableField(node.getPort(i),c);
             c.gridy++;
         }
     }
@@ -245,7 +245,7 @@ public class EditNodePanel extends JPanel {
             if(j >= size) continue;
 
             // only care about Input ports
-            Port<?> port = node.getVariable(i);
+            Port<?> port = node.getPort(i);
             if(!(port instanceof Input<?> input)) continue;
 
             var type = input.getType();
