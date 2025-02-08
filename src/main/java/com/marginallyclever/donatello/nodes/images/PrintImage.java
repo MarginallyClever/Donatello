@@ -17,6 +17,7 @@ public class PrintImage extends Node implements PrintWithGraphics {
     private final InputImage image = new InputImage("image");
     private final InputInt px = new InputInt("X",0);
     private final InputInt py = new InputInt("Y",0);
+    private final InputInt layer = new InputInt("layer",2);
 
     /**
      * Constructor for subclasses to call.
@@ -34,5 +35,10 @@ public class PrintImage extends Node implements PrintWithGraphics {
     @Override
     public void print(Graphics g) {
         g.drawImage(image.getValue(),px.getValue().intValue(),py.getValue().intValue(),null);
+    }
+
+    @Override
+    public int getLayer() {
+        return layer.getValue();
     }
 }
