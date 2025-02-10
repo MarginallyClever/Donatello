@@ -19,14 +19,12 @@ public class InputDouble extends Input<Double> implements SwingProvider {
 
     @Override
     public Component getSwingComponent(Component parent) {
-        if(selectDouble==null) {
-            selectDouble = new SelectDouble(name,name,this.value);
-            selectDouble.addSelectListener( evt -> {
+        if (selectDouble == null) {
+            selectDouble = new SelectDouble(name, name, this.value);
+            selectDouble.addSelectListener(evt -> {
                 setValue(evt.getNewValue());
             });
         }
         return selectDouble;
     }
-
-
 }
