@@ -74,14 +74,18 @@ public class SplitToCMYK extends Node {
         double k = Math.min(Math.min(r,g),b);   // should be Math.max(Math.max(r,g),b) but colors are inverted.
         double ik = 1.0 - k;
 
-        //if(ik<1.0/255.0) {
-        //  c=m=y=0;
-        //} else {
-        int c = (int)Math.max(0,Math.min(255, 255 * (r-k) / k ));
-        int m = (int)Math.max(0,Math.min(255, 255 * (g-k) / k ));
-        int y = (int)Math.max(0,Math.min(255, 255 * (b-k) / k ));
-        int k2 = (int)Math.max(0,Math.min(255, 255 * ik ));
-        //}
+        double c, m, y, k2;
+        if(ik<1.0/255.0) {
+          c=m=y=0;
+        } else {
+            c = (r - k) / ik;
+            m = (g - k) / ik;
+            y = (b - k) / ik;
+        }
+        c = Math.max(0,Math.min(255,  (c * 255.0) ));
+        m = Math.max(0,Math.min(255,  (m * 255.0) ));
+        y = Math.max(0,Math.min(255,  (y * 255.0) ));
+        k2 = Math.max(0,Math.min(255, (k * 255.0) ));
         return new double[]{c,m,y,k2};
     }
 }
