@@ -18,6 +18,6 @@ public class TimeInSeconds extends Node {
     @Override
     public void update() {
         double t = (System.currentTimeMillis()-startTime)/1000.0;
-        seconds.send((int)t);
+        seconds.setValue((int)t);
     }
 }

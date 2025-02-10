@@ -24,7 +24,7 @@ public class Invert extends Node {
     public void update() {
         var img = before.getValue();
         if (img == null) {
-            after.send(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+            after.setValue(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
             return;
         }
 
@@ -43,6 +43,6 @@ public class Invert extends Node {
             });
         });
 
-        after.send(dst);
+        after.setValue(dst);
     }
 }

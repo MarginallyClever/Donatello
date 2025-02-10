@@ -36,6 +36,6 @@ public class LoadColor extends Node {
         int gg = g.getValue();
         int bb = b.getValue();
         int aa = a.getValue();
-        output.send(new Color(rr,gg,bb,aa));
+        output.setValue(new Color(rr,gg,bb,aa));
     }
 }

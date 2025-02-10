@@ -35,9 +35,9 @@ public class ColorToCMYK extends Node {
     public void update() {
         Color c = color.getValue();
         double [] cmyk = ColorHelper.IntToCMYK(ColorHelper.ColorToInt(c));
-        cyan.send(   cmyk[0]/255.0);
-        magenta.send(cmyk[1]/255.0);
-        yellow.send( cmyk[2]/255.0);
-        black.send(  cmyk[3]/255.0);
+        cyan.setValue(   cmyk[0]/255.0);
+        magenta.setValue(cmyk[1]/255.0);
+        yellow.setValue( cmyk[2]/255.0);
+        black.setValue(  cmyk[3]/255.0);
     }
 }

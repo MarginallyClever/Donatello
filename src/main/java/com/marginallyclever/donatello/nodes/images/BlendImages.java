@@ -88,6 +88,6 @@ public class BlendImages extends Node {
                 cr.setPixel(x, y, pa);
             }
         }
-        output.send(C);
+        output.setValue(C);
     }
 }

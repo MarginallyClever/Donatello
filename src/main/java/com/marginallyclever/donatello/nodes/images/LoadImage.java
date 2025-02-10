@@ -49,9 +49,9 @@ public class LoadImage extends Node {
     public void update() {
         String filenameValue = filename.getValue().get();
         if(filenameValue==null || filenameValue.isEmpty()) {
-            contents.send(null);
-            width.send(0);
-            height.send(0);
+            contents.setValue(null);
+            width.setValue(0);
+            height.setValue(0);
             return;
         }
 
@@ -59,9 +59,9 @@ public class LoadImage extends Node {
             System.out.println("loading "+filenameValue);
             BufferedImage image = ImageIO.read(new File(filenameValue));
             if(image!=null) {
-                contents.send(image);
-                width.send(image.getWidth());
-                height.send(image.getHeight());
+                contents.setValue(image);
+                width.setValue(image.getWidth());
+                height.setValue(image.getHeight());
             }
         } catch (Exception e) {
             logger.error("Failed to load image from "+filenameValue,e);

@@ -33,9 +33,9 @@ public class ColorToRGBA extends Node {
     @Override
     public void update() {
         Color c = color.getValue();
-        red  .send(c.getRed()  /255.0);
-        green.send(c.getGreen()/255.0);
-        blue .send(c.getBlue() /255.0);
-        alpha.send(c.getAlpha()/255.0);
+        red  .setValue(c.getRed()  /255.0);
+        green.setValue(c.getGreen()/255.0);
+        blue .setValue(c.getBlue() /255.0);
+        alpha.setValue(c.getAlpha()/255.0);
     }
 }
