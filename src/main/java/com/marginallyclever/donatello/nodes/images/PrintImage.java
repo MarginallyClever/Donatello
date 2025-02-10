@@ -15,8 +15,6 @@ import java.awt.image.BufferedImage;
  */
 public class PrintImage extends Node implements PrintWithGraphics {
     private final InputImage image = new InputImage("image");
-    private final InputInt px = new InputInt("X",0);
-    private final InputInt py = new InputInt("Y",0);
     private final InputInt layer = new InputInt("layer",2);
 
     /**
@@ -25,8 +23,7 @@ public class PrintImage extends Node implements PrintWithGraphics {
     public PrintImage() {
         super("PrintImage");
         addPort(image);
-        addPort(px);
-        addPort(py);
+        addPort(layer);
     }
 
     @Override
@@ -34,7 +31,8 @@ public class PrintImage extends Node implements PrintWithGraphics {
 
     @Override
     public void print(Graphics g) {
-        g.drawImage(image.getValue(),px.getValue().intValue(),py.getValue().intValue(),null);
+        var img = image.getValue();
+        g.drawImage(img,-img.getWidth()/2,-img.getHeight()/2,null);
     }
 
     @Override
