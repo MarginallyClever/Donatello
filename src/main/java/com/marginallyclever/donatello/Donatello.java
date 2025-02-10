@@ -125,7 +125,7 @@ public class Donatello extends JPanel {
      */
     private final Point popupPoint = new Point();
 
-    private final UpdateClock updateClock = new UpdateClock(1000/60);
+    private final UpdateClock updateClock = new UpdateClock(1000/30);
 
     /**
      * If true, the graph will update automatically.
