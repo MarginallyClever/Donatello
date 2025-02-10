@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -271,11 +272,15 @@ public class GraphViewPanel extends JPanel {
      * @param g the {@link Graphics} context.
      */
     private void paintNodesInBackground(Graphics g) {
+        List<PrintWithGraphics> found = new ArrayList<>();
         for(Node n : model.getNodes()) {
-            if(n instanceof PrintWithGraphics) {
-                ((PrintWithGraphics) n).print(g);
+            if(n instanceof PrintWithGraphics pwg) {
+                found.add(pwg);
             }
         }
+
+        found.sort(Comparator.comparing(PrintWithGraphics::getLayer));
+        for( var pwg : found) pwg.print(g);
     }
 
     /**
