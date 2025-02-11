@@ -290,6 +290,14 @@
             <artifactId>flatlaf</artifactId>
             <version>3.5</version>
         </dependency>
+
+        <!-- simple math expression parser -->
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+
         <dependency>
             <!--
             When I run locally, I use groupID com.marginallyclever so that it grabs

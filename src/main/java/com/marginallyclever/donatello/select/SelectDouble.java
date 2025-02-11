@@ -1,12 +1,9 @@
 package com.marginallyclever.donatello.select;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.Locale;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -35,46 +32,13 @@ public class SelectDouble extends Select {
 		field.setHorizontalAlignment(JTextField.RIGHT);
 		setValue(defaultValue);
 
-		field.getDocument().addDocumentListener(new DocumentListener() {
-        	@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				if(arg0.getLength()==0) return;
-				validate();
+		field.getDocument().addDocumentListener(new DelayedDocumentValidator(field,newValue-> {
+			if (value != newValue) {
+				double oldValue = value;
+				value = newValue;
+				fireSelectEvent(oldValue, newValue);
 			}
-
-        	@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				if(arg0.getLength()==0) return;
-				validate();
-			}
-
-        	@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				if(arg0.getLength()==0) return;
-				validate();
-			}
-
-			public void validate() {
-				try {
-					double newValue = Float.parseFloat(field.getText());
-					field.setForeground(UIManager.getColor("Textfield.foreground"));
-					if(value != newValue) {
-						double oldValue = value; 
-						value = newValue;
-						
-						if(timer!=null) timer.cancel();
-						timer = new Timer("Delayed response");
-						timer.schedule(new TimerTask() { 
-							public void run() {
-								fireSelectEvent(oldValue,newValue);
-							}
-						}, 100L); // brief delay in case someone is typing fast
-					}
-				} catch (NumberFormatException e) {
-					field.setForeground(Color.RED);
-				}
-			}
-		});
+		}));
 
 		this.add(label, BorderLayout.LINE_START);
 		this.add(field, BorderLayout.LINE_END);

@@ -1,15 +1,11 @@
 package com.marginallyclever.donatello.select;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**
@@ -20,7 +16,6 @@ import java.util.TimerTask;
 public class SelectInteger extends Select {
 	private JFormattedTextField field;
 	private int value;
-	private Timer timer=null;
 
 	public SelectInteger(String internalName,String labelKey,Locale locale,int defaultValue) {
 		super(internalName);
@@ -37,44 +32,13 @@ public class SelectInteger extends Select {
 		field.setMinimumSize(d);
 		field.setValue(defaultValue);
 		field.setHorizontalAlignment(JTextField.RIGHT);
-		field.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				validate();
+		field.getDocument().addDocumentListener(new DelayedDocumentValidator(field,newValue-> {
+			if (value != newValue) {
+				double oldValue = value;
+				value = newValue.intValue();
+				fireSelectEvent(oldValue, newValue);
 			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				validate();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				validate();
-			}
-			
-			public void validate() {
-				try {
-					int newNumber = Integer.parseInt(field.getText());
-					field.setForeground(UIManager.getColor("Textfield.foreground"));
-					if(value != newNumber) {
-						int oldValue = value;
-						value = newNumber;
-						
-						if(timer!=null) timer.cancel();
-						timer = new Timer("Delayed response");
-						timer.schedule(new TimerTask() { 
-							public void run() {
-								fireSelectEvent(oldValue,newNumber);
-							}
-						}, 100L); // brief delay in case someone is typing fast
-					}
-				} catch(NumberFormatException e1) {
-					field.setForeground(Color.RED);
-					return;
-				}
-			}
-		});
+		}));
 
 		this.add(label,BorderLayout.LINE_START);
 		this.add(field,BorderLayout.LINE_END);

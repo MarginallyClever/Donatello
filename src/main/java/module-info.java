@@ -8,6 +8,7 @@ module com.marginallyclever.donatello {
     requires org.reflections;
     requires com.formdev.flatlaf;
     requires java.prefs;
+    requires exp4j;
 
     exports com.marginallyclever.donatello;
     exports com.marginallyclever.donatello.actions.undoable;
