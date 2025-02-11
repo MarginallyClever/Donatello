@@ -6,6 +6,8 @@ import com.marginallyclever.donatello.ports.OutputImage;
 import com.marginallyclever.nodegraphcore.Node;
 
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 /**
  * <a href='https://en.wikipedia.org/wiki/Blend_modes'>blend difference</a>
@@ -23,7 +25,7 @@ public class BlendImages extends Node {
      */
     public BlendImages() {
         super("BlendImages");
-        style.setOptions(new String[]{"Difference","Multiply","Screen"});
+        style.setOptions(new String[]{"Difference","Multiply","Screen","Add","Subtract"});
         addPort(a);
         addPort(b);
         addPort(style);
@@ -42,14 +44,18 @@ public class BlendImages extends Node {
 
         // TODO check A and B have the same pixel format?
         int components = A.getColorModel().getNumComponents();
-        float [] pa = new float[components];
-        float [] pb = new float[components];
 
         var ar = A.getRaster();
         var br = B.getRaster();
         var cr = C.getRaster();
 
-        for(int y=0;y<h;++y) {
+        setComplete(0);
+        int total = w*h;
+        AtomicInteger count = new AtomicInteger();
+
+        IntStream.range(0,h).parallel().forEach(y -> {
+            float [] pa = new float[components];
+            float [] pb = new float[components];
             for(int x=0;x<w;++x) {
                 ar.getPixel(x, y, pa);
                 br.getPixel(x, y, pb);
@@ -61,24 +67,11 @@ public class BlendImages extends Node {
                 }
 
                 switch(mode) {
-                    case 0: { // difference
-                        pa[0] = Math.abs(pa[0] - pb[0]);
-                        pa[1] = Math.abs(pa[1] - pb[1]);
-                        pa[2] = Math.abs(pa[2] - pb[2]);
-                    }
-                    break;
-                    case 1: { // multiply
-                        pa[0] = pa[0] * pb[0];
-                        pa[1] = pa[1] * pb[1];
-                        pa[2] = pa[2] * pb[2];
-                    }
-                    break;
-                    case 2: { // screen
-                        pa[0] = 1.0f - (1.0f - pa[0]) * (1.0f - pb[0]);
-                        pa[1] = 1.0f - (1.0f - pa[1]) * (1.0f - pb[1]);
-                        pa[2] = 1.0f - (1.0f - pa[2]) * (1.0f - pb[2]);
-                    }
-                    break;
+                    case 0:  difference(pa,pb);  break;
+                    case 2:  screen(pa,pb);  break;
+                    case 3:  add(pa,pb);  break;
+                    case 4:  subtract(pa,pb);  break;
+                    default:  multiply(pa,pb);  break;
                 }
 
                 for(int j=0;j<components;++j) {
@@ -87,7 +80,39 @@ public class BlendImages extends Node {
 
                 cr.setPixel(x, y, pa);
             }
-        }
+            setComplete((int)(100.0 * count.addAndGet(w) /total));
+        });
+        setComplete(100);
         output.setValue(C);
+    }
+
+    private void difference(float [] pa, float [] pb) {
+        pa[0] = Math.abs(pa[0] - pb[0]);
+        pa[1] = Math.abs(pa[1] - pb[1]);
+        pa[2] = Math.abs(pa[2] - pb[2]);
+    }
+
+    private void multiply(float [] pa, float [] pb) {
+        pa[0] = pa[0] * pb[0];
+        pa[1] = pa[1] * pb[1];
+        pa[2] = pa[2] * pb[2];
+    }
+
+    private void screen(float [] pa, float [] pb) {
+        pa[0] = 255 - (255 - pa[0]) * (255 - pb[0]);
+        pa[1] = 255 - (255 - pa[1]) * (255 - pb[1]);
+        pa[2] = 255 - (255 - pa[2]) * (255 - pb[2]);
+    }
+
+    private void add(float [] pa, float [] pb) {
+        pa[0] = Math.min(255, pa[0] + pb[0]);
+        pa[1] = Math.min(255, pa[1] + pb[1]);
+        pa[2] = Math.min(255, pa[2] + pb[2]);
+    }
+
+    private void subtract(float [] pa, float [] pb) {
+        pa[0] = Math.max(0, pa[0] - pb[0]);
+        pa[1] = Math.max(0, pa[1] - pb[1]);
+        pa[2] = Math.max(0, pa[2] - pb[2]);
     }
 }
