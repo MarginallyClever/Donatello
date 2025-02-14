@@ -1,5 +1,7 @@
 package com.marginallyclever.donatello;
 
+import com.marginallyclever.donatello.select.Select;
+
 import java.awt.*;
 
 /**
@@ -7,8 +9,7 @@ import java.awt.*;
  */
 public interface SwingProvider {
     /**
-     * Get the Swing component.
-     * @return the Swing component or null.
+     * @return the Select component or null.
      */
-    Component getSwingComponent(Component parent);
+    Select getSwingComponent(Component parent);
 }

@@ -512,8 +512,8 @@ public class GraphViewPanel extends JPanel {
         Point from = c.getInPosition();
         paintBezierBetweenTwoPoints(g,from,to);
 
-        if(c.isToValid()) paintConnectionAtPoint(g,to);
-        if(c.isFromValid()) paintConnectionAtPoint(g,from);
+        if(c.isToASaneInput()) paintConnectionAtPoint(g,to);
+        if(c.isFromASaneOutput()) paintConnectionAtPoint(g,from);
     }
 
     /**

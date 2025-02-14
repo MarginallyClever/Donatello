@@ -20,6 +20,9 @@ import java.util.TimerTask;
  * @since 7.50.5
  */
 public class SelectRandomSeed extends Select {
+	private final JPanel panel2;
+	private final JLabel label;
+	private final JButton chooseButton;
 	private JFormattedTextField field;
 	private int value;
 	private Timer timer=null;
@@ -29,9 +32,8 @@ public class SelectRandomSeed extends Select {
 
 		value = defaultValue;
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-
 		field = new JFormattedTextField();
+		field.setName(internalName+".field");
 		createAndAttachFormatter(locale);
 		Dimension d = field.getPreferredSize();
 		d.width = 100;
@@ -78,7 +80,7 @@ public class SelectRandomSeed extends Select {
 			}
 		});
 
-		JButton chooseButton = new JButton("↻");
+		chooseButton = new JButton("↻");
 		chooseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,12 +89,27 @@ public class SelectRandomSeed extends Select {
 		});
 
 
-		JPanel panel2 = new JPanel(new BorderLayout());
-		panel2.add(field,BorderLayout.LINE_END);
+		panel2 = new JPanel(new BorderLayout());
+		panel2.add(field,BorderLayout.CENTER);
+		panel2.add(chooseButton,BorderLayout.LINE_END);
 
-		this.add(label,BorderLayout.LINE_START);
-		this.add(panel2,BorderLayout.CENTER);
-		this.add(chooseButton,BorderLayout.LINE_END);
+		label = createLabel(labelKey);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		chooseButton.setEnabled(!state);
+		field.setEnabled(!state);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(panel2,gbc);
 	}
 
 	public SelectRandomSeed(String internalName, String labelKey, Locale locale) {
@@ -101,11 +118,6 @@ public class SelectRandomSeed extends Select {
 
 	public SelectRandomSeed(String internalName, String labelKey, int defaultValue) {
 		this(internalName,labelKey,Locale.getDefault(),defaultValue);
-	}
-
-	public SelectRandomSeed(String internalName) {
-		super(internalName);
-		createAndAttachFormatter(Locale.getDefault());
 	}
 	
 	protected void createAndAttachFormatter(Locale locale) {

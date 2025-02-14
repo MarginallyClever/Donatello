@@ -10,6 +10,7 @@ import java.awt.*;
  * @since 7.24.0
  */
 public class SelectColor extends Select {
+	private final JLabel label;
 	private final BackgroundPaintedButton chooseButton;
 	
 	/**
@@ -20,8 +21,6 @@ public class SelectColor extends Select {
 	public SelectColor(String internalName,String labelValue,Color defaultValue,final Component parentComponent) {
 		super(internalName);
 
-		JLabel label = new JLabel(labelValue,JLabel.LEADING);
-
 		chooseButton = new BackgroundPaintedButton("");
 		chooseButton.setOpaque(true);
 		chooseButton.setMinimumSize(new Dimension(80,20));
@@ -31,21 +30,32 @@ public class SelectColor extends Select {
 		chooseButton.setBackground(defaultValue);
 		chooseButton.setBorder(new LineBorder(Color.BLACK));
 		chooseButton.addActionListener(e -> {
-			Color c = JColorChooser.showDialog(parentComponent, label.getText(), chooseButton.getBackground());
+			Color c = JColorChooser.showDialog(parentComponent, labelValue, chooseButton.getBackground());
 			if ( c != null ){
 				chooseButton.setBackground(c);
 				fireSelectEvent(null,c);
 			}
 		});
+		chooseButton.setName(internalName+".button");
 
-		JPanel panel2 = new JPanel(new BorderLayout());
-		panel2.add(chooseButton,BorderLayout.LINE_END);
-		
-		this.add(label,BorderLayout.LINE_START);
-		this.add(panel2,BorderLayout.CENTER);
-		this.add(chooseButton,BorderLayout.LINE_END);
+		label = createLabel(labelValue);
 	}
-	
+
+	@Override
+	public void setReadOnly(boolean state) {
+		chooseButton.setEnabled(!state);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(chooseButton,gbc);
+	}
+
 	public Color getColor() {
 		return chooseButton.getBackground();
 	}

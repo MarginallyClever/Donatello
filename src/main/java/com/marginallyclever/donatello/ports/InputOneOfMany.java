@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.donatello.SwingProvider;
+import com.marginallyclever.donatello.select.Select;
 import com.marginallyclever.donatello.select.SelectOneOfMany;
 
 import java.awt.*;
@@ -18,7 +19,7 @@ public class InputOneOfMany extends InputInt implements SwingProvider {
     }
 
     @Override
-    public Component getSwingComponent(Component parent) {
+    public Select getSwingComponent(Component parent) {
         if(selectOneOfMany == null) {
             selectOneOfMany = new SelectOneOfMany(name,name);
             if(options!=null) setOptions(options);

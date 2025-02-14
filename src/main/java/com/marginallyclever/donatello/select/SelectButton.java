@@ -21,19 +21,32 @@ public class SelectButton extends Select {
 	public SelectButton(String internalName,AbstractAction action) {
 		super(internalName);
 		button = new JButton(action);
+		button.setName(internalName+".button");
 	}
-	
-	public SelectButton(String internalName,String labelText) {
+
+	public SelectButton(String internalName, String labelText) {
 		super(internalName);
 		
 		button = new JButton(labelText);
 		button.addActionListener((e) -> {
 			fireActionEvent();
 		});
-
-		this.add(button,BorderLayout.CENTER);
 	}
-	
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx=0;
+		gbc.gridwidth=2;
+		panel.add(button,gbc);
+		gbc.gridwidth=1;
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		button.setEnabled(!state);
+	}
+
 	public void doClick() {
 		if(button!=null) button.doClick();
 	}

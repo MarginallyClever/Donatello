@@ -1,6 +1,5 @@
 package com.marginallyclever.donatello.select;
 
-import com.marginallyclever.donatello.select.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +24,6 @@ public class SelectGUITest {
         // test constructor works
         b = new SelectBoolean("test2", "test2", false);
         assertFalse(b.isSelected());
-
         panel.add(b);
 
         // test observer fires
@@ -105,6 +103,11 @@ public class SelectGUITest {
         panel.add(b);
 
         b.setValue(0.2f);
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertEquals(0.2f, b.getValue(), 1e-6);
     }
 
@@ -119,6 +122,11 @@ public class SelectGUITest {
         panel.add(b);
 
         b.setValue(2);
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertEquals(2, b.getValue());
     }
 

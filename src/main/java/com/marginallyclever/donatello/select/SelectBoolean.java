@@ -10,13 +10,40 @@ import java.awt.*;
  * @since 7.24.0
  */
 public class SelectBoolean extends Select {
-	private final JCheckBox field = new JCheckBox();
-	
-	public SelectBoolean(String internalName,String labelKey,boolean arg0) {
+	private final JLabel label;
+	private final JCheckBox field;
+
+	/**
+	 * Create a new SelectBoolean
+	 * @param internalName the name of this SelectBoolean, used for debugging
+	 * @param labelKey the key to use for the label, visible to users
+	 * @param defaultValue the default value
+	 */
+	public SelectBoolean(String internalName,String labelKey,boolean defaultValue) {
 		super(internalName);
+		label = createLabel(labelKey);
+		field = createField(defaultValue);
+		field.setName(internalName+".field");
+	}
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(field,gbc);
+	}
 
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
+	}
+
+	private JCheckBox createField(boolean arg0) {
+		JCheckBox field = new JCheckBox();
+		field.setName(getName()+".field");
 		field.setSelected(arg0);
 		field.setBorder(new EmptyBorder(0,0,0,0));
 		field.addItemListener((e)-> {
@@ -24,9 +51,7 @@ public class SelectBoolean extends Select {
 			boolean oldValue = !newValue;
 			fireSelectEvent(oldValue, newValue);
 		});
-
-		this.add(label,BorderLayout.LINE_START);
-		this.add(field,BorderLayout.LINE_END);
+		return field;
 	}
 	
 	public boolean isSelected() {

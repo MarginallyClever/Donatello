@@ -19,13 +19,27 @@ import java.net.URISyntaxException;
  */
 public class SelectReadOnlyText extends Select {
 	private static final Logger logger = LoggerFactory.getLogger(SelectReadOnlyText.class);
+	private final JEditorPane jEditorPane;
 
 	public SelectReadOnlyText(String internalName,String labelKey) {
 		super(internalName);
 
-		JEditorPane jEdPane = createJEditorPaneWithHyperlinkListenerAndToolTipsForDesktopBrowse("<html>" + labelKey + "</html>");
-		this.add(jEdPane,BorderLayout.CENTER);
+		jEditorPane = createJEditorPaneWithHyperlinkListenerAndToolTipsForDesktopBrowse("<html>" + labelKey + "</html>");
+		jEditorPane.setName(internalName+".field");
 	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx=0;
+		gbc.gridwidth = 2;
+		panel.add(jEditorPane,gbc);
+		gbc.gridwidth = 1;
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {}
 	
 	/**
 	 * Create a JEditorPane not editable for text/html contente, with an HyperLinkListener to Desktop Browse (when clicked) and show a ToolTips with the URL hovered.

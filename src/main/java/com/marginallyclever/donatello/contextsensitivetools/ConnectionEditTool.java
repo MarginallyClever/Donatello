@@ -141,13 +141,13 @@ public class ConnectionEditTool extends ContextSensitiveTool {
      * @param g the {@link Graphics} context
      */
     private void paintConnectionBeingMade(Graphics g) {
-        if(connectionBeingCreated.isFromValid() || connectionBeingCreated.isToValid()) {
+        if(connectionBeingCreated.isFromASaneOutput() || connectionBeingCreated.isToASaneInput()) {
             g.setColor(CONNECTION_BEING_EDITED);
             GraphViewPanel paintArea = editor.getPaintArea();
             paintArea.setLineWidth(g,3);
 
             Point a,b;
-            if(connectionBeingCreated.isFromValid()) {
+            if(connectionBeingCreated.isFromASaneOutput()) {
                 a = connectionBeingCreated.getInPosition();
                 b = mousePreviousPosition;
                 paintArea.paintConnectionAtPoint(g,a);
@@ -180,16 +180,10 @@ public class ConnectionEditTool extends ContextSensitiveTool {
      * What to do when a user clicks on a connection point.
      */
     private void onClickConnectionPoint() {
-        if(lastConnectionPoint == null) {
-            connectionBeingCreated.disconnectAll();
-            setActive(false);
-            return;
-        }
-
-        // check that the end node is not the same as the start node.
-        if(connectionBeingCreated.isConnectedTo(lastConnectionPoint.getNode())) {
+        // clicking on nothing or clicking on the same port twice
+        if(lastConnectionPoint == null || connectionBeingCreated.isConnectedTo(lastConnectionPoint.getNode())) {
             // stop the connection attempt.
-            connectionBeingCreated.disconnectAll();
+            restart();
             setActive(false);
             return;
         }
@@ -208,32 +202,42 @@ public class ConnectionEditTool extends ContextSensitiveTool {
         r.grow((int)NEARBY_CONNECTION_DISTANCE_MAX,(int)NEARBY_CONNECTION_DISTANCE_MAX);
         editor.repaint(r);
 
-        if(connectionBeingCreated.isFromValid() && connectionBeingCreated.isToValid() ) {
-            if(connectionBeingCreated.isValidDataType()) {
-                Graph graph = editor.getGraph();
-                // does this connection already exist?
-                Connection match = graph.getMatchingConnection(connectionBeingCreated);
-                if(match!=null) {
-                    // yes, delete it.
-                    editor.addEdit(new ConnectionRemoveEdit(removeName,editor,match));
-                } else {
-                    // no, add it.
-                    editor.addEdit(new ConnectionAddEdit(addName,editor,new Connection(connectionBeingCreated)));
+        // make sure the connection is valid
+        if(!connectionBeingCreated.isFromASaneOutput() || !connectionBeingCreated.isToASaneInput() ) return;
 
-                }
-            } else {
-                // if any of the tests failed
-                Input<?> vIn = connectionBeingCreated.getInput();
-                Output<?> vOut = connectionBeingCreated.getOutput();
-                String nameIn = (vIn==null) ? "null" : vIn.getTypeName();
-                String nameOut = (vOut==null) ? "null" : vOut.getTypeName();
-                logger.warn("Invalid types {}, {}",nameOut,nameIn);
-            }
-
+        if(!connectionBeingCreated.isValidDataType()) {
+            // mismatched types
+            Input<?> vIn = connectionBeingCreated.getInput();
+            Output<?> vOut = connectionBeingCreated.getOutput();
+            String nameIn = (vIn==null) ? "null" : vIn.getTypeName();
+            String nameOut = (vOut==null) ? "null" : vOut.getTypeName();
+            logger.warn("Invalid types {}, {}",nameOut,nameIn);
             // stop the connection attempt.
-            connectionBeingCreated.disconnectAll();
+            restart();
             setActive(false);
+            return;
         }
+
+        Graph graph = editor.getGraph();
+        // does this connection already exist?
+        Connection match = graph.getMatchingConnection(connectionBeingCreated);
+        if(match!=null) {
+            // connection exists, delete it.
+            editor.addEdit(new ConnectionRemoveEdit(removeName,editor,match));
+            // reset the connection being created.
+            restart();
+            setActive(false);
+            return;
+        }
+
+        // connection does not exist, so add it.
+        // start by making a copy of the connection being created.
+        var newConnection = new Connection(connectionBeingCreated);
+        // add the new connection to the graph and the undo history.
+        editor.addEdit(new ConnectionAddEdit(addName,editor,newConnection));
+        // reset the connection being created.
+        restart();
+        setActive(false);
     }
 
     public ConnectionPointInfo getLastConnectionPoint() {
@@ -242,6 +246,8 @@ public class ConnectionEditTool extends ContextSensitiveTool {
 
     public void restart() {
         connectionBeingCreated.disconnectAll();
+        connectionBeingCreated.setFrom(null,-1);
+        connectionBeingCreated.setTo(null,-1);
     }
 
     @Override

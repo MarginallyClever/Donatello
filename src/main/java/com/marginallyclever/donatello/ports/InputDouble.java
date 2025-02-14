@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.donatello.SwingProvider;
+import com.marginallyclever.donatello.select.Select;
 import com.marginallyclever.donatello.select.SelectDouble;
 import com.marginallyclever.nodegraphcore.port.Input;
 
@@ -18,9 +19,9 @@ public class InputDouble extends Input<Double> implements SwingProvider {
     }
 
     @Override
-    public Component getSwingComponent(Component parent) {
+    public Select getSwingComponent(Component parent) {
         if (selectDouble == null) {
-            selectDouble = new SelectDouble(name, name, this.value);
+            selectDouble = new SelectDouble(name, name, value);
             selectDouble.addSelectListener(evt -> {
                 setValue(evt.getNewValue());
             });

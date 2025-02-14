@@ -7,8 +7,8 @@ package com.marginallyclever.donatello.select;
  */
 public class SelectEvent {
     private final Select source;
-    private Object oldValue;
-    private Object newValue;
+    private final Object oldValue;
+    private final Object newValue;
 
     public SelectEvent(Select source,Object oldValue,Object newValue) {
         this.source = source;

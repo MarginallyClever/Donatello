@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.select;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 
@@ -12,18 +11,13 @@ import java.util.Arrays;
 public class SelectOneOfMany extends Select {
 	private final JComboBox<String> field = new JComboBox<>();
 	private final DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)field.getModel();
-	
+	private final JLabel label;
+
 	public SelectOneOfMany(String internalName,String labelKey) {
 		super(internalName);
-
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-
+		field.setName(internalName+".field");
 		field.addActionListener((e)-> fireSelectEvent(null, field.getSelectedIndex()) );
-
-		this.removeAll();
-		this.setBorder(new EmptyBorder(0,0,0,1));
-		this.add(label,BorderLayout.LINE_START);
-		this.add(field,BorderLayout.LINE_END);
+		label = createLabel(labelKey);
 	}
 	
 	public SelectOneOfMany(String internalName,String labelKey,String[] options,int defaultValue) {
@@ -31,6 +25,21 @@ public class SelectOneOfMany extends Select {
 		
 		setNewList(options);
 		field.setSelectedIndex(defaultValue);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(field,gbc);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
 	}
 	
 	public void removeAll() {

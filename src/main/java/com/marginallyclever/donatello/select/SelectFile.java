@@ -14,17 +14,18 @@ import java.io.File;
  */
 public class SelectFile extends Select {
 	private final JTextField field;
+	private final JLabel label;
+	private final JPanel panel2;
 	private FileFilter filter = null;
 	private JFileChooser choose = new JFileChooser();
 	private final Component parentComponent;
 
-	public SelectFile(String internalName,String labelValue,String defaultValue,Component parentComponent) {
+	public SelectFile(String internalName,String labelKey,String defaultValue,Component parentComponent) {
 		super(internalName);
 		this.parentComponent = parentComponent;
 
-		JLabel label = new JLabel(labelValue, JLabel.LEADING);
-
 		field = new JTextField(defaultValue, 16);
+		field.setName(internalName+".field");
 		field.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -50,12 +51,26 @@ public class SelectFile extends Select {
 		JButton chooseButton = new JButton("...");
 		chooseButton.addActionListener(e -> field.setText(selectFile(field.getText())));
 		
-		JPanel panel2 = new JPanel(new BorderLayout());
-		panel2.add(field,BorderLayout.LINE_END);
-		
-		this.add(label,BorderLayout.LINE_START);
-		this.add(panel2,BorderLayout.CENTER);
-		this.add(chooseButton,BorderLayout.LINE_END);
+		panel2 = new JPanel(new BorderLayout());
+		panel2.add(field,BorderLayout.CENTER);
+		panel2.add(chooseButton,BorderLayout.LINE_END);
+
+		label = createLabel(labelKey);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(panel2,gbc);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
 	}
 	
 	public String getText() {

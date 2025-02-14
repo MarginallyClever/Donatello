@@ -12,14 +12,15 @@ import java.awt.*;
  */
 public class SelectTextArea extends Select {
 	private final JTextArea field;
+	private final JLabel label;
+	private final JScrollPane pane;
 
 	public SelectTextArea(String internalName,String labelKey,String defaultText) {
 		super(internalName);
 		//this.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-
-		field = new JTextArea(defaultText,4,20);
+		field = new JTextArea(defaultText, 4, 20);
+		field.setName(internalName+".field");
 		field.setLineWrap(true);
 		field.setWrapStyleWord(true);
 		field.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -39,17 +40,34 @@ public class SelectTextArea extends Select {
 			public void changedUpdate(DocumentEvent e) {
 				validate();
 			}
-			
+
 			void validate() {
-				fireSelectEvent(null,field.getText());
+				fireSelectEvent(null, field.getText());
 			}
 		});
 
-		JScrollPane pane = new JScrollPane(field);
+		pane = new JScrollPane(field);
 		pane.setPreferredSize(new Dimension(200, 150));
-		
-		this.add(label,BorderLayout.PAGE_START);
-		this.add(pane,BorderLayout.CENTER);
+
+		label = createLabel(labelKey);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.PAGE_START;
+		gbc.gridx=0;
+		gbc.gridwidth=2;
+		panel.add(label,gbc);
+		gbc.gridy++;
+		gbc.anchor = GridBagConstraints.CENTER;
+		panel.add(pane,gbc);
+		gbc.gridwidth=1;
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
 	}
 
 	public String getText() {

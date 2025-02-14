@@ -11,9 +11,10 @@ import java.awt.*;
 public class SelectToggleButton extends Select {
 	private final JToggleButton button;
 
-	public SelectToggleButton(String internalName, AbstractAction action) {
+	public SelectToggleButton(String internalName, AbstractAction action, GridBagConstraints gbc) {
 		super(internalName);
 		button = new JToggleButton(action);
+		button.setName(internalName+".button");
 	}
 
 	public SelectToggleButton(String internalName, String labelText) {
@@ -24,8 +25,18 @@ public class SelectToggleButton extends Select {
 		button.addActionListener((e) -> {
 			fireSelectEvent(!button.isSelected(),button.isSelected());
 		});
+	}
 
-		this.add(button,BorderLayout.CENTER);
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(button,gbc);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		button.setEnabled(!state);
 	}
 	
 	public void doClick() {

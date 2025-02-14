@@ -1,12 +1,12 @@
-package com.marginallyclever.donatello.simplerparser;
+package com.marginallyclever.donatello.simpleparser;
 
-import com.marginallyclever.donatello.simpleparser.SimpleParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class SimpleParserTest {
     @Test
     public void test() {
+        Assertions.assertEquals(51,SimpleParser.evaluate("51"));
         Assertions.assertEquals(-12,SimpleParser.evaluate("3 + 5 * (2 - 8) / 2.0"));
         Assertions.assertEquals(1,SimpleParser.evaluate("sin(PI / 2)"));  // 1.0
         Assertions.assertEquals(1,SimpleParser.evaluate("cos(0)"));  // 1.0
@@ -20,6 +20,7 @@ public class SimpleParserTest {
         Assertions.assertEquals(0.017453292519943295,SimpleParser.evaluate("(PI / 180)"),1e-6);  // Convert to radians
         Assertions.assertEquals(3,SimpleParser.evaluate("floor(PI)"));
         Assertions.assertEquals(4,SimpleParser.evaluate("ceil(PI)"));
+        Assertions.assertEquals(0,SimpleParser.evaluate("atan2(0, 1)"));
         Assertions.assertThrows(IllegalArgumentException.class,()->SimpleParser.evaluate("random"));
     }
 }

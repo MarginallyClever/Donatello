@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.donatello.SwingProvider;
+import com.marginallyclever.donatello.select.Select;
 import com.marginallyclever.donatello.select.SelectBoolean;
 import com.marginallyclever.nodegraphcore.port.Input;
 
@@ -14,9 +15,9 @@ public class InputBoolean extends Input<Boolean> implements SwingProvider {
     }
 
     @Override
-    public Component getSwingComponent(Component parent) {
+    public Select getSwingComponent(Component parent) {
         if(selectBoolean==null) {
-            selectBoolean = new SelectBoolean(name,name,this.value);
+            selectBoolean = new SelectBoolean(name,name,value);
             selectBoolean.addSelectListener( evt -> {
                 setValue(evt.getNewValue());
             });

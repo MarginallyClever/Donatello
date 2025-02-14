@@ -11,14 +11,14 @@ import java.awt.*;
  * @since 7.24.0
  */
 public class SelectPassword extends Select {
+	private final JLabel label;
 	private final JPasswordField field;
 
 	public SelectPassword(String internalName, String labelKey, String defaultText) {
 		super(internalName);
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-
 		field = new JPasswordField(defaultText);
+		field.setName(internalName+".field");
 		field.setEchoChar('*');
 		Dimension d = field.getPreferredSize();
 		d.width = 100;
@@ -46,8 +46,20 @@ public class SelectPassword extends Select {
 			}
 		});
 
-		this.add(label,BorderLayout.LINE_START);
-		this.add(field,BorderLayout.LINE_END);
+		label = createLabel(labelKey);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		panel.add(label,gbc);
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(field,gbc);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
 	}
 
 	public String getPassword() {

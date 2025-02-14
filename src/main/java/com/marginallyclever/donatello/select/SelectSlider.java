@@ -5,14 +5,15 @@ import java.awt.*;
 
 public class SelectSlider extends Select {
 	private final JSlider field = new JSlider();
-	
-	public SelectSlider(String internalName,String labelText,int top,int bottom,int defaultValue) {
-		super(internalName);
+	private final JLabel label;
+	private final JPanel panel2;
 
-		JLabel label = new JLabel(labelText, JLabel.LEADING);
+	public SelectSlider(String internalName,String labelKey,int top,int bottom,int defaultValue) {
+		super(internalName);
 
 		JLabel value = new JLabel("0",JLabel.TRAILING);
 
+		field.setName(internalName+".field");
 		field.setMaximum(top);
 		field.setMinimum(bottom);
 		field.setMinorTickSpacing(1);
@@ -30,12 +31,28 @@ public class SelectSlider extends Select {
 		value.setMinimumSize(dim);
 		value.setPreferredSize(dim);
 		value.setMaximumSize(dim);
-		
-		this.add(label,BorderLayout.LINE_START);
-		this.add(field,BorderLayout.CENTER);
-		this.add(value,BorderLayout.LINE_END);
+
+		label = createLabel(labelKey);
+		panel2 = new JPanel(new BorderLayout());
+		panel2.add(field,BorderLayout.CENTER);
+		panel2.add(value,BorderLayout.LINE_END);
 	}
-	
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(panel2,gbc);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
+	}
+
 	public int getValue() {
 		return field.getValue();
 	}

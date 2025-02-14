@@ -29,6 +29,8 @@ public class ConnectionRemoveEdit extends SignificantUndoableEdit {
         editor.lockClock();
         try {
             editor.getGraph().add(connection);
+            connection.apply();
+            editor.submit(connection.getTo());
         }
         finally {
             editor.unlockClock();
@@ -40,6 +42,8 @@ public class ConnectionRemoveEdit extends SignificantUndoableEdit {
         editor.lockClock();
         try {
             editor.getGraph().remove(connection);
+            connection.reset();
+            editor.submit(connection.getTo());
         }
         finally {
             editor.unlockClock();

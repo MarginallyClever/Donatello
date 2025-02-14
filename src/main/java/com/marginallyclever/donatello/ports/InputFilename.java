@@ -2,6 +2,7 @@ package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.donatello.Filename;
 import com.marginallyclever.donatello.SwingProvider;
+import com.marginallyclever.donatello.select.Select;
 import com.marginallyclever.donatello.select.SelectFile;
 import com.marginallyclever.nodegraphcore.port.Input;
 
@@ -25,7 +26,7 @@ public class InputFilename extends Input<Filename> implements SwingProvider {
     }
 
     @Override
-    public Component getSwingComponent(Component parent) {
+    public Select getSwingComponent(Component parent) {
         if(selectFile==null) {
             selectFile = new SelectFile(name,name,getValue().get(),parent);
             selectFile.addSelectListener( evt -> {

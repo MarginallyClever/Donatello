@@ -14,7 +14,8 @@ import java.util.Locale;
  * @since 7.24.0
  */
 public class SelectInteger extends Select {
-	private JFormattedTextField field;
+	private final JFormattedTextField field = new JFormattedTextField();
+	private final JLabel label;
 	private int value;
 
 	public SelectInteger(String internalName,String labelKey,Locale locale,int defaultValue) {
@@ -22,26 +23,24 @@ public class SelectInteger extends Select {
 		
 		value = defaultValue;
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-
-		field = new JFormattedTextField();
+		field.setName(internalName+".field");
 		createAndAttachFormatter(locale);
 		Dimension d = field.getPreferredSize();
 		d.width = 100;
 		field.setPreferredSize(d);
 		field.setMinimumSize(d);
-		field.setValue(defaultValue);
 		field.setHorizontalAlignment(JTextField.RIGHT);
+		field.setValue(defaultValue);
+		field.setColumns(20);
 		field.getDocument().addDocumentListener(new DelayedDocumentValidator(field,newValue-> {
 			if (value != newValue) {
-				double oldValue = value;
+				int oldValue = value;
 				value = newValue.intValue();
-				fireSelectEvent(oldValue, newValue);
+				fireSelectEvent(oldValue, value);
 			}
 		}));
 
-		this.add(label,BorderLayout.LINE_START);
-		this.add(field,BorderLayout.LINE_END);
+		label = createLabel(labelKey);
 	}
 
 	public SelectInteger(String internalName,String labelKey,Locale locale) {
@@ -51,19 +50,27 @@ public class SelectInteger extends Select {
 	public SelectInteger(String internalName,String labelKey,int defaultValue) {
 		this(internalName,labelKey,Locale.getDefault(),defaultValue);
 	}
-	
-	public SelectInteger(String internalName) {
-		super(internalName);
-		createAndAttachFormatter(Locale.getDefault());
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(field,gbc);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
 	}
 	
 	protected void createAndAttachFormatter(Locale locale) {
-		NumberFormat nFloat = NumberFormat.getIntegerInstance(locale);
-		nFloat.setGroupingUsed(false);
-		
-		NumberFormatter nff = new NumberFormatter(nFloat);
-		DefaultFormatterFactory factory = new DefaultFormatterFactory(nff);
-		field.setFormatterFactory(factory);
+		NumberFormat numberFormat = NumberFormat.getIntegerInstance(locale);
+		numberFormat.setGroupingUsed(false);
+
+		field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(numberFormat)));
 	}
 	
 	public void setReadOnly() {

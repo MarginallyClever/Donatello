@@ -1,7 +1,10 @@
 package com.marginallyclever.donatello.select;
 
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Timer;
 
@@ -12,7 +15,8 @@ import java.util.Timer;
  * @since 7.24.0
  */
 public class SelectDouble extends Select {
-	private final JTextField field = new JTextField();
+	private final JFormattedTextField field = new JFormattedTextField();
+	private final JLabel label;
 	private double value;
 	private Timer timer;
 
@@ -21,27 +25,24 @@ public class SelectDouble extends Select {
 
 		value = defaultValue;
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-		label.setName(internalName+".label");
-
 		field.setName(internalName+".field");
+		createAndAttachFormatter(locale);
 		Dimension d = field.getPreferredSize();
 		d.width = 100;
 		field.setPreferredSize(d);
 		field.setMinimumSize(d);
 		field.setHorizontalAlignment(JTextField.RIGHT);
-		setValue(defaultValue);
-
+		field.setValue(defaultValue);
+		field.setColumns(20);
 		field.getDocument().addDocumentListener(new DelayedDocumentValidator(field,newValue-> {
 			if (value != newValue) {
 				double oldValue = value;
 				value = newValue;
-				fireSelectEvent(oldValue, newValue);
+				fireSelectEvent(oldValue, value);
 			}
 		}));
 
-		this.add(label, BorderLayout.LINE_START);
-		this.add(field, BorderLayout.LINE_END);
+		label = createLabel(labelKey);
 	}
 
 	public SelectDouble(String internalName,String labelKey, Locale locale) {
@@ -60,10 +61,24 @@ public class SelectDouble extends Select {
 		this(internalName,"", Locale.getDefault(), 0);
 	}
 
-	public void setReadOnly() {
-		field.setEditable(false);
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(field,gbc);
 	}
 
+	protected void createAndAttachFormatter(Locale locale) {
+		NumberFormat nFloat = NumberFormat.getNumberInstance(locale);
+		nFloat.setGroupingUsed(false);
+
+		field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(nFloat)));
+	}
+
+	@Override
 	public void setReadOnly(boolean state) {
 		field.setEditable(!state);
 	}

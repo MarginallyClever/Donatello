@@ -12,14 +12,14 @@ import java.awt.*;
  */
 public class SelectTextField extends Select {
 	private final JTextField field;
+	private final JLabel label;
 
 	public SelectTextField(String internalName, String labelKey, String defaultText) {
 		super(internalName);
 		//this.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-		JLabel label = new JLabel(labelKey, JLabel.LEADING);
-
-		field = new JTextField(defaultText);
+		field = new JTextField(defaultText,20);
+		field.setName(internalName+".field");
 		Dimension d = field.getPreferredSize();
 		d.width = 100;
 		field.setPreferredSize(d);
@@ -45,8 +45,22 @@ public class SelectTextField extends Select {
 			}
 		});
 
-		this.add(label,BorderLayout.LINE_START);
-		this.add(field,BorderLayout.LINE_END);
+		label = createLabel(labelKey);
+	}
+
+	@Override
+	public void setReadOnly(boolean state) {
+		field.setEnabled(!state);
+	}
+
+	@Override
+	public void attach(JComponent panel, GridBagConstraints gbc) {
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx=0;
+		panel.add(label,gbc);
+		gbc.gridx=1;
+		gbc.anchor = GridBagConstraints.LINE_END;
+		panel.add(field,gbc);
 	}
 
 	public String getText() {
