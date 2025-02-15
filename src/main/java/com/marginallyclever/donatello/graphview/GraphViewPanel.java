@@ -660,4 +660,8 @@ public class GraphViewPanel extends JPanel {
     public Point getCameraPosition() {
         return new Point(camera);
     }
+
+    public Point getPreviousMousePosition() {
+        return previousMouse;
+    }
 }
