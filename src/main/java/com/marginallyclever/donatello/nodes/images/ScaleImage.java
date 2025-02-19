@@ -33,8 +33,9 @@ public class ScaleImage extends Node {
 
     @Override
     public void update() {
-        int w = Math.max(1,width.getValue().intValue());
-        int h = Math.max(1,height.getValue().intValue());
+        int w = Math.max(1,width.getValue());
+        int h = Math.max(1,height.getValue());
+
         BufferedImage input = image.getValue();
         BufferedImage result = new BufferedImage(w,h,input.getType());
 
