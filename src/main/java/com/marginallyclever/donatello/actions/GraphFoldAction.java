@@ -2,7 +2,6 @@ package com.marginallyclever.donatello.actions;
 
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.nodegraphcore.Subgraph;
 import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.actions.undoable.NodeCutAction;
 
@@ -42,8 +41,8 @@ public class GraphFoldAction extends AbstractAction implements EditorAction {
 
         nodeCutAction.actionPerformed(e);
         Graph justCut = editor.getCopiedGraph().deepCopy();
-        Node n = editor.getGraph().add(new Subgraph(justCut));
-        n.setPosition(editor.getPopupPoint());
+        editor.getGraph().add(justCut);
+        justCut.setPosition(editor.getPopupPoint());
 
         editor.setCopiedGraph(preserveCopyBehaviour);
     }

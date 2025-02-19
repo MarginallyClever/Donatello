@@ -1,9 +1,8 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.nodegraphcore.Subgraph;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.nodegraphcore.Graph;
+import com.marginallyclever.nodegraphcore.Node;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Uncollapses all the editor's selected items that are {@link Subgraph}s.  The new list of selected items will contain
- * all the new graph elements plus any old elements that were not {@link Subgraph}s.
- * Each newly exposed graph is positioned relative to the original {@link Subgraph}.
+ * Uncollapses all the editor's selected items that are {@link Graph}s.  The new list of selected items will contain
+ * all the new graph elements plus any old elements that were not {@link Graph}s.
+ * Each newly exposed graph is positioned relative to the original {@link Graph}.
  * @author Dan Royer
  * @since 2022-02-21
  */
@@ -41,13 +40,13 @@ public class GraphUnfoldAction extends AbstractAction implements EditorAction {
         List<Node> newSelection = editor.getSelectedNodes();
 
         for(Node n : wasSelected) {
-            if (n instanceof Subgraph) {
+            if (n instanceof Graph) {
                 toBeDeleted.add(n);
             }
         }
 
         for(Node n : toBeDeleted) {
-            Graph inner = ((Subgraph)n).getGraph();
+            Graph inner = (Graph)n;
             // add the subgraph to this graph.
             editor.getGraph().add(inner);
             // make sure it is selected
@@ -78,7 +77,7 @@ public class GraphUnfoldAction extends AbstractAction implements EditorAction {
     public void updateEnableStatus() {
         List<Node> list = editor.getSelectedNodes();
         for(Node n : list) {
-            if(n instanceof Subgraph) {
+            if(n instanceof Graph) {
                 setEnabled(true);
                 return;
             }
