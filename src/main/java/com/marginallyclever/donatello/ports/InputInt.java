@@ -26,4 +26,19 @@ public class InputInt extends Input<Integer> implements SwingProvider {
         }
         return selectInteger;
     }
+
+    @Override
+    public boolean isValidType(Object arg0) {
+        if(arg0 instanceof Number) return true;
+        return super.isValidType(arg0);
+    }
+
+    @Override
+    public void setValue(Object arg0) {
+        if(arg0 instanceof Number) {
+            super.setValue(((Number)arg0).intValue());
+            return;
+        }
+        super.setValue(arg0);
+    }
 }

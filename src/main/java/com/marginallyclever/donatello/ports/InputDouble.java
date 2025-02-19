@@ -28,4 +28,19 @@ public class InputDouble extends Input<Double> implements SwingProvider {
         }
         return selectDouble;
     }
+
+    @Override
+    public boolean isValidType(Object arg0) {
+        if(arg0 instanceof Number) return true;
+        return super.isValidType(arg0);
+    }
+
+    @Override
+    public void setValue(Object arg0) {
+        if(arg0 instanceof Number) {
+            super.setValue(((Number)arg0).doubleValue());
+            return;
+        }
+        super.setValue(arg0);
+    }
 }
