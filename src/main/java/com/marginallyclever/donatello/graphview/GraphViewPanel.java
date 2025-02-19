@@ -2,10 +2,13 @@ package com.marginallyclever.donatello.graphview;
 
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.donatello.bezier.Point2D;
-import com.marginallyclever.nodegraphcore.*;
-import com.marginallyclever.nodegraphcore.port.Port;
+import com.marginallyclever.nodegraphcore.Connection;
+import com.marginallyclever.nodegraphcore.Graph;
+import com.marginallyclever.nodegraphcore.Node;
+import com.marginallyclever.nodegraphcore.PrintWithGraphics;
 import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.port.Output;
+import com.marginallyclever.nodegraphcore.port.Port;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +21,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -175,11 +177,12 @@ public class GraphViewPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         Graphics2D g2 = (Graphics2D)g;
         setHints(g2);
 
         setBackground(settings.getPanelColorBackground());
-        super.paintComponent(g2);
 
         g2.transform(getTransform());
 
@@ -197,8 +200,14 @@ public class GraphViewPanel extends JPanel {
         if(settings.getDrawOrigin()) paintOrigin(g2);
 
         firePaintEvent(g2);
+
+        g2.dispose();
     }
 
+    /**
+     * Set rendering hints for the {@link Graphics2D} context.
+     * @param g2 the {@link Graphics2D} context.
+     */
     public static void setHints(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
@@ -206,6 +215,10 @@ public class GraphViewPanel extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY);
     }
 
+    /**
+     * Paint the background grid across the entire JPanel
+     * @param g the {@link Graphics} context.
+     */
     private void paintBackgroundGrid(Graphics g) {
         g.setColor(settings.getPanelGridColor());
 
@@ -242,7 +255,7 @@ public class GraphViewPanel extends JPanel {
         g2.drawLine(0,0,0,10*(int)Math.ceil(zoom));
     }
 
-    AffineTransform getTransform() {
+    private AffineTransform getTransform() {
         Rectangle r = getBounds();
         var w2 = r.getWidth()/2.0;
         var h2 = r.getHeight()/2.0;
@@ -292,7 +305,7 @@ public class GraphViewPanel extends JPanel {
         g.setColor(settings.getNodeColorBackground());
         paintNodeBackground(g,n);
         paintNodeTitleBar(g, n);
-        paintAllDocks(g, n);
+        paintAllPorts(g, n);
         g.setColor(settings.getNodeColorBorder());
         paintNodeBorder(g, n);
     }
@@ -345,9 +358,9 @@ public class GraphViewPanel extends JPanel {
      * @param g the {@link Graphics} context
      * @param n the {@link Node} to paint.
      */
-    private void paintAllDocks(Graphics g, Node n) {
+    private void paintAllPorts(Graphics g, Node n) {
         for(int i = 0; i<n.getNumPorts(); ++i) {
-            paintOneDock(g,n.getPort(i));
+            paintOnePort(g,n.getPort(i));
         }
     }
 
@@ -356,7 +369,7 @@ public class GraphViewPanel extends JPanel {
      * @param g the {@link Graphics} context
      * @param v the {@link Port} to paint.
      */
-    public void paintOneDock(Graphics g, Port<?> v) {
+    public void paintOnePort(Graphics g, Port<?> v) {
         final int MAX_CHARS = 10;
 
         Rectangle box = v.getRectangle();
@@ -364,8 +377,8 @@ public class GraphViewPanel extends JPanel {
 
         Object vObj = v.getValue();
         if(vObj != null) {
-            if(vObj instanceof BufferedImage img) {
-                paintDockBufferedImage(g, img, box);
+            if(v instanceof GraphViewProvider gvp) {
+                gvp.paint(g,box);
             } else if(vObj instanceof Color color) {
                 paintDockColor(g,color,box);
             } else {
@@ -408,22 +421,6 @@ public class GraphViewPanel extends JPanel {
         g.setColor(c);
         g.fillRect(x, y, w, h);
         g.setColor(prev);
-    }
-
-    private void paintDockBufferedImage(Graphics g, BufferedImage img, Rectangle insideBox) {
-        int w = img.getWidth();
-        int h = img.getHeight();
-        int maxW = (int)insideBox.getWidth();
-        if (w > maxW) {
-            h = h * maxW / w;
-            w = maxW;
-        }
-        int x = (int)insideBox.getX();
-        int y = (int)insideBox.getY();
-        g.drawImage(img, x, y, w, h, null);
-
-        //g.setColor(Color.RED);
-        //g.drawRect(insideBox.x,insideBox.y,insideBox.width,insideBox.height);
     }
 
     /**

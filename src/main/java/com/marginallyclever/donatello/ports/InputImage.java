@@ -15,13 +15,7 @@ public class InputImage extends Input<BufferedImage> {
 
     @Override
     public Rectangle getRectangle() {
-        double w = value.getWidth();
-        double h = value.getHeight();
-        if(w<rectangle.width && h<DEFAULT_HEIGHT) return rectangle;
-        double ratio = h/w;
-        var newh = (double)rectangle.width * ratio;
-        rectangle.setSize(rectangle.width,(int)Math.max(newh,DEFAULT_HEIGHT));
-
+        rectangle.setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
         return super.getRectangle();
     }
 }
