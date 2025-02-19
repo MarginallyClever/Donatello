@@ -138,15 +138,23 @@ public class NodeFactoryPanel extends JPanel {
 
     private void setupTree() {
         tree.setCellRenderer(new FactoryCategoryCellRenderer());
+        setToolTipFromCategory();
+        doubleClickToAddNode();
+    }
+
+    private void setToolTipFromCategory() {
         tree.addTreeSelectionListener(e -> {
             TreePath path = tree.getSelectionPath();
             if (path != null) {
                 NodeCategory category = getCategory((DefaultMutableTreeNode) path.getLastPathComponent());
+                tree.setToolTipText(category.getName());
             }
         });
         tree.setToolTipText("");
+    }
 
-        // Add a MouseListener for double-clicks
+    // Add a MouseListener for double-clicks
+    private void doubleClickToAddNode() {
         tree.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
