@@ -60,4 +60,20 @@ public class SelectSlider extends Select {
 	public void setValue(int v) {
 		field.setValue(v);
 	}
+
+	public void setTop(int top) {
+		field.setMaximum(top);
+	}
+
+	public void setBottom(int bottom) {
+		field.setMinimum(bottom);
+	}
+
+	public int getTop() {
+		return field.getMaximum();
+	}
+
+	public int getBottom() {
+		return field.getMinimum();
+	}
 }
