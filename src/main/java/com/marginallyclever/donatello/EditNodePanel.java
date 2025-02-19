@@ -1,12 +1,9 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.nodes.images.ColorAtPoint;
-import com.marginallyclever.donatello.select.Select;
-import com.marginallyclever.donatello.select.SelectBoolean;
-import com.marginallyclever.donatello.select.SelectTextField;
+import com.marginallyclever.donatello.select.*;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.port.Output;
 import com.marginallyclever.nodegraphcore.port.Port;
 import org.slf4j.Logger;
@@ -14,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Swing UI allowing a user to edit an existing {@link Node}.
@@ -31,15 +28,7 @@ public class EditNodePanel extends JPanel {
      * The edit field for the label (nickname) of the {@link Node}.
      */
     private final JTextField labelField = new JTextField(20);
-    /**
-     * The fields being edited (old way).
-     */
-    private final ArrayList<JComponent> fields = new ArrayList<>();
 
-    /**
-     * static so that the file chooser dialog remembers the last directory used.
-     */
-    private static final JFileChooser chooser = new JFileChooser();
     private final Graph graph;
 
     /**
@@ -74,18 +63,41 @@ public class EditNodePanel extends JPanel {
             Select component = swingProvider.getSwingComponent(this);
             if(component == null) return;
             component.attach(this,c);
-            setComponentReadOnly(component, port);
-            return;
+            maybeSetComponentReadOnly(component, port);
+        } else {
+            // no SwingProvider, do it the old way.
+            runOldTypeFactory(port, c);
         }
-        // no SwingProvider, do it the old way.
-        var type = port.getType();
-             if(Number.class.isAssignableFrom(type)) addTextField(port, c);
-        else if(String.class.isAssignableFrom(type)) addTextField(port, c);
-        else if(Boolean.class.isAssignableFrom(type)) addBooleanField(port, c);
-        else addReadOnlyField(c, port.getName(), port.getTypeName());
     }
 
-    private void setComponentReadOnly(Select component, Port port) {
+    /**
+     * Adds one variable to the panel as a label/text field pair, based on the {@link Port}.
+     * @param port the {@link Port} to look at
+     * @param c {@link GridBagConstraints} for placement.
+     */
+    private void runOldTypeFactory(Port<?> port, GridBagConstraints c) {
+        var type = port.getType();
+
+        Select field;
+             if(Double .class.isAssignableFrom(type)) field = new SelectDouble   (port.getName(), port.getName(), Locale.getDefault(), (double)port.getValue());
+        else if(Integer.class.isAssignableFrom(type)) field = new SelectInteger  (port.getName(), port.getName(), Locale.getDefault(), (int)port.getValue());
+        else if(Number .class.isAssignableFrom(type)) field = new SelectDouble   (port.getName(), port.getName(), Locale.getDefault(), ((Number)port.getValue()).doubleValue());
+        else if(String .class.isAssignableFrom(type)) field = new SelectTextField(port.getName(), port.getName(), port.getValue().toString());
+        else if(Boolean.class.isAssignableFrom(type)) field = new SelectBoolean  (port.getName(), port.getName(), (Boolean)port.getValue());
+        else if(Color  .class.isAssignableFrom(type)) field = new SelectColor    (port.getName(), port.getName(), (Color)port.getValue(),this);
+        else field = addReadOnlyField(c, port.getName(), port.getTypeName());
+
+        field.addSelectListener( evt -> port.setValue(evt.getNewValue()) );
+        field.attach(this,c);
+        maybeSetComponentReadOnly(field, port);
+    }
+
+    /**
+     * If the port is an output or connected, set the component to read-only.
+     * @param component the component to set.
+     * @param port the port to check.
+     */
+    private void maybeSetComponentReadOnly(Select component, Port<?> port) {
         if(port instanceof Output<?>) {
             // controlled by this node's update()
             component.setReadOnly(true);
@@ -93,33 +105,6 @@ public class EditNodePanel extends JPanel {
             // controlled by an upstream value
             component.setReadOnly(true);
         }
-    }
-    /**
-     * Adds one variable to the panel as a label/text field pair.
-     * @param variable the {@link Port} to add.
-     * @param c {@link GridBagConstraints} for placement.
-     */
-    private void addTextField(Port<?> variable, GridBagConstraints c) {
-        SelectTextField field = new SelectTextField(variable.getName(),variable.getName(),variable.getValue().toString());
-        field.addSelectListener( evt -> {
-            variable.setValue(evt.getNewValue());
-        });
-        field.attach(this,c);
-        setComponentReadOnly(field, variable);
-    }
-
-    /**
-     * Adds one variable to the panel as a label/text field pair.
-     * @param variable the {@link Port} to add.
-     * @param c {@link GridBagConstraints} for placement.
-     */
-    private void addBooleanField(Port<?> variable, GridBagConstraints c) {
-        SelectBoolean field = new SelectBoolean(variable.getName(),variable.getName(),(Boolean)variable.getValue());
-        field.addSelectListener( evt -> {
-            variable.setValue(evt.getNewValue());
-        });
-        field.attach(this,c);
-        setComponentReadOnly(field, variable);
     }
 
     /**
@@ -143,10 +128,11 @@ public class EditNodePanel extends JPanel {
      * @param name the label
      * @param value the value
      */
-    private void addReadOnlyField(GridBagConstraints c,String name,String value) {
+    private Select addReadOnlyField(GridBagConstraints c,String name,String value) {
         SelectTextField field = new SelectTextField(name,name,value);
         field.setReadOnly(true);
         field.attach(this,c);
+        return field;
     }
 
     /**
@@ -158,66 +144,6 @@ public class EditNodePanel extends JPanel {
         EditNodePanel panel = new EditNodePanel(subject,graph);
         if(JOptionPane.showConfirmDialog(frame,panel,"Edit "+subject.getName(),JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
             subject.setLabel(panel.getLabel());
-            panel.readAllFields();
-        }
-    }
-
-    /**
-     * Transfer the values from the edit panel to the node.
-     */
-    private void readAllFields() {
-        int j=0;
-        var size = fields.size();
-
-        for(int i = 0; i<node.getNumPorts(); ++i) {
-            // in case the panel has more fields than the node (somehow?)
-            if(j >= size) continue;
-
-            // only care about Input ports
-            if(!(node.getPort(i) instanceof Input<?> input)) continue;
-
-            var type = input.getType();
-                 if(Number.class.isAssignableFrom(type)) readTextField(j++, input);
-            else if(Filename.class.isAssignableFrom(type)) readTextField(j++, input);
-            else if(String.class.isAssignableFrom(type)) readTextField(j++, input);
-            else if(Boolean.class.isAssignableFrom(type)) readBooleanField(j++, input);
-            else if(Color.class.isAssignableFrom(type)) readColorField(j++, input);
-            else logger.warn("readAllFields {} unknown type {}", input.getName(), input.getTypeName());
-        }
-    }
-
-    private void readColorField(int index, Input<?> variable) {
-        var f = (JButton)fields.get(index);
-        if(f==null) {
-            // TODO ???
-            return;
-        }
-        variable.setValue(f.getBackground());
-    }
-
-    private void readBooleanField(int index, Input<?> variable) {
-        var f = (JCheckBox)fields.get(index);
-        if(f==null) {
-            // TODO ???
-            return;
-        }
-
-        variable.setValue(f.isSelected());
-    }
-
-    private void readTextField(int index, Input<?> variable) {
-        JTextField f = (JTextField)fields.get(index);
-        if(f==null) {
-            // TODO ???
-            return;
-        }
-
-        if(variable.getType().equals(Number.class)) {
-            variable.setValue(Double.parseDouble(f.getText()));
-        } else if(variable.getType().equals(String.class)) {
-            variable.setValue(f.getText());
-        } else {
-            // TODO ???
         }
     }
 
