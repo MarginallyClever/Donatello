@@ -190,10 +190,10 @@ public class ConnectionEditTool extends ContextSensitiveTool {
 
         if (lastConnectionPoint.getFlags() == ConnectionPointInfo.IN) {
             // the output of a connection goes to the input of a node.
-            connectionBeingCreated.setTo(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
+            connectionBeingCreated.setTo(lastConnectionPoint.getNode(), lastConnectionPoint.getPortIndex());
         } else {
             //the output of a node goes to the input of a connection.
-            connectionBeingCreated.setFrom(lastConnectionPoint.getNode(), lastConnectionPoint.getDockIndex());
+            connectionBeingCreated.setFrom(lastConnectionPoint.getNode(), lastConnectionPoint.getPortIndex());
         }
 
         setActive(true);
