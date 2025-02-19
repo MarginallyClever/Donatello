@@ -179,12 +179,15 @@ public class GraphViewPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D)g.create();
         setHints(g2);
 
         setBackground(settings.getPanelColorBackground());
-
         g2.transform(getTransform());
+
+        // Save the original clipping region
+        Shape originalClip = g2.getClip();
+
 
         if(settings.getDrawBackgroundGrid()) paintBackgroundGrid(g2);
         paintNodesInBackground(g2);
@@ -329,11 +332,10 @@ public class GraphViewPanel extends JPanel {
     public void paintNodeTitleBar(Graphics g, Node n) {
         Rectangle r = n.getRectangle();
         var cr = settings.getCornerRadius();
-        g.setClip(r.x,r.y,r.width,Node.TITLE_HEIGHT);
+
         g.setColor(settings.getNodeColorTitleBackground());
         g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
         g.fillRect(r.x, r.y+cr, r.width+1, Node.TITLE_HEIGHT -cr);
-        g.setClip(null);
 
         paintProgressBar(g,n,r);
 
@@ -347,10 +349,8 @@ public class GraphViewPanel extends JPanel {
     private void paintProgressBar(Graphics g, Node n,Rectangle r) {
         float complete = n.getComplete() * 0.01f;
         var cr = settings.getCornerRadius();
-        g.setClip(r.x,r.y,(int)(r.width * complete),Node.TITLE_HEIGHT);
         g.setColor(settings.getNodeColorProgressBar());
         g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
-        g.setClip(null);
     }
 
     /**
@@ -379,23 +379,22 @@ public class GraphViewPanel extends JPanel {
         if(vObj != null) {
             if(v instanceof GraphViewProvider gvp) {
                 gvp.paint(g,box);
-            } else if(vObj instanceof Color color) {
-                paintDockColor(g,color,box);
-            } else {
-                String val;
-                if (vObj instanceof String
-                        || vObj instanceof Number
-                        || vObj instanceof Boolean
-                        || vObj instanceof Character
-                        || vObj instanceof Enum) {
-                    val = vObj.toString();
-                } else {
-                    val = v.getTypeName();
-                }
-                if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
-                g.setColor(settings.getNodeColorFontClean());
-                paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_TOP);
+                return;
             }
+
+            String val;
+            if (vObj instanceof String
+                    || vObj instanceof Number
+                    || vObj instanceof Boolean
+                    || vObj instanceof Character
+                    || vObj instanceof Enum) {
+                val = vObj.toString();
+            } else {
+                val = v.getTypeName();
+            }
+            if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
+            g.setColor(settings.getNodeColorFontClean());
+            paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_TOP);
         }
 
 
@@ -410,17 +409,6 @@ public class GraphViewPanel extends JPanel {
         // connection points
         g.setColor(settings.getConnectionPointColor());
         paintVariableConnectionPoints(g,v);
-    }
-
-    private void paintDockColor(Graphics g, Color c, Rectangle insideBox) {
-        int w = (int)insideBox.getWidth();
-        int h = (int)insideBox.getHeight();
-        int x = (int)insideBox.getX();
-        int y = (int)insideBox.getY();
-        Color prev = g.getColor();
-        g.setColor(c);
-        g.fillRect(x, y, w, h);
-        g.setColor(prev);
     }
 
     /**
