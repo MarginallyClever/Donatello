@@ -67,6 +67,11 @@ public class GraphViewPanel extends JPanel {
     public static final int ALIGN_BOTTOM=1;
 
     /**
+     * The maximum number of characters to display in a {@link Port}.
+     */
+    public static final int MAX_CHARS_PER_RORT = 10;
+
+    /**
      * the {@link Graph} to edit.
      */
     private final Graph model;
@@ -185,10 +190,6 @@ public class GraphViewPanel extends JPanel {
         setBackground(settings.getPanelColorBackground());
         g2.transform(getTransform());
 
-        // Save the original clipping region
-        Shape originalClip = g2.getClip();
-
-
         if(settings.getDrawBackgroundGrid()) paintBackgroundGrid(g2);
         paintNodesInBackground(g2);
 
@@ -214,7 +215,7 @@ public class GraphViewPanel extends JPanel {
     public static void setHints(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_PURE);
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_NORMALIZE);
         g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_QUALITY);
     }
 
@@ -347,10 +348,10 @@ public class GraphViewPanel extends JPanel {
     }
 
     private void paintProgressBar(Graphics g, Node n,Rectangle r) {
-        float complete = n.getComplete() * 0.01f;
+        int width = (int)(r.width * n.getComplete() / 100.0);
         var cr = settings.getCornerRadius();
         g.setColor(settings.getNodeColorProgressBar());
-        g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
+        g.fillRoundRect(r.x, r.y, width, cr*2, cr, cr);
     }
 
     /**
@@ -370,18 +371,13 @@ public class GraphViewPanel extends JPanel {
      * @param v the {@link Port} to paint.
      */
     public void paintOnePort(Graphics g, Port<?> v) {
-        final int MAX_CHARS = 10;
-
         Rectangle box = v.getRectangle();
         Rectangle insideBox = getNodeInternalBounds(box);
 
         Object vObj = v.getValue();
-        if(vObj != null) {
-            if(v instanceof GraphViewProvider gvp) {
-                gvp.paint(g,box);
-                return;
-            }
-
+        if(v instanceof GraphViewProvider gvp) {
+            gvp.paint(g,box);
+        } else {
             String val;
             if (vObj instanceof String
                     || vObj instanceof Number
@@ -389,10 +385,10 @@ public class GraphViewPanel extends JPanel {
                     || vObj instanceof Character
                     || vObj instanceof Enum) {
                 val = vObj.toString();
-            } else {
+            } else if(vObj != null) {
                 val = v.getTypeName();
-            }
-            if (val.length() > MAX_CHARS) val = val.substring(0, MAX_CHARS) + "...";
+            } else val = "null";
+            if (val.length() > MAX_CHARS_PER_RORT) val = val.substring(0, MAX_CHARS_PER_RORT) + "...";
             g.setColor(settings.getNodeColorFontClean());
             paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_TOP);
         }
@@ -404,7 +400,7 @@ public class GraphViewPanel extends JPanel {
 
         // internal border
         g.setColor(settings.getNodeColorInternalBorder());
-        g.drawLine((int)box.getMinX(),(int)box.getMinY(),(int)box.getMaxX(),(int)box.getMinY());
+        g.drawLine(box.x,box.y,box.x+box.width,box.y);
 
         // connection points
         g.setColor(settings.getConnectionPointColor());
@@ -463,7 +459,7 @@ public class GraphViewPanel extends JPanel {
      * @param alignH the desired horizontal alignment.  Can be any one of {@link GraphViewPanel#ALIGN_LEFT}, {@link GraphViewPanel#ALIGN_RIGHT}, or {@link GraphViewPanel#ALIGN_CENTER}
      * @param alignV the desired vertical alignment.  Can be any one of {@link GraphViewPanel#ALIGN_TOP}, {@link GraphViewPanel#ALIGN_BOTTOM}, or {@link GraphViewPanel#ALIGN_CENTER}
      */
-    public void paintText(Graphics g,String str,Rectangle box,int alignH,int alignV) {
+    public static void paintText(Graphics g,String str,Rectangle box,int alignH,int alignV) {
         if(str==null || str.isEmpty()) return;
 
         FontRenderContext frc = new FontRenderContext(null, false, false);
