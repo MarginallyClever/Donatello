@@ -182,7 +182,11 @@ public class NodeFactoryPanel extends JPanel {
             // Trigger the action
             Supplier<Node> factory = category.getSupplier();
             if (factory != null) {
-                fireAddNode(factory.get());
+                Node n = factory.get();
+                if(n==null) {
+                    throw new RuntimeException("NodeFactoryPanel.addNow("+category.getName()+") returned null.");
+                }
+                fireAddNode(n);
             }
         }
     }
