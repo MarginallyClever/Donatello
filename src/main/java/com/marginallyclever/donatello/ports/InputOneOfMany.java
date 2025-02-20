@@ -1,12 +1,14 @@
 package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.donatello.SwingProvider;
+import com.marginallyclever.donatello.graphview.GraphViewPanel;
+import com.marginallyclever.donatello.graphview.GraphViewProvider;
 import com.marginallyclever.donatello.select.Select;
 import com.marginallyclever.donatello.select.SelectOneOfMany;
 
 import java.awt.*;
 
-public class InputOneOfMany extends InputInt implements SwingProvider {
+public class InputOneOfMany extends InputInt implements SwingProvider, GraphViewProvider {
     private SelectOneOfMany selectOneOfMany;
     private String [] options;
 
@@ -42,5 +44,12 @@ public class InputOneOfMany extends InputInt implements SwingProvider {
         if(selectOneOfMany!=null) {
             selectOneOfMany.setSelectedIndex(getValue());
         }
+    }
+
+    @Override
+    public void paint(Graphics g, Rectangle box) {
+        String val = options[getValue()];
+        if (val.length() > GraphViewPanel.MAX_CHARS) val = val.substring(0, GraphViewPanel.MAX_CHARS) + "...";
+        GraphViewPanel.paintText(g, val, box, GraphViewPanel.ALIGN_RIGHT, GraphViewPanel.ALIGN_TOP);
     }
 }
