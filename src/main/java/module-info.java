@@ -9,6 +9,7 @@ module com.marginallyclever.donatello {
     requires com.formdev.flatlaf;
     requires java.prefs;
     requires exp4j;
+    requires vecmath;
 
     exports com.marginallyclever.donatello;
     exports com.marginallyclever.donatello.actions.undoable;
