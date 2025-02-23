@@ -10,14 +10,14 @@ import java.util.List;
  * @author Dan Royer
  */
 public class Bezier {
-	private int recursionLimit = 8;
-	private double curveAngleToleranceEpsilon =0.01;
-	private double angleTolerance = 0;
-	private double cuspLimit = 0;
+	private final int recursionLimit = 8;
+	private final double curveAngleToleranceEpsilon = 0.01;
+	private final double angleTolerance = 0;
+	private final double cuspLimit = 0;
 	private static final double FLOAT_EPSILON=1.19209290e-7;
     
-	private double x0,x1,x2,x3;
-	private double y0,y1,y2,y3;
+	private final double x0,x1,x2,x3;
+	private final double y0,y1,y2,y3;
 
     /**
      * Default constructor that takes four control points.
@@ -71,7 +71,7 @@ public class Bezier {
      * @param distanceTolerance the allowed tolerance.
      * @param level to prevent infinite recursion.
      */
-	private void recursive(double x1,double y1,double x2,double y2,double x3,double y3,double x4,double y4,ArrayList<Point2D> points, double distanceTolerance,int level) {
+    private void recursive(double x1,double y1,double x2,double y2,double x3,double y3,double x4,double y4,ArrayList<Point2D> points, double distanceTolerance,int level) {
         if(level > recursionLimit) 
             return;
 
@@ -204,7 +204,8 @@ public class Bezier {
      * Returns a list of points along the curve.
      * @return a list of points along the curve.
      */
-	protected ArrayList<Point2D> generateCurvePointsOld() {
+	@Deprecated(since="1.7.0")
+    protected ArrayList<Point2D> generateCurvePointsOld() {
 		ArrayList<Point2D> list = new ArrayList<>();
 		list.add(new Point2D(x0,y0));
 		
@@ -244,7 +245,8 @@ public class Bezier {
      * @param t some value t=[0...1]
      * @return the x value of the curve at t.
      */
-	double getXAt(double t) {
+    @Deprecated(since="1.7.0")
+    double getXAt(double t) {
         double a = Math.pow((1.0 - t), 3.0);
         double b = 3.0 * t * Math.pow((1.0 - t), 2.0);
         double c = 3.0 * Math.pow(t, 2.0) * (1.0 - t);
@@ -258,7 +260,8 @@ public class Bezier {
      * @param t some value t=[0...1]
      * @return the y value of the curve at t.
      */
-	double getYAt(double t) {
+    @Deprecated(since="1.7.0")
+    double getYAt(double t) {
         double a = Math.pow((1.0 - t), 3.0);
         double b = 3.0 * t * Math.pow((1.0 - t), 2.0);
         double c = 3.0 * Math.pow(t, 2.0) * (1.0 - t);
