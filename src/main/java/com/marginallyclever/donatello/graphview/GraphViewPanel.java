@@ -71,6 +71,8 @@ public class GraphViewPanel extends JPanel {
      */
     public static final int MAX_CHARS_PER_RORT = 10;
 
+    private static final double BEZIER_TOLERANCE = 0.2;
+
     /**
      * the {@link Graph} to edit.
      */
@@ -471,14 +473,14 @@ public class GraphViewPanel extends JPanel {
 
         int x,y;
         x = switch (alignH) {
-            default -> (int) box.getMinX();
             case ALIGN_RIGHT -> (int) (box.getMaxX() - w);
             case ALIGN_CENTER -> (int) (box.getMinX() + (box.getWidth() - w) / 2);
+            default -> (int) box.getMinX();
         };
         y = switch (alignV) {
-            default -> (int) (box.getMinY() + h-md);
             case ALIGN_BOTTOM -> (int) (box.getMaxY());
             case ALIGN_CENTER -> (int) (box.getMinY()-md + (box.getHeight() + h) / 2);
+            default -> (int) (box.getMinY() + h-md);
         };
         layout.draw((Graphics2D)g,x,y);
     }
@@ -508,7 +510,8 @@ public class GraphViewPanel extends JPanel {
     }
 
     /**
-     * Paint a cubic bezier using {@link Graphics} from p0 to p3.
+     * Paint a cubic bezier using {@link Graphics} from p0 to p3.  The X difference between p0 and p3 is used to
+     * calculate p1 and p2.
      * @param g the {@link Graphics} painting tool.
      * @param p0 the first point of the cubic bezier spline.
      * @param p3 the last point of the cubic bezier spline.
@@ -530,8 +533,8 @@ public class GraphViewPanel extends JPanel {
     }
 
     private void drawBezier(Graphics g, Bezier b) {
-        List<Point2D> points = b.generateCurvePoints(0.2);
-        int len=points.size();
+        List<Point2D> points = b.generateCurvePoints(BEZIER_TOLERANCE);
+        int len = points.size();
         int [] x = new int[len];
         int [] y = new int[len];
         for(int i=0;i<len;++i) {
