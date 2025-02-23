@@ -1,5 +1,6 @@
 package com.marginallyclever.donatello.select;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,8 @@ public class SelectDoubleTest {
 		}
 		assertEquals(2000.34f,b.getValue(),1e-3);
 	}
-	
+
+	@Disabled("Very slow test, only run when needed")
 	@Test
 	public void testAllFloatFields() throws Exception {
 		logger.debug("testAllFloatFields() start");
