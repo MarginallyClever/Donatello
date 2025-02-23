@@ -6,6 +6,8 @@ import com.marginallyclever.nodegraphcore.port.Input;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Calculate extends Node {
     private final InputInt inputCount = new InputInt("count");
@@ -96,10 +98,23 @@ public class Calculate extends Node {
         e.setVariable("PI", Math.PI); // Assign value to variable
         for(int i=DEFAULT_PORTS; i<getNumPorts(); i++) {
             if(getPort(i) instanceof InputDouble input) {
-                e.setVariable(input.getName(), input.getValue().doubleValue());
+                e.setVariable(input.getName(), input.getValue());
             }
         }
         // evaluate the expression
         return e.evaluate();
+    }
+
+    /**
+     * Parse the JSON object into this object.  Because the number of inputs may vary,
+     * we need to update the number of input ports first and then read in the rest.
+     * @param jo the JSON object to parse
+     * @throws JSONException if there is an error parsing the JSON
+     */
+    @Override
+    public void parseJSON(JSONObject jo) throws JSONException {
+        super.parseJSON(jo);
+        updateInputCount(Math.max(0,inputCount.getValue()));
+        this.parseAllPortsFromJSON(jo.getJSONArray("variables"));
     }
 }

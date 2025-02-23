@@ -1,13 +1,16 @@
 package com.marginallyclever.donatello;
 
 import com.marginallyclever.donatello.actions.GraphSaveAsAction;
-import com.marginallyclever.nodegraphcore.*;
 import com.marginallyclever.donatello.nodes.images.LoadImage;
 import com.marginallyclever.donatello.nodes.images.PrintImage;
+import com.marginallyclever.nodegraphcore.Connection;
+import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
+import com.marginallyclever.nodegraphcore.NodeFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,27 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 2022-02-21
  */
 public class TestGraphSwing {
-    private static final Graph model = new Graph();
-
     @BeforeAll
     public static void beforeAll() {
-        DonatelloRegistry r = new DonatelloRegistry();
-        r.registerNodes();
-        r.registerDAO();
+        NodeFactory.loadRegistries();
+        DAO4JSONFactory.loadRegistries();
     }
 
     @AfterAll
     public static void afterAll() {
         NodeFactory.clear();
         DAO4JSONFactory.clear();
-    }
-
-    /**
-     * Reset
-     */
-    @BeforeEach
-    public void beforeEach() {
-        model.clear();
     }
 
     /**
@@ -63,7 +55,9 @@ public class TestGraphSwing {
         img2.update();
 
         LoadImage img = new LoadImage();
-        img.getPort(0).setValue(new Filename("src/test/resources/test.png"));
+        // get filename of test image
+        String fname = Objects.requireNonNull(TestGraphSwing.class.getResource("test.png")).getPath();
+        img.getPort(0).setValue(new Filename(fname));
         img.update();
 
         PrintImage printer = new PrintImage();
