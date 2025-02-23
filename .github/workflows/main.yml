@@ -25,11 +25,14 @@ jobs:
         cache: 'maven'
 
     # from https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+    # runs for all pushes and pull requests
     - name: Build and Test with Maven
       timeout-minutes: 15
       run: mvn --batch-mode --update-snapshots package
 
     - name: Prepare nightly package
+      # only run on pushes to master or main
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
       shell: bash
       run: |
         mkdir -p target/universal-package &&
@@ -40,7 +43,8 @@ jobs:
         mv Donatello.zip ../..
 
     - name: Deploy nightly release
-      if: github.repository == 'MarginallyClever/Donatello' && github.ref == 'refs/heads/main'
+      # only run on pushes to master or main
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
       uses: WebFreak001/deploy-nightly@v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatically provided by github actions

@@ -65,7 +65,6 @@ public class LoadImage extends Node {
             }
         } catch (Exception e) {
             logger.error("Failed to load image from "+filenameValue,e);
-            e.printStackTrace();
         }
     }
 }

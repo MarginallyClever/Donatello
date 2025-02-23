@@ -10,8 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Registers Swing {@link com.marginallyclever.nodegraphcore.Node}s to the {@link NodeFactory}.
- * Registers Swing types with the JSON DAO factory.
+ * <p>Registers Swing {@link com.marginallyclever.nodegraphcore.Node}s to the {@link NodeFactory}.
+ * Registers Swing types with the JSON DAO factory.</p>
+ * <p>Do not instantiate this class or call these directly.  Instead call <code>NodeFactory.loadRegistries()</code> and <code>DAO4JSONFactory.loadRegistries()</code></p>
  * @author Dan Royer
  * @since 2022-02-11
  */
@@ -22,6 +23,7 @@ public class DonatelloRegistry implements NodeRegistry, DAORegistry {
         return "Donatello";
     }
 
+    @Override
     public void registerNodes() {
         logger.info("Registering donatello nodes");
         NodeFactory.registerAllNodesInPackage("com.marginallyclever.donatello.nodes");
