@@ -2,10 +2,22 @@ package com.marginallyclever.donatello.nodes;
 
 import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class CalculateTest {
+    @BeforeAll
+    public static void beforeAll() {
+        DAO4JSONFactory.loadRegistries();
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        DAO4JSONFactory.clear();
+    }
+
     /**
      * Create a Calculate node.  set the inputCount to 2.  set the inputExpression to "a+b".
      * set the inputA to 1.0.  set the inputB to 2.0.  update the node.  check that the output is 3.0.
@@ -14,8 +26,6 @@ public class CalculateTest {
      */
     @Test
     public void testCalculate() {
-        DAO4JSONFactory.loadRegistries();
-
         Calculate before = new Calculate();
         before.getPort("count").setValue(2);
         before.getPort("expression").setValue("a+b");
@@ -28,6 +38,7 @@ public class CalculateTest {
         JSONObject json = before.toJSON();
         Calculate after = new Calculate();
         after.parseJSON(json);
+        Assertions.assertEquals(5, after.getPorts().size());
         Assertions.assertEquals(2, after.getPort("count").getValue());
         after.update();
         Assertions.assertEquals(3.0, after.getPort("result").getValue());
