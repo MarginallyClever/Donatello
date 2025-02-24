@@ -1,5 +1,8 @@
 package com.marginallyclever.donatello.colorspace;
 
+/**
+ * A color space that converts between RGB and RGB.
+ */
 public class RGBColorSpace implements ColorSpace {
     @Override
     public float[] fromRGB(float r, float g, float b) {

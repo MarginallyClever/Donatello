@@ -1,5 +1,8 @@
 package com.marginallyclever.donatello.colorspace;
 
+/**
+ * Interface for color space conversion to and from RGB.
+ */
 public interface ColorSpace {
     /**
      * Converts RGB values (0-1 range) to the target color space.
