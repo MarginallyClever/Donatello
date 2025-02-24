@@ -21,4 +21,9 @@ public class LUVColorSpace implements ColorSpace {
         float b = x *  0.0556434f + y * -0.2040259f + z *  1.0572252f;
         return new float[]{r,g,b};
     }
+
+    @Override
+    public String toString() {
+        return "LUV";
+    }
 }

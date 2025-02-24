@@ -42,4 +42,9 @@ public class HSVColorSpace implements ColorSpace {
         }
         return new float[]{r + m, g + m, b + m};
     }
+
+    @Override
+    public String toString() {
+        return "HSV";
+    }
 }

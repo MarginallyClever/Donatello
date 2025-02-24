@@ -13,4 +13,9 @@ public class RGBColorSpace implements ColorSpace {
     public float[] toRGB(float c1, float c2, float c3) {
         return new float[]{c1, c2, c3};
     }
+
+    @Override
+    public String toString() {
+        return "RGB";
+    }
 }
