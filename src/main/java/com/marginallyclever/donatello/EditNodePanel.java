@@ -1,6 +1,5 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.donatello.nodes.images.ColorAtPoint;
 import com.marginallyclever.donatello.select.*;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;
@@ -153,15 +152,5 @@ public class EditNodePanel extends JPanel {
      */
     private String getLabel() {
         return labelField.getText();
-    }
-
-    /**
-     * main entry point.  Good for independent test.
-     * @param args command line arguments.
-     */
-    public static void main(String[] args) {
-        // a test case
-        Node node = new ColorAtPoint();
-        EditNodePanel.runAsDialog(node,null,null);
     }
 }
