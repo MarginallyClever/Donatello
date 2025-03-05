@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
@@ -137,6 +138,8 @@ public class Donatello extends JPanel {
 
     private final NodeFactoryPanel nodeFactoryPanel = new NodeFactoryPanel();
 
+    private final EventListenerList listeners = new EventListenerList();
+
     public Donatello() {
         this(new Graph());
     }
@@ -180,6 +183,15 @@ public class Donatello extends JPanel {
                 threadPoolScheduler.update();
                 //graph.update();
                 paintArea.repaint();
+
+                if(threadPoolScheduler.isIdle()) {
+                    // submit dirty nodes to the thread pool.
+                    for(Node n : graph.getNodes()) {
+                        if(n.isDirty()) {
+                            threadPoolScheduler.submit(n);
+                        }
+                    }
+                }
             }
         });
     }
@@ -590,6 +602,7 @@ public class Donatello extends JPanel {
         if (list != null) selectedNodes.addAll(list);
         updateActionEnableStatus();
         paintArea.repaint();
+        fireSelectionChange();
     }
 
     /**
@@ -717,5 +730,19 @@ public class Donatello extends JPanel {
 
     public NodeFactoryPanel getNodeFactoryPanel() {
         return nodeFactoryPanel;
+    }
+
+    private void fireSelectionChange() {
+        for(var recipient : listeners.getListeners(DonatelloSelectionListener.class)) {
+            recipient.selectionChanged(this);
+        }
+    }
+
+    public void addSelectionListener(DonatelloSelectionListener listener) {
+        listeners.add(DonatelloSelectionListener.class, listener);
+    }
+
+    public void removeSelectionListener(DonatelloSelectionListener listener) {
+        listeners.remove(DonatelloSelectionListener.class, listener);
     }
 }
