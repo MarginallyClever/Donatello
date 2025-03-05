@@ -320,7 +320,7 @@
             -->
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.3.5</version>
+            <version>1.4.1</version>
         </dependency>
     </dependencies>
 

@@ -183,6 +183,15 @@ public class Donatello extends JPanel {
                 threadPoolScheduler.update();
                 //graph.update();
                 paintArea.repaint();
+
+                if(threadPoolScheduler.isIdle()) {
+                    // submit dirty nodes to the thread pool.
+                    for(Node n : graph.getNodes()) {
+                        if(n.isDirty()) {
+                            threadPoolScheduler.submit(n);
+                        }
+                    }
+                }
             }
         });
     }
