@@ -1,7 +1,6 @@
 package com.marginallyclever.donatello.graphview;
 
 import com.marginallyclever.donatello.bezier.Bezier;
-import com.marginallyclever.donatello.bezier.Point2D;
 import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.vecmath.Point2d;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -533,12 +533,12 @@ public class GraphViewPanel extends JPanel {
     }
 
     private void drawBezier(Graphics g, Bezier b) {
-        List<Point2D> points = b.generateCurvePoints(BEZIER_TOLERANCE);
+        List<Point2d> points = b.generateCurvePoints(BEZIER_TOLERANCE);
         int len = points.size();
         int [] x = new int[len];
         int [] y = new int[len];
         for(int i=0;i<len;++i) {
-            Point2D p = points.get(i);
+            Point2d p = points.get(i);
             x[i]=(int)p.x;
             y[i]=(int)p.y;
         }
