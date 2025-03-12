@@ -49,6 +49,7 @@ public class InputOneOfMany extends InputInt implements SwingProvider, GraphView
     @Override
     public void paint(Graphics g, Rectangle box) {
         String val = options[getValue()];
+        Rectangle insideBox = GraphViewPanel.getNodeInternalBounds(box);
         if (val.length() > GraphViewPanel.MAX_CHARS_PER_RORT) val = val.substring(0, GraphViewPanel.MAX_CHARS_PER_RORT) + "...";
         GraphViewPanel.paintText(g, val, box, GraphViewPanel.ALIGN_RIGHT, GraphViewPanel.ALIGN_TOP);
     }

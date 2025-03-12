@@ -338,7 +338,7 @@ public class GraphViewPanel extends JPanel {
 
         g.setColor(settings.getNodeColorTitleBackground());
         g.fillRoundRect(r.x, r.y, r.width, cr*2, cr, cr);
-        g.fillRect(r.x, r.y+cr, r.width+1, Node.TITLE_HEIGHT -cr);
+        g.fillRect(r.x, r.y+cr, r.width, Node.TITLE_HEIGHT -cr);
 
         paintProgressBar(g,n,r);
 
@@ -377,6 +377,8 @@ public class GraphViewPanel extends JPanel {
         Rectangle insideBox = getNodeInternalBounds(box);
 
         Object vObj = v.getValue();
+        g.setColor(settings.getNodeColorFontClean());
+
         if(v instanceof GraphViewProvider gvp) {
             gvp.paint(g,box);
         } else {
@@ -391,10 +393,8 @@ public class GraphViewPanel extends JPanel {
                 val = v.getTypeName();
             } else val = "null";
             if (val.length() > MAX_CHARS_PER_RORT) val = val.substring(0, MAX_CHARS_PER_RORT) + "...";
-            g.setColor(settings.getNodeColorFontClean());
             paintText(g, val, insideBox, ALIGN_RIGHT, ALIGN_TOP);
         }
-
 
         // label
         g.setColor(settings.getNodeColorFontClean());
@@ -416,7 +416,7 @@ public class GraphViewPanel extends JPanel {
      * @param r the outer bounsd of the node.
      * @return the adjusted inner bounds of a {@link Node}.
      */
-    public Rectangle getNodeInternalBounds(Rectangle r) {
+    public static Rectangle getNodeInternalBounds(Rectangle r) {
         Rectangle r2 = new Rectangle(r);
         int padding = (int)Connection.DEFAULT_RADIUS+4;
         r2.x += padding;
