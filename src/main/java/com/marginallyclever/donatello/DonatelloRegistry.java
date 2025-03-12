@@ -1,7 +1,5 @@
 package com.marginallyclever.donatello;
 
-import com.marginallyclever.donatello.nodes.color.ColorDAO4JSON;
-import com.marginallyclever.donatello.nodes.images.BufferedImageDAO4JSON;
 import com.marginallyclever.nodegraphcore.DAO4JSONFactory;
 import com.marginallyclever.nodegraphcore.DAORegistry;
 import com.marginallyclever.nodegraphcore.NodeFactory;
@@ -32,8 +30,7 @@ public class DonatelloRegistry implements NodeRegistry, DAORegistry {
     @Override
     public void registerDAO() {
         logger.info("Registering donatello DAOs");
-        DAO4JSONFactory.registerDAO(new BufferedImageDAO4JSON());
-        DAO4JSONFactory.registerDAO(new ColorDAO4JSON());
-        DAO4JSONFactory.registerDAO(new FilenameDAO4JSON());
+        DAO4JSONFactory.registerAllDAOInPackage("com.marginallyclever.donatello.nodes");
+        DAO4JSONFactory.registerAllDAOInPackage("com.marginallyclever.donatello.ports");
     }
 }
