@@ -1,6 +1,5 @@
 package com.marginallyclever.donatello.ports;
 
-import com.marginallyclever.donatello.Filename;
 import com.marginallyclever.donatello.SwingProvider;
 import com.marginallyclever.donatello.select.Select;
 import com.marginallyclever.donatello.select.SelectFile;
