@@ -178,17 +178,16 @@ public class NodeFactoryPanel extends JPanel {
     private void addNow(TreePath path) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
         NodeCategory category = getCategory(node);
-        if (category.getSupplier() != null) {
-            // Trigger the action
-            Supplier<Node> factory = category.getSupplier();
-            if (factory != null) {
-                Node n = factory.get();
-                if(n==null) {
-                    throw new RuntimeException("NodeFactoryPanel.addNow("+category.getName()+") returned null.");
-                }
-                fireAddNode(n);
-            }
+        Supplier<Node> factory = category.getSupplier();
+        if (factory == null) {
+            throw new RuntimeException("No factory found for "+category.getName());
         }
+        // Trigger the action
+        Node n = factory.get();
+        if(n==null) {
+            throw new RuntimeException("Factory returned null for "+category.getName()+".  Did you provide module access?");
+        }
+        fireAddNode(n);
     }
 
     public String getSelectedNode() {
