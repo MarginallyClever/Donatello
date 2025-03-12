@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.ports;
 
 /**
  * This is container for a String.  EditNodePanel looks for Filename and then knows to use a file chooser.
