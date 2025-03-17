@@ -326,7 +326,7 @@
             Github/Jitpack/etc can find the copy published by Jitpack.
             I have to do this dance every time.
             -->
-            <groupId>com.marginallyclever</groupId>
+            <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
             <version>1.5.4</version>
         </dependency>
