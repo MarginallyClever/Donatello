@@ -4,7 +4,7 @@
 
     <groupId>com.marginallyclever</groupId>
     <artifactId>donatello</artifactId>
-    <version>1.8.2</version>
+    <version>1.8.3</version>
 
     <name>Donatello</name>
     <description>GUI for nodegraphcore flow-based programming</description>
@@ -44,6 +44,11 @@
     </developers>
 
     <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -339,7 +344,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minimum.maven.version>3.8.1</minimum.maven.version>
-        <minimum.java.version>21</minimum.java.version>
+        <minimum.java.version>22</minimum.java.version>
         <maven-dependency-plugin.ignoreNonCompile>true</maven-dependency-plugin.ignoreNonCompile>
         <maven.compiler.source>${minimum.java.version}</maven.compiler.source>
         <maven.compiler.target>${minimum.java.version}</maven.compiler.target>
