@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
  */
 public class TestDAO4JSON {
     @BeforeAll
-    public static void beforeAll() throws Exception {
+    public static void beforeAll() {
         NodeFactory.loadRegistries();
         DAO4JSONFactory.loadRegistries();
     }
@@ -43,6 +43,11 @@ public class TestDAO4JSON {
         }
 
         return true;
+    }
+
+    @Test
+    public void isRegistered() {
+        assert(DAO4JSONFactory.isRegistered(BufferedImage.class));
     }
 
     /**
