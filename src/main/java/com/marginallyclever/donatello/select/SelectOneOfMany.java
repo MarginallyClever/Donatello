@@ -75,4 +75,12 @@ public class SelectOneOfMany extends Select {
 		model.removeAllElements();
 		model.addAll(Arrays.asList(list));
 	}
+
+	public JLabel getLabel() {
+		return label;
+	}
+
+	public JComboBox<String> getField() {
+		return field;
+	}
 }

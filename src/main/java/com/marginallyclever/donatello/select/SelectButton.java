@@ -76,4 +76,8 @@ public class SelectButton extends Select {
 			l.actionPerformed(new ActionEvent(this,ActionEvent.ACTION_PERFORMED,getName()));
 		}
 	}
+
+	public JButton getButton() {
+		return button;
+	}
 }
