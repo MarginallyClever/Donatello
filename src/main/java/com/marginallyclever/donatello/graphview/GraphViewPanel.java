@@ -406,7 +406,7 @@ public class GraphViewPanel extends JPanel {
 
         // connection points
         g.setColor(settings.getConnectionPointColor());
-        paintVariableConnectionPoints(g,v);
+        paintPortConnectionPoints(g,v);
     }
 
     /**
@@ -440,7 +440,7 @@ public class GraphViewPanel extends JPanel {
      * @param g the {@link Graphics} context
      * @param v the {@link Port} to paint.
      */
-    public void paintVariableConnectionPoints(Graphics g, Port<?> v) {
+    public void paintPortConnectionPoints(Graphics g, Port<?> v) {
         if(v instanceof Input) {
             Point p = v.getInPosition();
             int radius = (int)Connection.DEFAULT_RADIUS+2;

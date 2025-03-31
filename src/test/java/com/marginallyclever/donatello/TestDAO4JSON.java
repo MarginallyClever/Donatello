@@ -46,6 +46,7 @@ public class TestDAO4JSON {
         return true;
     }
 
+    // TODO figure out why this test fails in Maven.
     @Disabled("Work in IntelliJ, not in Maven.  Investigate!")
     @Test
     public void isRegistered() {

@@ -171,7 +171,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
             g.setColor(CONNECTION_POINT_COLOR_SELECTED);
             GraphViewPanel paintArea = editor.getPaintArea();
             paintArea.setLineWidth(g,2);
-            paintArea.paintVariableConnectionPoints(g,lastConnectionPoint.getVariable());
+            paintArea.paintPortConnectionPoints(g,lastConnectionPoint.getVariable());
             paintArea.setLineWidth(g,1);
         }
     }
