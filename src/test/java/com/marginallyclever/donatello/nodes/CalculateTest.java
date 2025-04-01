@@ -37,7 +37,7 @@ public class CalculateTest {
 
         JSONObject json = before.toJSON();
         Calculate after = new Calculate();
-        after.parseJSON(json);
+        after.fromJSON(json);
         Assertions.assertEquals(5, after.getPorts().size());
         Assertions.assertEquals(2, after.getPort("count").getValue());
         after.update();

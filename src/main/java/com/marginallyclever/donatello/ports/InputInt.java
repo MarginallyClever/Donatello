@@ -28,8 +28,8 @@ public class InputInt extends Input<Integer> implements SwingProvider {
     }
 
     @Override
-    public boolean isValidType(Object arg0) {
-        if(arg0 instanceof Number) return true;
+    public boolean isValidType(Class<?> arg0) {
+        if(arg0 == Number.class) return true;
         return super.isValidType(arg0);
     }
 

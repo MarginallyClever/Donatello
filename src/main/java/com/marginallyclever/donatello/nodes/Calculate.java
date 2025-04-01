@@ -112,8 +112,8 @@ public class Calculate extends Node {
      * @throws JSONException if there is an error parsing the JSON
      */
     @Override
-    public void parseJSON(JSONObject jo) throws JSONException {
-        super.parseJSON(jo);
+    public void fromJSON(JSONObject jo) throws JSONException {
+        super.fromJSON(jo);
         updateInputCount(Math.max(0,inputCount.getValue()));
         this.parseAllPortsFromJSON(jo.getJSONArray("variables"));
     }

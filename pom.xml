@@ -4,7 +4,7 @@
 
     <groupId>com.marginallyclever</groupId>
     <artifactId>donatello</artifactId>
-    <version>1.8.4</version>
+    <version>1.8.5</version>
 
     <name>Donatello</name>
     <description>GUI for nodegraphcore flow-based programming</description>
@@ -199,7 +199,7 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <ignoreNonCompile>${maven-dependency-plugin.ignoreNonCompile}</ignoreNonCompile>
+                    <ignoreNonCompile>true</ignoreNonCompile>
                 </configuration>
             </plugin>
             <plugin>
@@ -328,7 +328,7 @@
             -->
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.5.4</version>
+            <version>1.5.5</version>
         </dependency>
     </dependencies>
 
@@ -348,7 +348,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minimum.maven.version>3.8.1</minimum.maven.version>
         <minimum.java.version>22</minimum.java.version>
-        <maven-dependency-plugin.ignoreNonCompile>true</maven-dependency-plugin.ignoreNonCompile>
         <maven.compiler.source>${minimum.java.version}</maven.compiler.source>
         <maven.compiler.target>${minimum.java.version}</maven.compiler.target>
         <maven.compiler.release>${minimum.java.version}</maven.compiler.release>

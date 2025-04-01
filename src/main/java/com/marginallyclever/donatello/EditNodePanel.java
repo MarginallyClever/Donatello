@@ -145,7 +145,7 @@ public class EditNodePanel extends JPanel {
         if(JOptionPane.showConfirmDialog(frame,panel,"Edit "+subject.getName(),JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
             subject.setLabel(panel.getLabel());
         } else {
-            subject.parseJSON(before);
+            subject.fromJSON(before);
         }
     }
 
