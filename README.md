@@ -2,12 +2,12 @@
 
 [![Release](https://jitpack.io/v/MarginallyClever/Donatello.svg)](https://jitpack.io/#MarginallyClever/Donatello)
 
-A pure Java implementation of [Flow-based Programming](https://en.wikipedia.org/wiki/Dataflow_programming) (FBP) and a GUI editor.
+## What is it?
 
-![img](docs/preview-for-github.png)
-
-Data-flow programming is aesthetically pleasing, greatly reduces the chance of syntax error, and empowering for people
-that are not fluent in the archaic syntax of text-only languages.
+Donatello is a Java-based Integrated Development Environment (IDE) designed for 
+[Flow-Based Programming (FBP)](https://en.wikipedia.org/wiki/Flow-based_programming).
+It offers a graphical interface that simplifies the creation and management of complex
+data flows, making it accessible for both novice and experienced developers.
 
 ## Features
 
@@ -20,15 +20,17 @@ that are not fluent in the archaic syntax of text-only languages.
 - Convenient built-in nodes for basic math and reporting.
 - Unit tests for everything!  If it can be tested, we shall!
 
-### Getting started
+## Screenshots
 
-1. Download NodeGraphCore (https://github.com/MarginallyClever/NodeGraphCore/)
+![img](docs/preview-for-github.png)
+
+## Getting started (Developers)
+
+1. Clone [Donatello](https://github.com/MarginallyClever/Donatello/).
 2. Use your favorite IDE to import the Maven project.
-3. Use Maven to "install" the project.  It will now be available as a local dependency in your other projects.
-4. Repeat these steps for Donatello (https://github.com/MarginallyClever/Donatello/)
-5. Donatello can be built to run on its own, or as a plugin in your project.
+3. Donatello can be built to run on its own, or as a plugin in your project.
 
-./src/test/java/com/marginallyclever/donatello has unit tests, which are also examples of how to use the API.
+`./src/test/java/com/marginallyclever/donatello` has unit tests, which are also examples of how to use the API.
 
 ## Use it, Discuss it, Love it.
 
