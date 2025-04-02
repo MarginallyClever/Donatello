@@ -11,14 +11,9 @@ data flows, making it accessible for both novice and experienced developers.
 
 ## Features
 
-- Nodes are not directed or forced to run via triggers.  There is little danger of large networks overflowing the stack.  They could be run in parallel.
-- Folding: Collapse a subgraph down to a single Node with *Fold* and reverse with *Unfold*
-- The editor has written in Java Swing.  The main executable class is `com.marginallyclever.donatello.Donatello`.
-- A ~/Donatello/ folder contains the application log file.
-- A ~/Donatello/extensions/ folder contains 3rd party plugins.  Add new Nodes or write your own.
-- While running the editor you can also access Swing-only nodes like `LoadImage` and `PrintImage`.  PrintImage results will appear in the background of the node editor panel.
-- Convenient built-in nodes for basic math and reporting.
-- Unit tests for everything!  If it can be tested, we shall!
+- No-code style programming with a graphical interface.
+- Syntax errors are impossible to make.  The editor will not let you connect nodes in a way that doesn't make sense.
+- Nodes can run in parallel using virtual threads (JEP 425).
 
 ## Screenshots
 
