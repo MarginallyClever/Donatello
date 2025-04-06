@@ -11,8 +11,8 @@ public class InputDoubleTest {
     @Test
     public void testIntToDouble() {
         // Create an instance of InputDouble
-        Node outputNode = new Node("Test") {
-            OutputInt outputInt = new OutputInt("TestOutput", 1);
+        Node outputNode = new Node("output") {
+            final OutputInt outputInt = new OutputInt("TestOutput", 1);
             {
                 addPort(outputInt);
             }
@@ -22,7 +22,7 @@ public class InputDoubleTest {
         };
 
         Node inputNode = new Node("input") {
-            InputDouble inputDouble = new InputDouble("TestInput", 0.0);
+            final InputDouble inputDouble = new InputDouble("TestInput", 0.0);
             {
                 addPort(inputDouble);
             }
