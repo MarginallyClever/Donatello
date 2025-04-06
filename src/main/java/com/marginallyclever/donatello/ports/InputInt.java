@@ -29,14 +29,14 @@ public class InputInt extends Input<Integer> implements SwingProvider {
 
     @Override
     public boolean isValidType(Class<?> arg0) {
-        if(arg0 == Number.class) return true;
+        if(Number.class.isAssignableFrom(arg0)) return true;
         return super.isValidType(arg0);
     }
 
     @Override
     public void setValue(Object arg0) {
-        if(arg0 instanceof Number) {
-            super.setValue(((Number)arg0).intValue());
+        if(arg0 instanceof Number number) {
+            super.setValue(number.intValue());
             return;
         }
         super.setValue(arg0);

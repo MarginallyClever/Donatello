@@ -9,7 +9,7 @@ import javax.swing.undo.CannotUndoException;
 import java.util.List;
 
 /**
- * Adds a {@link Connection} to a {@link com.marginallyclever.nodegraphcore.NodeVariable}.
+ * Adds a {@link Connection} to a {@link com.marginallyclever.nodegraphcore.port.Port}.
  * Since the inbound node can only have one connection at a time, this edit also preserves any connection that has
  * to be removed.
  */
