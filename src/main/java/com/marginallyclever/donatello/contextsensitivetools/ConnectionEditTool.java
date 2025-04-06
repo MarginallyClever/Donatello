@@ -66,7 +66,7 @@ public class ConnectionEditTool extends ContextSensitiveTool {
     @Override
     public boolean isCorrectContext(Point p) {
         selectOneNearbyConnectionPoint(p);
-        return lastConnectionPoint!=null;
+        return lastConnectionPoint != null;
     }
 
     public KeyStroke getAcceleratorKey() {
