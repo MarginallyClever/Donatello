@@ -25,7 +25,9 @@ public class GraphPasteEdit extends SignificantUndoableEdit {
 
         for(Node n : copiedGraph.getNodes()) {
             n.moveRelative(dx, dy);
-            editor.submit(n);
+            if(copiedGraph.nodeHasInputConnections(n)) {
+                editor.submit(n);
+            }
         }
         System.out.println("test "+position.x+" "+position.y);
 
