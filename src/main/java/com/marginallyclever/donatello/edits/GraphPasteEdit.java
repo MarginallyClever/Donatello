@@ -1,7 +1,8 @@
 package com.marginallyclever.donatello.edits;
 
-import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.donatello.Donatello;
+import com.marginallyclever.donatello.QueueByDepth;
+import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;
 
 import javax.swing.undo.CannotRedoException;
@@ -25,9 +26,6 @@ public class GraphPasteEdit extends SignificantUndoableEdit {
 
         for(Node n : copiedGraph.getNodes()) {
             n.moveRelative(dx, dy);
-            if(copiedGraph.nodeHasInputConnections(n)) {
-                editor.submit(n);
-            }
         }
         System.out.println("test "+position.x+" "+position.y);
 
@@ -45,6 +43,7 @@ public class GraphPasteEdit extends SignificantUndoableEdit {
             editor.getGraph().add(copiedGraph);
             editor.setSelectedNodes(copiedGraph.getNodes());
             editor.repaint();
+            new QueueByDepth(editor, copiedGraph);
         }
         finally {
             editor.unlockClock();
