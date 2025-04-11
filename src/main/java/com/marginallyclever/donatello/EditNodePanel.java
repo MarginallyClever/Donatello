@@ -47,7 +47,7 @@ public class EditNodePanel extends JPanel {
 
         addReadOnlyField(c,"ID",node.getUniqueID());
         c.gridy++;
-        addLabelField(c);
+        addLabelField(c,node);
         c.gridy++;
 
         for(int i = 0; i<node.getNumPorts(); ++i) {
@@ -109,15 +109,10 @@ public class EditNodePanel extends JPanel {
      * Adds the node 'label' field to the edit panel.
      * @param c {@link GridBagConstraints} for placement.
      */
-    private void addLabelField(GridBagConstraints c) {
-        c.anchor = GridBagConstraints.LINE_START;
-        c.gridx=0;
-        this.add(new JLabel("Label"),c);
-
-        c.anchor = GridBagConstraints.LINE_END;
-        c.gridx=1;
-        labelField.setText(node.getLabel());
-        this.add(labelField,c);
+    private void addLabelField(GridBagConstraints c, Node node) {
+        var field = new SelectTextField("Label", "label", node.getLabel());
+        field.addSelectListener( evt -> node.setLabel(field.getText()) );
+        field.attach(this,c);
     }
 
     /**
