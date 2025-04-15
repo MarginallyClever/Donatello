@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 2022-03-19
  */
 public class UpdateClock extends TimerTask {
-    private final Timer myTimer = new Timer("myTimer");
+    private final Timer myTimer = new Timer("UpdateClock");
     private final List<UpdateClockListener> listeners = new ArrayList<>();
     private final int frequency;
 
