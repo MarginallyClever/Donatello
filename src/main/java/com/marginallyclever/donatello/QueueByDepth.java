@@ -21,7 +21,13 @@ public class QueueByDepth {
     private final Map<Node, Integer> depth = new HashMap<>();
     private final Queue<Node> queue = new LinkedList<>();
 
-    public QueueByDepth(Donatello editor, Graph graph) {
+    /**
+     * Queue the {@link Node}s of a {@link Graph} in the {@link com.marginallyclever.nodegraphcore.ThreadPoolScheduler}
+     * @param editor the {@link Donatello} editor
+     * @param graph the {@link Graph} to queue
+     * @param maxDepth the maximum depth to queue
+     */
+    public QueueByDepth(Donatello editor, Graph graph,int maxDepth) {
         logger.trace("QueueByDepth start");
 
         buildOutgoingAndInDegreeMaps(graph);
@@ -34,7 +40,7 @@ public class QueueByDepth {
         nodes.sort(Comparator.comparingInt(n -> depth.getOrDefault(n, 0)));
 
         for(Node n : nodes) {
-            if(n.isDirty()) {
+            if(depth.getOrDefault(n,0)<=maxDepth && n.isDirty()) {
                 editor.submit(n);
             }
         }

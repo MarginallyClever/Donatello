@@ -43,7 +43,7 @@ public class GraphPasteEdit extends SignificantUndoableEdit {
             editor.getGraph().add(copiedGraph);
             editor.setSelectedNodes(copiedGraph.getNodes());
             editor.repaint();
-            new QueueByDepth(editor, copiedGraph);
+            new QueueByDepth(editor, copiedGraph,0);
         }
         finally {
             editor.unlockClock();
