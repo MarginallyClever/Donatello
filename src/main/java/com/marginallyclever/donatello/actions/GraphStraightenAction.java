@@ -1,10 +1,10 @@
 package com.marginallyclever.donatello.actions;
 
-import com.marginallyclever.donatello.graphview.GraphViewPanel;
+import com.marginallyclever.donatello.Donatello;
 import com.marginallyclever.donatello.graphview.GraphViewSettings;
 import com.marginallyclever.nodegraphcore.Node;
-import com.marginallyclever.nodegraphcore.Graph;
-import com.marginallyclever.donatello.Donatello;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
  * @since 2022-02-21
  */
 public class GraphStraightenAction extends AbstractAction implements EditorAction {
+    private static final Logger logger = LoggerFactory.getLogger(GraphStraightenAction.class);
+
     /**
      * The editor being affected.
      */
@@ -39,10 +41,19 @@ public class GraphStraightenAction extends AbstractAction implements EditorActio
         var gs = settings.getGridSize();
         for(Node n : g.getNodes()) {
             Rectangle r = n.getRectangle();
-            r.x -= r.x % gs;
-            r.y -= r.y % gs;
+            var x = round(r.x,gs);
+            var y = round(r.y,gs);
+            if(r.x!=x) logger.debug("x round({},{})={}", r.x, gs, x);
+            if(r.y!=y) logger.debug("y round({},{})={}", r.y, gs, y);
+            r.x = x;
+            r.y = y;
+            n.updateBounds();
         }
         editor.repaint();
+    }
+
+    private int round(int v, int step) {
+        return Math.round((float) v / step) * step;
     }
 
     @Override
