@@ -183,7 +183,6 @@ public class Donatello extends JPanel {
 
             threadPoolScheduler.update();
             //graph.update();
-            //paintArea.repaint();
 
             if(!threadPoolScheduler.isIdle()) return;
 
