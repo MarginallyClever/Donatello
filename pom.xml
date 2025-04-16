@@ -328,7 +328,7 @@
             -->
             <groupId>com.github.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.5.14</version>
+            <version>1.6.0</version>
         </dependency>
     </dependencies>
 
