@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Split a {@link BufferedImage} into separate CMYK channels.
+ * See also <a href="https://en.wikipedia.org/wiki/CMYK_color_model">CMYK color model</a>.
  * @author Dan Royer
  * @since 2022-02-23
  */
@@ -75,17 +76,17 @@ public class SplitToCMYK extends Node {
         double ik = 1.0 - k;
 
         double c, m, y, k2;
-        if(ik<1.0/255.0) {
+        if(k<1.0/255.0) {
           c=m=y=0;
         } else {
             c = (r - k) / ik;
             m = (g - k) / ik;
             y = (b - k) / ik;
         }
-        c = Math.max(0,Math.min(255,  (c * 255.0) ));
-        m = Math.max(0,Math.min(255,  (m * 255.0) ));
-        y = Math.max(0,Math.min(255,  (y * 255.0) ));
-        k2 = Math.max(0,Math.min(255, (k * 255.0) ));
+        c = Math.max(0,Math.min(255,  255.0-(c * 255.0) ));
+        m = Math.max(0,Math.min(255,  255.0-(m * 255.0) ));
+        y = Math.max(0,Math.min(255,  255.0-(y * 255.0) ));
+        k2 = Math.max(0,Math.min(255, 255.0-(k * 255.0) ));
         return new double[]{c,m,y,k2};
     }
 }
