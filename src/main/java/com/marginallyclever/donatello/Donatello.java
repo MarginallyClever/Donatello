@@ -76,17 +76,8 @@ public class Donatello extends JPanel {
      * Manages undo/redo in the editor.
      */
     private final UndoManager undoManager = UnifiedUndoManager.getInstance();
-
-    /**
-     * declared here so that it can be referenced by the RedoAction.
-     */
     private final UndoAction undoAction = new UndoAction(undoManager);
-
-    /**
-     * declared here so that it can be referenced by the UndoAction.
-     */
     private final RedoAction redoAction = new RedoAction(undoManager);
-
     private final UndoHandler undoHandler = new UndoHandler(undoManager, undoAction, redoAction);
 
     /**
@@ -98,6 +89,27 @@ public class Donatello extends JPanel {
      * Status information at the bottom of the editor.
      */
     private final JLabel statusBar = new JLabel();
+
+    private final NodeFactoryPanel nodeFactoryPanel = new NodeFactoryPanel();
+
+    private final NodeCopyAction nodeCopyAction = new NodeCopyAction("Copy",this);
+    private final NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
+    private final NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
+    private final NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, nodeCopyAction);
+    private final NodeAddAction nodeAddAction = new NodeAddAction("Add",this,nodeFactoryPanel);
+    private final NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
+    private final ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
+    private final GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, nodeCutAction);
+    private final GraphUnfoldAction graphUnfoldAction = new GraphUnfoldAction("Unfold",this);
+    private final NodeIsolateAction nodeIsolateAction = new NodeIsolateAction("Isolate",this);
+    private final SelectAllAction selectAllAction = new SelectAllAction("Select all",this);
+    private final SelectionGrowAction selectionGrowAction = new SelectionGrowAction("Grow selection",this);
+    private final SelectionShrinkAction selectionShrinkAction = new SelectionShrinkAction("Shrink selection",this);
+    private final SelectionInvertAction selectionInvertAction = new SelectionInvertAction("Invert selection",this);
+    private final SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
+    private final ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
+    private final GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
+    private final GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
 
     /**
      * The popupBar appears when the user right clicks in the paintArea.  It contains all actions that affect one or
@@ -135,8 +147,6 @@ public class Donatello extends JPanel {
 
     private final RecentFilesMenu recentFilesMenu = new RecentFilesMenu(Preferences.userNodeForPackage(GraphLoadAction.class),this);
     private final ThreadPoolScheduler threadPoolScheduler = new ThreadPoolScheduler();
-
-    private final NodeFactoryPanel nodeFactoryPanel = new NodeFactoryPanel();
 
     private final EventListenerList listeners = new EventListenerList();
 
@@ -260,17 +270,6 @@ public class Donatello extends JPanel {
         }
     }
 
-    public void setupMenuBar() {
-        JFrame topFrame = (JFrame)SwingUtilities.getWindowAncestor(this);
-        if(topFrame==null) return;
-
-        JMenuBar menuBar = new JMenuBar();
-        topFrame.setJMenuBar(menuBar);
-
-        menuBar.add(setupNodeMenu());
-        menuBar.add(setupHelpMenu());
-    }
-
     private void setupTools() {
         RectangleSelectTool rectangleSelectTool = new RectangleSelectTool(this);
         NodeMoveTool moveTool = new NodeMoveTool(this);
@@ -280,35 +279,6 @@ public class Donatello extends JPanel {
         tools.add(rectangleSelectTool);
 
         swapTool(tools.getFirst());
-    }
-
-    private JMenu setupHelpMenu() {
-        JMenu menu = new JMenu("Help");
-
-        BrowseURLAction showLog = new BrowseURLAction("Open log file",FileHelper.convertToFileURL(FileHelper.getLogFile()));
-        BrowseURLAction update = new BrowseURLAction("Check for updates","https://github.com/MarginallyClever/GraphCore/releases");
-        BrowseURLAction problem = new BrowseURLAction("I have a problem...","https://github.com/MarginallyClever/GraphCore/issues");
-        BrowseURLAction drink = new BrowseURLAction("Buy me a drink","https://www.paypal.com/donate/?hosted_button_id=Y3VZ66ZFNUWJE");
-        BrowseURLAction community = new BrowseURLAction("Join the community","https://discord.gg/TbNHKz6rpy");
-        BrowseURLAction idea = new BrowseURLAction("I have an idea!","https://github.com/MarginallyClever/GraphCore/issues");
-
-        community.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-discord-16.png"))));
-        drink.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cocktail-16.png"))));
-        update.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-newspaper-16.png"))));
-        problem.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-telephone-16.png"))));
-        idea.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-light-bulb-16.png"))));
-        problem.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-bug-16.png"))));
-
-        menu.add(community);
-        menu.add(drink);
-        menu.add(update);
-        menu.addSeparator();
-        menu.add(idea);
-        menu.add(problem);
-        menu.addSeparator();
-        menu.add(showLog);
-
-        return menu;
     }
 
     /**
@@ -378,25 +348,6 @@ public class Donatello extends JPanel {
     }
 
     private void setupToolBar2() {
-        NodeCopyAction nodeCopyAction = new NodeCopyAction("Copy",this);
-        NodePasteAction nodePasteAction = new NodePasteAction("Paste",this);
-        NodeDeleteAction nodeDeleteAction = new NodeDeleteAction("Delete",this);
-        NodeCutAction nodeCutAction = new NodeCutAction("Cut", nodeDeleteAction, nodeCopyAction);
-        NodeAddAction nodeAddAction = new NodeAddAction("Add",this,nodeFactoryPanel);
-        NodeEditAction editNodesAction = new NodeEditAction("Edit",this);
-        ForciblyUpdateNodesAction forciblyUpdateNodesAction = new ForciblyUpdateNodesAction("Force update",this);
-        GraphFoldAction graphFoldAction = new GraphFoldAction("Fold",this, nodeCutAction);
-        GraphUnfoldAction graphUnfoldAction = new GraphUnfoldAction("Unfold",this);
-        NodeIsolateAction nodeIsolateAction = new NodeIsolateAction("Isolate",this);
-        SelectAllAction selectAllAction = new SelectAllAction("Select all",this);
-        SelectionGrowAction selectionGrowAction = new SelectionGrowAction("Grow selection",this);
-        SelectionShrinkAction selectionShrinkAction = new SelectionShrinkAction("Shrink selection",this);
-        SelectionInvertAction selectionInvertAction = new SelectionInvertAction("Invert selection",this);
-        SelectShortestPathAction selectShortestPathAction = new SelectShortestPathAction("Select shortest path",this);
-        ZoomToFitSelectedAction zoomToFitSelectedAction = new ZoomToFitSelectedAction("Pan and zoom to selected",this);
-        GraphStraightenAction graphStraightenAction = new GraphStraightenAction("Straighten",this);
-        GraphOrganizeAction graphOrganizeAction = new GraphOrganizeAction("Organize",this);
-
         addActionItem(graphStraightenAction,"Straighten","/com/marginallyclever/donatello/icons8-square-ruler-16.png","");
         addActionItem(selectShortestPathAction,"Select shortest path","/com/marginallyclever/donatello/icons8-path-16.png","");
         addActionItem(forciblyUpdateNodesAction,"Force update","/com/marginallyclever/donatello/icons8-update-16.png","");
@@ -427,6 +378,7 @@ public class Donatello extends JPanel {
         toolBar.add(graphStraightenAction);
         toolBar.add(graphOrganizeAction);
 
+        // the contents of the right-click popup menu
         popupBar.add(nodeAddAction);
         popupBar.add(editNodesAction);
         popupBar.add(forciblyUpdateNodesAction);
@@ -477,7 +429,7 @@ public class Donatello extends JPanel {
     /**
      * Populates the popupBar and the node menu with actions and assigns accelerator keys.
      */
-    private JMenu setupNodeMenu() {
+    public JMenu getUndoRedoMenu() {
         JMenu menu = new JMenu("Node");
 
         menu.add(undoAction);
@@ -494,6 +446,23 @@ public class Donatello extends JPanel {
 
         actions.add(undoAction);
         actions.add(redoAction);
+
+        menu.addSeparator();
+
+        // these should match the right-click popup menu (aka popupBar)
+        menu.add(nodeAddAction);
+        menu.add(editNodesAction);
+        menu.add(forciblyUpdateNodesAction);
+        menu.addSeparator();
+        menu.add(graphFoldAction);
+        menu.add(graphUnfoldAction);
+        menu.add(nodeIsolateAction);
+        menu.addSeparator();
+        menu.add(nodeCopyAction);
+        menu.add(nodeCutAction);
+        menu.add(nodePasteAction);
+        menu.addSeparator();
+        menu.add(nodeDeleteAction);
 
         return menu;
     }
@@ -694,36 +663,6 @@ public class Donatello extends JPanel {
         updateClock.unlock();
     }
 
-
-    /**
-     * Main entry point.  Good for independent test.
-     * @param args command line arguments.
-     */
-    public static void main(String[] args) throws Exception {
-        FileHelper.createDirectoryIfMissing(FileHelper.getExtensionPath());
-        ServiceLoaderHelper.addAllPathFiles(FileHelper.getExtensionPath());
-
-        NodeFactory.loadRegistries();
-        DAO4JSONFactory.loadRegistries();
-
-        Donatello.setLookAndFeel();
-
-        PropertiesHelper.showProperties();
-        PropertiesHelper.listAllNodes();
-        PropertiesHelper.listAllDAO();
-
-        Donatello panel = new Donatello();
-
-        JFrame frame = new JFrame("Donatello");
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(1200,800));
-        frame.setLocationRelativeTo(null);
-        frame.add(panel);
-        panel.setupMenuBar();
-        frame.setVisible(true);
-    }
-
     public void submit(Node node) {
         threadPoolScheduler.submit(node);
     }
@@ -744,5 +683,22 @@ public class Donatello extends JPanel {
 
     public void removeSelectionListener(DonatelloSelectionListener listener) {
         listeners.remove(DonatelloSelectionListener.class, listener);
+    }
+
+    /**
+     * Edit the node at the given cursor position.
+     * @param cursorPosition the position of the cursor
+     */
+    public void editNodeAt(Point cursorPosition) {
+        Node node = graph.getNodeAt(paintArea.transformScreenToWorldPoint(cursorPosition)); // Implement logic to find the node
+        if (node == null) return;
+
+        // find the editNodesAction and call it
+        for (AbstractAction action : actions) {
+            if (action instanceof NodeEditAction) {
+                ((NodeEditAction) action).editNode(node);
+                break;
+            }
+        }
     }
 }
