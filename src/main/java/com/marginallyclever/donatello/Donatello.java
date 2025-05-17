@@ -286,11 +286,11 @@ public class Donatello extends JPanel {
         JMenu menu = new JMenu("Help");
 
         BrowseURLAction showLog = new BrowseURLAction("Open log file",FileHelper.convertToFileURL(FileHelper.getLogFile()));
-        BrowseURLAction update = new BrowseURLAction("Check for updates","https://github.com/MarginallyClever/GraphCore/releases");
-        BrowseURLAction problem = new BrowseURLAction("I have a problem...","https://github.com/MarginallyClever/GraphCore/issues");
+        BrowseURLAction update = new BrowseURLAction("Check for updates","https://github.com/MarginallyClever/Donatello/releases");
+        BrowseURLAction problem = new BrowseURLAction("I have a problem...","https://github.com/MarginallyClever/Donatello/issues");
         BrowseURLAction drink = new BrowseURLAction("Buy me a drink","https://www.paypal.com/donate/?hosted_button_id=Y3VZ66ZFNUWJE");
         BrowseURLAction community = new BrowseURLAction("Join the community","https://discord.gg/TbNHKz6rpy");
-        BrowseURLAction idea = new BrowseURLAction("I have an idea!","https://github.com/MarginallyClever/GraphCore/issues");
+        BrowseURLAction idea = new BrowseURLAction("I have an idea!","https://github.com/MarginallyClever/Donatello/issues");
 
         community.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-discord-16.png"))));
         drink.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-cocktail-16.png"))));
