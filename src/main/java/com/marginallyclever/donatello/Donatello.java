@@ -464,6 +464,18 @@ public class Donatello extends JPanel {
         menu.addSeparator();
         menu.add(nodeDeleteAction);
 
+        // matches the toolbar items
+        menu.addSeparator();
+        menu.add(selectAllAction);
+        menu.add(selectionGrowAction);
+        menu.add(selectionShrinkAction);
+        menu.add(selectionInvertAction);
+        menu.add(selectShortestPathAction);
+        menu.add(zoomToFitSelectedAction);
+        menu.addSeparator();
+        menu.add(graphStraightenAction);
+        menu.add(graphOrganizeAction);
+
         return menu;
     }
 
