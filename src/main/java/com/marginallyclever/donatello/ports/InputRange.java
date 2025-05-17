@@ -7,6 +7,9 @@ import com.marginallyclever.nodegraphcore.port.Input;
 
 import java.awt.*;
 
+/**
+ * An input port that allows the user to select a range of values using a slider.
+ */
 public class InputRange extends Input<Integer> implements SwingProvider {
     private SelectSlider selectSlider;
     private int top, bottom;
