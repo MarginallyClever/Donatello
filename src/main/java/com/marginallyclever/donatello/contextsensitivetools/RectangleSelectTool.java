@@ -174,6 +174,17 @@ public class RectangleSelectTool extends ContextSensitiveTool {
     private void endSelectionArea(Point point) {
         Rectangle selectionArea = getSelectionArea(point);
         java.util.List<Node> nodesInSelectionArea = editor.getGraph().getNodesInRectangle(selectionArea);
+
+        // if the last nodesInSelectionArea completely contains the selection area then ignore all other nodes.
+        if(nodesInSelectionArea.size() > 1) {
+            Node topNode = nodesInSelectionArea.getLast();
+            Rectangle firstNodeBounds = topNode.getRectangle();
+            if (firstNodeBounds.contains(selectionArea)) {
+                nodesInSelectionArea.clear();
+                nodesInSelectionArea.add(topNode);
+            }
+        }
+
         if(!keyStateMemory.isShiftKeyDown()) {
             editor.setSelectedNodes(nodesInSelectionArea);
         } else {
