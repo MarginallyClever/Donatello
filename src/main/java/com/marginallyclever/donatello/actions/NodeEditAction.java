@@ -32,12 +32,16 @@ public class NodeEditAction extends AbstractAction implements EditorAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         List<Node> nodes = editor.getSelectedNodes();
-        if(nodes.isEmpty()) return;
+        if (nodes.isEmpty()) return;
         Node firstNode = nodes.getFirst();
-        EditNodePanel.runAsDialog(firstNode,(JFrame)SwingUtilities.getWindowAncestor(editor),editor.getGraph());
-        if(firstNode.isDirty()) {
-            editor.repaint(firstNode.getRectangle());
-            editor.submit(firstNode);
+        editNode(firstNode);
+    }
+
+    public void editNode(Node node) {
+        EditNodePanel.runAsDialog(node,(JFrame)SwingUtilities.getWindowAncestor(editor),editor.getGraph());
+        if(node.isDirty()) {
+            editor.repaint(node.getRectangle());
+            editor.submit(node);
         }
     }
 

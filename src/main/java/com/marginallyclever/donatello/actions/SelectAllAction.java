@@ -22,6 +22,7 @@ public class SelectAllAction extends AbstractAction {
     public SelectAllAction(String name, Donatello editor) {
         super(name);
         this.editor = editor;
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("control A"));
     }
 
     /**
