@@ -8,8 +8,12 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Calculate extends Node {
+    private static final Logger logger = LoggerFactory.getLogger(Calculate.class);
+
     private final InputInt inputCount = new InputInt("count");
     private final InputString inputExpression = new InputString("expression","");
     private final OutputDouble output = new OutputDouble("result");
@@ -93,16 +97,23 @@ public class Calculate extends Node {
                 eb.variable(input.getName());
             }
         }
-        Expression e = eb.build();
-        // set the variables
-        e.setVariable("PI", Math.PI); // Assign value to variable
-        for(int i=DEFAULT_PORTS; i<getNumPorts(); i++) {
-            if(getPort(i) instanceof InputDouble input) {
-                e.setVariable(input.getName(), input.getValue());
+
+        try {
+            Expression e = eb.build();
+
+            // set the variables
+            e.setVariable("PI", Math.PI); // Assign value to variable
+            for(int i=DEFAULT_PORTS; i<getNumPorts(); i++) {
+                if(getPort(i) instanceof InputDouble input) {
+                    e.setVariable(input.getName(), input.getValue());
+                }
             }
+            // evaluate the expression
+            return e.evaluate();
+        } catch(Exception exception) {
+            logger.info("Invalid expression: {}", expression, exception);
+            return Double.NaN;
         }
-        // evaluate the expression
-        return e.evaluate();
     }
 
     /**

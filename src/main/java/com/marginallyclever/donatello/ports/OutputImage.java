@@ -2,6 +2,7 @@ package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.donatello.graphview.GraphViewProvider;
 import com.marginallyclever.nodegraphcore.port.Output;
+import com.marginallyclever.nodegraphcore.port.Port;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,13 +16,13 @@ public class OutputImage extends Output<BufferedImage> implements GraphViewProvi
     public Rectangle getRectangle() {
         double w = value.getWidth();
         double h = value.getHeight();
-        if(w<rectangle.width && h<DEFAULT_HEIGHT) {
-            rectangle.setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
+        if(w<rectangle.width && h<Port.DEFAULT_HEIGHT) {
+            rectangle.setSize(Port.DEFAULT_WIDTH,Port.DEFAULT_HEIGHT);
             return rectangle;
         }
         double ratio = h/w;
         var newHeight = (double)rectangle.width * ratio;
-        rectangle.setSize(rectangle.width,(int)Math.max(newHeight,DEFAULT_HEIGHT));
+        rectangle.setSize(rectangle.width,(int)Math.max(newHeight,Port.DEFAULT_HEIGHT));
 
         return rectangle;
     }
