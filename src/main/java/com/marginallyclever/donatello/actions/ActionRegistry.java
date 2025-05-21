@@ -17,8 +17,8 @@ public class ActionRegistry {
         return actions.get(id);
     }
 
-    public static Collection<Action> getAll() {
-        return actions.values();
+    public static ArrayList<Action> getAll() {
+        return new ArrayList<>(actions.values());
     }
 
     public static Set<Map.Entry<String, Action>> entrySet() {

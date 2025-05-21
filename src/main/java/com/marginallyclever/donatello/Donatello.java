@@ -373,19 +373,32 @@ public class Donatello extends JPanel {
         var openSettingsAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
-                // put in a modal dialog
-                var root = SwingUtilities.getWindowAncestor((Component)e.getSource());
-                int result = JOptionPane.showConfirmDialog(root, gvSettingsPanel, "Preferences", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result==JOptionPane.OK_OPTION)
-                    paintArea.saveSettings();
-                else paintArea.loadSettings();
-                paintArea.repaint();
+                createSettingsPanel(e);
             }
         };
         openSettingsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
         openSettingsAction.putValue(Action.SHORT_DESCRIPTION,"Preferences");
         toolBar.add(new JButton(openSettingsAction));
+    }
+
+    private void createSettingsPanel(ActionEvent e) {
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabbedPane.setPreferredSize(new Dimension(400,400));
+        ActionSettingsPanel actionSettingsPanel = new ActionSettingsPanel();
+
+        GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
+
+        tabbedPane.add("Actions", new JScrollPane(actionSettingsPanel));
+        tabbedPane.add("View", new JScrollPane(gvSettingsPanel));
+
+        // put in a modal dialog
+        var root = SwingUtilities.getWindowAncestor((Component)e.getSource());
+        int result = JOptionPane.showConfirmDialog(root, tabbedPane, "Preferences", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if(result==JOptionPane.OK_OPTION)
+            paintArea.saveSettings();
+        else paintArea.loadSettings();
+        paintArea.repaint();
     }
 
     private void setupToolBar2() {
