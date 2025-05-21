@@ -23,10 +23,6 @@ public class EditNodePanel extends JPanel {
      * The {@link Node} being edited.
      */
     private final Node node;
-    /**
-     * The edit field for the label (nickname) of the {@link Node}.
-     */
-    private final JTextField labelField = new JTextField(20);
 
     private final Graph graph;
 
@@ -111,7 +107,9 @@ public class EditNodePanel extends JPanel {
      */
     private void addLabelField(GridBagConstraints c, Node node) {
         var field = new SelectTextField("Label", "label", node.getLabel());
-        field.addSelectListener( evt -> node.setLabel(field.getText()) );
+        field.addSelectListener( evt -> {
+            node.setLabel(field.getText());
+        } );
         field.attach(this,c);
     }
 
@@ -136,18 +134,9 @@ public class EditNodePanel extends JPanel {
     public static void runAsDialog(Node subject, Frame frame, Graph graph) {
         var before = subject.toJSON();
         EditNodePanel panel = new EditNodePanel(subject,graph);
-        if(JOptionPane.showConfirmDialog(frame,panel,"Edit "+subject.getName(),JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION) {
-            subject.setLabel(panel.getLabel());
-        } else {
+        if(JOptionPane.showConfirmDialog(frame,panel,"Edit "+subject.getName(),JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) {
+            // user cancelled, restore the node to its original state
             subject.fromJSON(before);
         }
-    }
-
-    /**
-     * Returns the value of the label field
-     * @return the value of the label field
-     */
-    private String getLabel() {
-        return labelField.getText();
     }
 }
