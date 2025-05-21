@@ -1,6 +1,7 @@
 package com.marginallyclever.donatello.ports;
 
 import com.marginallyclever.nodegraphcore.port.Input;
+import com.marginallyclever.nodegraphcore.port.Port;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +16,7 @@ public class InputImage extends Input<BufferedImage> {
 
     @Override
     public Rectangle getRectangle() {
-        rectangle.setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
+        rectangle.setSize(Port.DEFAULT_WIDTH,Port.DEFAULT_HEIGHT);
         return super.getRectangle();
     }
 }

@@ -106,7 +106,7 @@
                                     <SplashScreen-Image>splash.png</SplashScreen-Image>
                                 </manifestEntries>
                                 <manifest>
-                                    <mainClass>com.marginallyclever.donatello.Donatello</mainClass>
+                                    <mainClass>com.marginallyclever.donatello.DonatelloApp</mainClass>
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                             </archive>
@@ -145,7 +145,7 @@
                             <SplashScreen-Image>splash.png</SplashScreen-Image>
                         </manifestEntries>
                         <manifest>
-                            <mainClass>com.marginallyclever.donatello.Donatello</mainClass>
+                            <mainClass>com.marginallyclever.donatello.DonatelloApp</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>

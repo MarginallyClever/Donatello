@@ -115,7 +115,9 @@ public class NodeMoveTool extends ContextSensitiveTool {
             Point p = editor.getPaintArea().transformScreenToWorldPoint(e.getPoint());
             int dx = p.x - mouseStartPosition.x;
             int dy = p.y - mouseStartPosition.y;
-            editor.addEdit(new MoveNodesEdit(getName(),editor,dx,dy));
+            if(dx!=0 || dy!=0) {
+                editor.addEdit(new MoveNodesEdit(getName(), editor, dx, dy));
+            }
         }
     }
 }
