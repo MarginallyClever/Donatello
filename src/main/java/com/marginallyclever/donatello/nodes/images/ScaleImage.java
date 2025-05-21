@@ -10,7 +10,13 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 /**
- * Resize an {@link BufferedImage} to the new desired size
+ * Resize an {@link BufferedImage} to the new desired size.
+ * <ul>
+ *     <li>Input: {@link BufferedImage} to be resized</li>
+ *     <li>Input: New width in pixels</li>
+ *     <li>Input: New height in pixels</li>
+ *     <li>Output: Resized {@link BufferedImage}</li>
+ * </ul>
  * @author Dan Royer
  * @since 2022-02-23
  */
