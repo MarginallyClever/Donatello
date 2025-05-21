@@ -10,6 +10,7 @@ module com.marginallyclever.donatello {
     requires java.prefs;
     requires exp4j;
     requires vecmath;
+    requires jsr305;
 
     exports com.marginallyclever.donatello;
     exports com.marginallyclever.donatello.actions.undoable;
