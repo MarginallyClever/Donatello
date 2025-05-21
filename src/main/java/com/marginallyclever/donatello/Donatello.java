@@ -299,6 +299,13 @@ public class Donatello extends JPanel {
         idea.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-light-bulb-16.png"))));
         problem.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-bug-16.png"))));
 
+        ActionRegistry.register("help > showLog",showLog);
+        ActionRegistry.register("help > update",update);
+        ActionRegistry.register("help > problem",problem);
+        ActionRegistry.register("help > drink",drink);
+        ActionRegistry.register("help > community",community);
+        ActionRegistry.register("help > idea",idea);
+
         menu.add(community);
         menu.add(drink);
         menu.add(update);
@@ -332,7 +339,7 @@ public class Donatello extends JPanel {
         GraphUpdateAction graphUpdateAction = new GraphUpdateAction("Step",this);
         graphUpdateAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_U, 0));
         graphUpdateAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-end-16.png"))));
-        JToggleButton stepButton = new JToggleButton(graphUpdateAction);
+        JToggleButton graphUpdateButton = new JToggleButton(graphUpdateAction);
 
         PlayAction playAction = new PlayAction("Play",this, graphUpdateAction);
         JToggleButton playButton = new JToggleButton(playAction);
@@ -349,17 +356,21 @@ public class Donatello extends JPanel {
         resetAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_R,KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
         resetAction.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-rewind-16.png"))));
 
-        clockGroup.add(stepButton);
+        clockGroup.add(graphUpdateButton);
         clockGroup.add(playButton);
         clockGroup.add(resetButton);
 
-        toolBar.add(stepButton);
+        toolBar.add(graphUpdateButton);
         toolBar.add(playButton);
         toolBar.add(resetButton);
+
+        ActionRegistry.register("toolbar > graphUpdate", graphUpdateAction);
+        ActionRegistry.register("toolbar > play", playAction);
+        ActionRegistry.register("toolbar > reset", resetAction);
     }
 
     private void addPreferencesButton(JToolBar toolBar) {
-        var settingsPanel = new AbstractAction() {
+        var openSettingsAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GraphViewSettingsPanel gvSettingsPanel = new GraphViewSettingsPanel(paintArea.getSettings());
@@ -372,9 +383,9 @@ public class Donatello extends JPanel {
                 paintArea.repaint();
             }
         };
-        settingsPanel.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
-        settingsPanel.putValue(Action.SHORT_DESCRIPTION,"Preferences");
-        toolBar.add(new JButton(settingsPanel));
+        openSettingsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-settings-16.png"))));
+        openSettingsAction.putValue(Action.SHORT_DESCRIPTION,"Preferences");
+        toolBar.add(new JButton(openSettingsAction));
     }
 
     private void setupToolBar2() {
@@ -446,6 +457,7 @@ public class Donatello extends JPanel {
         action.putValue(Action.SHORT_DESCRIPTION,name);
         action.putValue(Action.SMALL_ICON, new ImageIcon(Objects.requireNonNull(getClass().getResource(iconFile))));
         action.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(accelerator));
+        ActionRegistry.register("action > "+name,action);
         actions.add(action);
     }
 
