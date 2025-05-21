@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/6ec1a1e3-491a-4fa1-bdb9-29b00d4b3011)# Donatello: Flow-based Programming IDE
+# Donatello: Flow-based Programming IDE
 
 [![Release](https://jitpack.io/v/MarginallyClever/Donatello.svg)](https://jitpack.io/#MarginallyClever/Donatello)
 [![Discord](https://img.shields.io/discord/521753686238560256?label=Discord)](https://discord.gg/QtvHqAv8yp)
