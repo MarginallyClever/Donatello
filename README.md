@@ -1,4 +1,4 @@
-# Donatello: Flow-based Programming IDE
+![image](https://github.com/user-attachments/assets/6ec1a1e3-491a-4fa1-bdb9-29b00d4b3011)# Donatello: Flow-based Programming IDE
 
 [![Release](https://jitpack.io/v/MarginallyClever/Donatello.svg)](https://jitpack.io/#MarginallyClever/Donatello)
 [![Discord](https://img.shields.io/discord/521753686238560256?label=Discord)](https://discord.gg/QtvHqAv8yp)
@@ -32,7 +32,7 @@ data flows, making it accessible for both novice and experienced developers.
 
 - Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/Donatello/javadoc).
 - Please see guide for [how to Contribute](https://github.com/MarginallyClever/Donatello/blob/main/CONTRIBUTING.md)
-- The [Official webpage](https://marginallyclever.github.io/Donatello/)!
+- The [Official webpage](https://github.com/MarginallyClever/Donatello/)!
 - Join [the Discord channel](https://discord.gg/Q5TZFmB) and make new friends.
 
 ## Based on work by
