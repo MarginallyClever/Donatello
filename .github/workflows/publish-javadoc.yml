@@ -31,7 +31,7 @@ jobs:
           mvn clean install   # Clean and build the project
           mvn javadoc:javadoc # Generate Javadoc
 
-      # Step 4: Deploy Javadoc to GitHub Pages
+      # Step 5: Deploy Javadoc to GitHub Pages
       - name: Deploy JavaDoc 🚀
         uses: MathieuSoysal/Javadoc-publisher.yml@v2.4.0
         with:
@@ -43,3 +43,21 @@ jobs:
           # url will be https://<username>.github.io/<repo>/<target-folder>
           # update this to the project version number
           target-folder: ${{ steps.get_version.outputs.version }}
+
+      # Step 6: Generate index.html in the javadoc branch root
+      - name: Generate index.html for all versions
+        run: |
+          git fetch origin javadoc:javadoc
+          git checkout javadoc
+          # Generate index.html listing all version folders
+          echo '<!DOCTYPE html>
+          <html><head><meta charset="utf-8"><title>Donatello Documentation Versions</title></head>
+          <body><h1>Available Donatello Documentation Versions</h1><ul>' > index.html
+          for dir in */ ; do
+            [[ "$dir" =~ ^(assets|static|.*\..*)/?$ ]] && continue
+            echo "<li><a href=\"$dir\">${dir%/}</a></li>" >> index.html
+          done
+          echo '</ul></body></html>' >> index.html
+          git add index.html
+          git commit -m "Update index.html for Javadoc versions" || echo "No changes to commit"
+          git push origin javadoc
