@@ -40,6 +40,7 @@ jobs:
           javadoc-branch: javadoc
           java-distribution: temurin
           project: maven
+          javadoc-source-folder: target/site/apidocs
           # url will be https://<username>.github.io/<repo>/<target-folder>
           # update this to the project version number
           target-folder: ${{ steps.get_version.outputs.version }}
