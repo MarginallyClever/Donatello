@@ -18,7 +18,7 @@ data flows, making it accessible for both novice and experienced developers.
 
 ## Screenshots
 
-![img](docs/preview-for-github.png)
+![img](preview-for-github.png)
 
 ## Getting started (Developers)
 
