@@ -126,7 +126,6 @@
                     <doclint>none</doclint>
                     <source>${minimum.java.version}</source>
                     <show>public</show>
-                    <reportOutputDirectory>${project.basedir}/docs</reportOutputDirectory>
                     <destDir>.</destDir>
                 </configuration>
             </plugin>
