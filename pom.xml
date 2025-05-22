@@ -119,8 +119,15 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.6.3</version>
+                <configuration>
+                    <doclint>none</doclint>
+                    <source>${minimum.java.version}</source>
+                    <show>public</show>
+                    <destDir>.</destDir>
+                </configuration>
             </plugin>
 
             <!-- Beginning of plugins defined originally only in Super POM -->
