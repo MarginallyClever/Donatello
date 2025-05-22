@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - gh-pages
-      - enable-javadoc-api
 
 jobs:
   publish:
