@@ -1,0 +1,11 @@
+module:com.marginallyclever.donatello
+com.marginallyclever.donatello
+com.marginallyclever.donatello.actions.undoable
+com.marginallyclever.donatello.bezier
+com.marginallyclever.donatello.graphview
+com.marginallyclever.donatello.nodes
+com.marginallyclever.donatello.nodes.color
+com.marginallyclever.donatello.nodes.images
+com.marginallyclever.donatello.ports
+com.marginallyclever.donatello.search
+com.marginallyclever.donatello.select
