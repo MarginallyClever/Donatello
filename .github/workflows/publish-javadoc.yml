@@ -20,6 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '22'
 
+      # Step 0: Get project version
       - name: Get project version
         id: get_version
         run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
