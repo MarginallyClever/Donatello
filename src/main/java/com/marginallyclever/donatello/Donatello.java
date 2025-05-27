@@ -483,20 +483,23 @@ public class Donatello extends JPanel {
         actions.add(graphNewAction);
         toolBar.add(graphNewAction);
         graphNewAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+        ActionRegistry.register("toolbar > graphNew", graphNewAction);
 
         GraphLoadAction graphLoadAction = new GraphLoadAction(recentFilesMenu,null,this);
         graphLoadAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-load-16.png"))));
         actions.add(graphLoadAction);
         toolBar.add(graphLoadAction);
         graphLoadAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
+        ActionRegistry.register("toolbar > graphLoad", graphLoadAction);
 
         //toolBar.add(recentFilesMenu);
 
         GraphSaveAsAction graphSaveAsAction = new GraphSaveAsAction(recentFilesMenu,"Save",this);
         graphSaveAsAction.putValue(Action.SMALL_ICON,new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/marginallyclever/donatello/icons8-save-16.png"))));
         actions.add(graphSaveAsAction);
-        graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
         toolBar.add(graphSaveAsAction);
+        graphSaveAsAction.putValue(Action.ACCELERATOR_KEY,KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+        ActionRegistry.register("toolbar > graphSaveAs", graphSaveAsAction);
     }
 
     /**

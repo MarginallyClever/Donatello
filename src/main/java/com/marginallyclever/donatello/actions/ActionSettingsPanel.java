@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -46,7 +44,7 @@ public class ActionSettingsPanel extends JPanel {
 
         // get the accelerator key for the action.
         KeyStroke ks = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-        String readable = ks != null ? toHumanReadable(ks) : "";
+        String readable = ks != null ? ActionRegistry.toHumanReadable(ks) : "";
         var field = new JTextField(readable);
 
         KeyStroke defaultKs = ActionRegistry.getDefaultAccelerator(action);
@@ -57,7 +55,7 @@ public class ActionSettingsPanel extends JPanel {
         resetButton.addActionListener(e->{
             // reset the action's accelerator key to the default
             action.putValue(Action.ACCELERATOR_KEY, defaultKs);
-            field.setText(toHumanReadable(defaultKs));
+            field.setText(ActionRegistry.toHumanReadable(defaultKs));
             field.setForeground(Color.BLACK); // reset the color to default
             resetButton.setEnabled(false);
             checkForCollisions(list);
@@ -133,14 +131,14 @@ public class ActionSettingsPanel extends JPanel {
         for( int i=0; i<list.size(); ++i ) {
             var action1 = list.get(i);
             var ks1 = (KeyStroke) action1.getValue(Action.ACCELERATOR_KEY);
-            String text1 = ks1 != null ? toHumanReadable(ks1) : "";
-            if(text1==null || text1.trim().isEmpty()) continue;
+            String text1 = ks1 != null ? ActionRegistry.toHumanReadable(ks1) : "";
+            if(text1.trim().isEmpty()) continue;
 
             for( int j=i+1; j<list.size(); ++j ) {
                 var action2 = list.get(j);
                 var ks2 = (KeyStroke) action2.getValue(Action.ACCELERATOR_KEY);
-                String text2 = ks2 != null ? toHumanReadable(ks2) : "";
-                if(text2==null || text2.trim().isEmpty()) continue;
+                String text2 = ks2 != null ? ActionRegistry.toHumanReadable(ks2) : "";
+                if(text2.trim().isEmpty()) continue;
 
                 // if two actions have the same accelerator key, mark them as a collision.
                 if( text1.equals(text2) ) {
@@ -153,22 +151,5 @@ public class ActionSettingsPanel extends JPanel {
                 }
             }
         }
-    }
-
-    /**
-     * Convert a {@link KeyStroke} to a human readable string that matches the format used in
-     * {@link KeyStroke#getKeyStroke(String)}
-     * @param ks the KeyStroke to convert
-     * @return a human readable string representation of the {@link KeyStroke}
-     */
-    public String toHumanReadable(KeyStroke ks) {
-        if (ks == null) return "";
-        StringBuilder sb = new StringBuilder();
-        int modifiers = ks.getModifiers();
-        if (modifiers != 0) {
-            sb.append(InputEvent.getModifiersExText(modifiers).toLowerCase().replace("+"," ")).append(" ");
-        }
-        sb.append(KeyEvent.getKeyText(ks.getKeyCode()));
-        return sb.toString();
     }
 }
