@@ -12,6 +12,7 @@ module com.marginallyclever.donatello {
     requires vecmath;
 
     exports com.marginallyclever.donatello;
+    exports com.marginallyclever.donatello.actions;
     exports com.marginallyclever.donatello.actions.undoable;
     exports com.marginallyclever.donatello.bezier;
     exports com.marginallyclever.donatello.graphview;

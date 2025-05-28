@@ -2,6 +2,7 @@
 
 [![Release](https://jitpack.io/v/MarginallyClever/Donatello.svg)](https://jitpack.io/#MarginallyClever/Donatello)
 [![Discord](https://img.shields.io/discord/521753686238560256?label=Discord)](https://discord.gg/QtvHqAv8yp)
+[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://marginallyclever.github.io/Donatello/)
 
 ## What is it?
 
@@ -30,7 +31,7 @@ data flows, making it accessible for both novice and experienced developers.
 
 ## Use it, Discuss it, Love it.
 
-- Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/Donatello/javadoc).
+- Please see the [Javadoc with the full node graph API](https://marginallyclever.github.io/Donatello/).
 - Please see guide for [how to Contribute](https://github.com/MarginallyClever/Donatello/blob/main/CONTRIBUTING.md)
 - The [Official webpage](https://github.com/MarginallyClever/Donatello/)!
 - Join [the Discord channel](https://discord.gg/Q5TZFmB) and make new friends.
