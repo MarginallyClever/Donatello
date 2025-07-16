@@ -351,7 +351,8 @@ public class GraphViewPanel extends JPanel {
         g.setColor(settings.getNodeColorTitleFont());
         box.height = Node.TITLE_HEIGHT;
         paintText(g,n.getLabel(),box,ALIGN_LEFT,ALIGN_CENTER);
-        paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
+        //paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
+        paintIcon(g,n,box,ALIGN_RIGHT,ALIGN_CENTER);
     }
 
     private void paintProgressBar(Graphics g, Node n,Rectangle r) {
@@ -457,7 +458,6 @@ public class GraphViewPanel extends JPanel {
             g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
         }
     }
-
     /**
      * Use the graphics context to paint text within a box with the provided alignment.
      * @param g the graphics context
@@ -490,6 +490,29 @@ public class GraphViewPanel extends JPanel {
         layout.draw((Graphics2D)g,x,y);
     }
 
+    public void paintIcon(Graphics g, Node n, Rectangle box, int alignH, int alignV) {
+        Icon icon = n.getIcon();
+        if(icon == null) return;
+
+        int x,y;
+        if(alignH == ALIGN_LEFT) {
+            x = box.x;
+        } else if(alignH == ALIGN_RIGHT) {
+            x = box.x + box.width - icon.getIconWidth();
+        } else {
+            x = box.x + (box.width - icon.getIconWidth()) / 2;
+        }
+
+        if(alignV == ALIGN_TOP) {
+            y = box.y;
+        } else if(alignV == ALIGN_BOTTOM) {
+            y = box.y + box.height - icon.getIconHeight();
+        } else {
+            y = box.y + (box.height - icon.getIconHeight()) / 2;
+        }
+
+        icon.paintIcon(this, g, x, y);
+    }
     /**
      * Paint the male end of connection points at this {@link Port}.
      * @param g the {@link Graphics} context
