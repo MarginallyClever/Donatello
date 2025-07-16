@@ -4,7 +4,7 @@
 
     <groupId>com.marginallyclever</groupId>
     <artifactId>donatello</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.1</version>
 
     <name>Donatello</name>
     <description>GUI for nodegraphcore flow-based programming</description>
@@ -278,25 +278,17 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
+            <version>2.0.17</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.5.16</version>
-            <scope>compile</scope>
+            <version>1.5.18</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.16</version>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.5.18</version>
         </dependency>
 
         <dependency>
@@ -333,9 +325,9 @@
             Github/Jitpack/etc can find the copy published by Jitpack.
             I have to do this dance every time.
             -->
-            <groupId>com.github.marginallyclever</groupId>
+            <groupId>com.marginallyclever</groupId>
             <artifactId>nodegraphcore</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.2</version>
         </dependency>
     </dependencies>
 
