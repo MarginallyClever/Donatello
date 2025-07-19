@@ -45,6 +45,8 @@ public class EditNodePanel extends JPanel {
         c.weightx=1;
         c.fill = GridBagConstraints.HORIZONTAL;
 
+        addReadOnlyField(c,"Type",node.getName());
+        c.gridy++;
         addReadOnlyField(c,"ID",node.getUniqueID());
         c.gridy++;
         addLabelField(c,node);
