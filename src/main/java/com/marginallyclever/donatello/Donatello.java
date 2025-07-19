@@ -12,6 +12,7 @@ import com.marginallyclever.donatello.graphview.GraphViewListener;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.graphview.GraphViewSettings;
 import com.marginallyclever.donatello.graphview.GraphViewSettingsPanel;
+import com.marginallyclever.donatello.nodefactorypanel.NodeFactoryPanel;
 import com.marginallyclever.nodegraphcore.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.nodefactorypanel;
 
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.NodeCategory;

@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.nodefactorypanel;
 
 import com.marginallyclever.donatello.search.SearchBar;
 import com.marginallyclever.nodegraphcore.Node;
