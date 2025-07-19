@@ -1,5 +1,6 @@
 package com.marginallyclever.donatello.graphview;
 
+import com.marginallyclever.donatello.IconHelper;
 import com.marginallyclever.donatello.bezier.Bezier;
 import com.marginallyclever.nodegraphcore.Connection;
 import com.marginallyclever.nodegraphcore.Graph;
@@ -28,6 +29,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.marginallyclever.donatello.IconHelper.scaleIcon;
 
 /**
  * {@link GraphViewPanel} visualizes the contents of a {@link Graph} with Java Swing.
@@ -488,6 +491,31 @@ public class GraphViewPanel extends JPanel {
             default -> (int) (box.getMinY() + h-md);
         };
         layout.draw((Graphics2D)g,x,y);
+    }
+
+    public void paintIcon(Graphics g, Node n, Rectangle box, int alignH, int alignV) {
+        Icon icon = scaleIcon(n.getIcon(), IconHelper.ICON_SIZE, IconHelper.ICON_SIZE);
+        //Icon icon = n.getIcon();
+        if(icon == null) return;
+
+        int x,y;
+        if(alignH == ALIGN_LEFT) {
+            x = box.x;
+        } else if(alignH == ALIGN_RIGHT) {
+            x = box.x + box.width - icon.getIconWidth();
+        } else {
+            x = box.x + (box.width - icon.getIconWidth()) / 2;
+        }
+
+        if(alignV == ALIGN_TOP) {
+            y = box.y;
+        } else if(alignV == ALIGN_BOTTOM) {
+            y = box.y + box.height - icon.getIconHeight();
+        } else {
+            y = box.y + (box.height - icon.getIconHeight()) / 2;
+        }
+
+        icon.paintIcon(this, g, x, y);
     }
 
     /**
