@@ -5,9 +5,11 @@ import com.marginallyclever.donatello.ports.InputInt;
 import com.marginallyclever.donatello.ports.OutputImage;
 import com.marginallyclever.nodegraphcore.Node;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.Objects;
 
 public class Blur extends Node {
     private final InputImage src = new InputImage("source");
@@ -65,5 +67,10 @@ public class Blur extends Node {
             kernel = new Kernel(1, size, data);
         }
         return new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(Blur.class.getResource("icons8-blur-48.png")));
     }
 }
