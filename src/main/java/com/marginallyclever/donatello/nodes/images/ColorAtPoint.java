@@ -5,8 +5,10 @@ import com.marginallyclever.donatello.ports.InputInt;
 import com.marginallyclever.donatello.ports.OutputColor;
 import com.marginallyclever.nodegraphcore.Node;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 /**
  * Calculates the color of a {@link BufferedImage} at a given point.  Does nothing if the requested point is out of bounds.
@@ -77,5 +79,10 @@ public class ColorAtPoint extends Node {
             sumB /= sumCount;
             output.setValue(new Color((int)sumR, (int)sumG, (int)sumB, (int)sumA));
         }
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(Blur.class.getResource("icons8-eye-dropper-48.png")));
     }
 }

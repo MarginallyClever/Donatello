@@ -7,6 +7,10 @@ import com.marginallyclever.nodegraphcore.Graph;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class for working with {@link Node} objects in a {@link Graph}.
+ * Provides methods to retrieve outgoing connections and neighbors of nodes.
+ */
 public class NodeHelper {
     public static List<Node> getAllOutgoingConnections(Graph graph, Node source) {
         List<Node> adjacent = new ArrayList<>();

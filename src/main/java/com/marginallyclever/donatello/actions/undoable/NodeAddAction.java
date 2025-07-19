@@ -1,7 +1,7 @@
 package com.marginallyclever.donatello.actions.undoable;
 
 import com.marginallyclever.donatello.Donatello;
-import com.marginallyclever.donatello.NodeFactoryPanel;
+import com.marginallyclever.donatello.nodefactorypanel.NodeFactoryPanel;
 import com.marginallyclever.donatello.edits.NodeAddEdit;
 import com.marginallyclever.nodegraphcore.Graph;
 import com.marginallyclever.nodegraphcore.Node;

@@ -4,7 +4,9 @@ import com.marginallyclever.donatello.ports.InputImage;
 import com.marginallyclever.donatello.ports.OutputImage;
 import com.marginallyclever.nodegraphcore.Node;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 /**
@@ -44,5 +46,10 @@ public class Invert extends Node {
         });
 
         after.setValue(dst);
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(Invert.class.getResource("icons8-invert-colors-48.png")));
     }
 }

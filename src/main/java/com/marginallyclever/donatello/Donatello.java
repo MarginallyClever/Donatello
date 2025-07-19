@@ -12,6 +12,7 @@ import com.marginallyclever.donatello.graphview.GraphViewListener;
 import com.marginallyclever.donatello.graphview.GraphViewPanel;
 import com.marginallyclever.donatello.graphview.GraphViewSettings;
 import com.marginallyclever.donatello.graphview.GraphViewSettingsPanel;
+import com.marginallyclever.donatello.nodefactorypanel.NodeFactoryPanel;
 import com.marginallyclever.nodegraphcore.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -553,7 +554,9 @@ public class Donatello extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
-                setStatusBar(paintArea.transformScreenToWorldPoint(e.getPoint()));
+                var p = paintArea.transformScreenToWorldPoint(e.getPoint());
+                setStatusBar(p);
+                setToolTipText(p);
             }
 
             @Override
@@ -562,6 +565,7 @@ public class Donatello extends JPanel {
                 Point p = paintArea.transformScreenToWorldPoint(e.getPoint());
                 checkToolContext(p);
                 setStatusBar(p);
+                setToolTipText(p);
             }
         });
         paintArea.addMouseListener(new MouseAdapter() {
@@ -585,8 +589,18 @@ public class Donatello extends JPanel {
     }
 
     private void setStatusBar(Point transformMousePoint) {
-        statusBar.setText(activeTool.getName()+" ("+transformMousePoint.x+","+transformMousePoint.y+")"
-                +" ["+getPaintArea().getCameraPosition().x+","+getPaintArea().getCameraPosition().y+"]");
+        StringBuilder sb = new StringBuilder();
+        var camPos = getPaintArea().getCameraPosition();
+        sb.append(activeTool.getName())
+                .append(" (").append(transformMousePoint.x).append(",").append(transformMousePoint.y).append(")")
+                .append(" [").append(camPos.x).append(",").append(camPos.y).append("]");
+        statusBar.setText(sb.toString());
+    }
+
+    private void setToolTipText(Point transformMousePoint) {
+        // tool tip text is the name of the type of node under the cursor, if any
+        Node node = getGraph().getNodeAt(transformMousePoint);
+        paintArea.setToolTipText(node == null ? null : node.getName());
     }
 
     private void checkToolContext(Point point) {

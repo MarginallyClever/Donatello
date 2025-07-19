@@ -354,7 +354,8 @@ public class GraphViewPanel extends JPanel {
         g.setColor(settings.getNodeColorTitleFont());
         box.height = Node.TITLE_HEIGHT;
         paintText(g,n.getLabel(),box,ALIGN_LEFT,ALIGN_CENTER);
-        paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
+        //paintText(g,n.getName(),box,ALIGN_RIGHT,ALIGN_CENTER);
+        paintIcon(g,n,box,ALIGN_RIGHT,ALIGN_CENTER);
     }
 
     private void paintProgressBar(Graphics g, Node n,Rectangle r) {
@@ -460,7 +461,6 @@ public class GraphViewPanel extends JPanel {
             g.drawOval(p.x-radius,p.y-radius,radius*2,radius*2);
         }
     }
-
     /**
      * Use the graphics context to paint text within a box with the provided alignment.
      * @param g the graphics context
@@ -495,8 +495,6 @@ public class GraphViewPanel extends JPanel {
 
     public void paintIcon(Graphics g, Node n, Rectangle box, int alignH, int alignV) {
         Icon icon = scaleIcon(n.getIcon(), IconHelper.ICON_SIZE, IconHelper.ICON_SIZE);
-        //Icon icon = n.getIcon();
-        if(icon == null) return;
 
         int x,y;
         if(alignH == ALIGN_LEFT) {

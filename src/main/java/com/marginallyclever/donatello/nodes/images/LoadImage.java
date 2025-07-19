@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Objects;
 
 /**
  * This {@link Node} can load an AWT {@link BufferedImage}.
@@ -49,7 +50,7 @@ public class LoadImage extends Node {
     public void update() {
         String filenameValue = filename.getValue().get();
         if(filenameValue==null || filenameValue.isEmpty()) {
-            contents.setValue(null);
+            contents.setValue(new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB));
             width.setValue(0);
             height.setValue(0);
             return;
@@ -66,5 +67,10 @@ public class LoadImage extends Node {
         } catch (Exception e) {
             logger.error("Failed to load image from "+filenameValue,e);
         }
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(LoadImage.class.getResource("icons8-image-48.png")));
     }
 }

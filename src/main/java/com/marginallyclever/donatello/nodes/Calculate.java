@@ -1,6 +1,9 @@
 package com.marginallyclever.donatello.nodes;
 
-import com.marginallyclever.donatello.ports.*;
+import com.marginallyclever.donatello.ports.InputDouble;
+import com.marginallyclever.donatello.ports.InputInt;
+import com.marginallyclever.donatello.ports.InputString;
+import com.marginallyclever.donatello.ports.OutputDouble;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.port.Input;
 import net.objecthunter.exp4j.Expression;
@@ -11,6 +14,15 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.util.Objects;
+
+/**
+ * <p>A node that evaluates a mathematical expression using the input ports as variables.
+ * The expression can include functions like
+ * hypot, atan2, random, max, min, sin, cos, tan, floor, ceil, pow, and more.
+ * The number of input ports can be adjusted dynamically based on the "count" input.</p>
+ */
 public class Calculate extends Node {
     private static final Logger logger = LoggerFactory.getLogger(Calculate.class);
 
@@ -73,15 +85,36 @@ public class Calculate extends Node {
 
     private static final Function hypot = new Function("hypot",2) {
         @Override
-        public double apply(double... doubles) {
-            return Math.hypot(doubles[0], doubles[1]);
+        public double apply(double... args) {
+            return Math.hypot(args[0], args[1]);
         }
     };
 
     private static final Function atan2 = new Function("atan2",2) {
         @Override
-        public double apply(double... doubles) {
-            return Math.atan2(doubles[0], doubles[1]);
+        public double apply(double... args) {
+            return Math.atan2(args[0], args[1]);
+        }
+    };
+
+    private static final Function random = new Function("random",0) {
+        @Override
+        public double apply(double... args) {
+            return Math.random();
+        }
+    };
+
+    private static final Function max = new Function("max",2) {
+        @Override
+        public double apply(double... args) {
+            return Math.max(args[0], args[1]);
+        }
+    };
+
+    private static final Function min = new Function("min",2) {
+        @Override
+        public double apply(double... args) {
+            return Math.min(args[0], args[1]);
         }
     };
 
@@ -90,7 +123,10 @@ public class Calculate extends Node {
         ExpressionBuilder eb = new ExpressionBuilder(expression)
                 .variables("PI") // Declare the variable
                 .function(hypot)
-                .function(atan2);
+                .function(atan2)
+                .function(random)
+                .function(max)
+                .function(min);
         // add the variables from the input ports
         for(int i=DEFAULT_PORTS; i<getNumPorts(); i++) {
             if(getPort(i) instanceof InputDouble input) {
@@ -127,5 +163,10 @@ public class Calculate extends Node {
         super.fromJSON(jo);
         updateInputCount(Math.max(0,inputCount.getValue()));
         this.parseAllPortsFromJSON(jo.getJSONArray("variables"));
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(Calculate.class.getResource("icons8-calculate-48.png")));
     }
 }

@@ -1,4 +1,4 @@
-package com.marginallyclever.donatello;
+package com.marginallyclever.donatello.nodefactorypanel;
 
 import com.marginallyclever.donatello.search.SearchBar;
 import com.marginallyclever.nodegraphcore.Node;
@@ -20,8 +20,6 @@ import java.util.function.Supplier;
 
 /**
  * Swing UI allowing a user to create a new {@link Node} as registered with a {@link NodeFactory}.
- * @author Dan Royer
- * @since 2022-02-11
  */
 public class NodeFactoryPanel extends JPanel {
     private static final Logger logger = LoggerFactory.getLogger(NodeFactoryPanel.class);
