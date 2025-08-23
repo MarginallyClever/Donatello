@@ -4,7 +4,9 @@ import com.marginallyclever.nodegraphcore.*;
 import com.marginallyclever.nodegraphcore.port.Input;
 import com.marginallyclever.nodegraphcore.port.Output;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * Separates a color into its four component RGBA channels.  Each channel is a value 0...1.
@@ -37,5 +39,10 @@ public class ColorToRGBA extends Node {
         green.setValue(c.getGreen()/255.0);
         blue .setValue(c.getBlue() /255.0);
         alpha.setValue(c.getAlpha()/255.0);
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(LoadColor.class.getResource("icons8-rgb-48.png")));
     }
 }

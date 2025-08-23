@@ -1,10 +1,13 @@
 package com.marginallyclever.donatello.nodes.color;
 
+import com.marginallyclever.donatello.nodes.Calculate;
 import com.marginallyclever.donatello.ports.InputInt;
 import com.marginallyclever.donatello.ports.OutputColor;
 import com.marginallyclever.nodegraphcore.Node;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * Loads a {@link Color} into the graph.
@@ -37,5 +40,10 @@ public class LoadColor extends Node {
         int bb = b.getValue();
         int aa = a.getValue();
         output.setValue(new Color(rr,gg,bb,aa));
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(LoadColor.class.getResource("icons8-color-48.png")));
     }
 }

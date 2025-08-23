@@ -5,8 +5,10 @@ import com.marginallyclever.donatello.ports.InputInt;
 import com.marginallyclever.nodegraphcore.Node;
 import com.marginallyclever.nodegraphcore.PrintWithGraphics;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 /**
  * This {@link Node} can print a {@link BufferedImage} using the {@link Graphics} context.
@@ -38,5 +40,10 @@ public class PrintImage extends Node implements PrintWithGraphics {
     @Override
     public int getLayer() {
         return layer.getValue();
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(PrintImage.class.getResource("icons8-print-48.png")));
     }
 }

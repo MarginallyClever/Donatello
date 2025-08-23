@@ -1,13 +1,16 @@
 package com.marginallyclever.donatello.nodes.images;
 
+import com.marginallyclever.donatello.nodes.color.LoadColor;
 import com.marginallyclever.donatello.ports.InputImage;
 import com.marginallyclever.donatello.ports.InputInt;
 import com.marginallyclever.donatello.ports.OutputImage;
 import com.marginallyclever.nodegraphcore.Node;
 
+import javax.swing.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 /**
  * Resize an {@link BufferedImage} to the new desired size
@@ -44,5 +47,10 @@ public class ScaleImage extends Node {
         AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
         scaleOp.filter(input, result);
         output.setValue(result);
+    }
+
+    @Override
+    public Icon getIcon() {
+        return new ImageIcon(Objects.requireNonNull(ScaleImage.class.getResource("icons8-resize-48.png")));
     }
 }
