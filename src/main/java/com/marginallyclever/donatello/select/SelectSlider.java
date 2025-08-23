@@ -4,36 +4,34 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SelectSlider extends Select {
-	private final JSlider field = new JSlider();
 	private final JLabel label;
-	private final JPanel panel2;
+	private final JSlider field = new JSlider();
+	private final JLabel value;
+	private final JPanel panel2 = new JPanel(new BorderLayout());
 
 	public SelectSlider(String internalName,String labelKey,int top,int bottom,int defaultValue) {
 		super(internalName);
 
-		JLabel value = new JLabel("0",JLabel.TRAILING);
-
-		field.setName(internalName+".field");
-		field.setMaximum(top);
-		field.setMinimum(bottom);
-		field.setMinorTickSpacing(1);
-		field.addChangeListener((e) -> {
-	        int n = field.getValue();
-	        value.setText(Integer.toString(n));
-	        
-			if(field.getValueIsAdjusting()) return;
-			
-			fireSelectEvent(null,n);
-		});
-		field.setValue(defaultValue);
-
+		value = new JLabel("0",JLabel.TRAILING);
 		Dimension dim = new Dimension(30,1);
 		value.setMinimumSize(dim);
 		value.setPreferredSize(dim);
 		value.setMaximumSize(dim);
 
+		field.setName(internalName+".field");
+		field.setMaximum(top);
+		field.setMinimum(bottom);
+		field.setMinorTickSpacing(1);
+		field.addChangeListener(e -> {
+			int n = field.getValue();
+			value.setText(Integer.toString(n));
+			if(field.getValueIsAdjusting()) return;
+			fireSelectEvent(null,n);
+		});
+		field.setValue(defaultValue);
+
 		label = createLabel(labelKey);
-		panel2 = new JPanel(new BorderLayout());
+
 		panel2.add(field,BorderLayout.CENTER);
 		panel2.add(value,BorderLayout.LINE_END);
 	}
