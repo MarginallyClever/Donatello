@@ -18,13 +18,10 @@ import java.util.List;
 public class CurveEditor extends JPanel {
     private static class ControlPoint {
         Point2d position;
-        Point2d tangentIn;
-        Point2d tangentOut;
+        // TODO add bezier curve control points
 
         public ControlPoint(Point2d position) {
             this.position = position;
-            this.tangentIn = new Point2d();
-            this.tangentOut = new Point2d();
         }
     }
 
